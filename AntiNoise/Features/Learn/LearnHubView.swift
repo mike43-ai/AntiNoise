@@ -7,6 +7,11 @@ struct LearnHubView: View {
     @State private var model: LearnHubModel?
     @State private var navigationPath = NavigationPath()
 
+    enum LearnDestination: Hashable {
+        case capture(UUID)
+        case deck(UUID)
+    }
+
     var body: some View {
         NavigationStack(path: $navigationPath) {
             Group {
@@ -20,8 +25,13 @@ struct LearnHubView: View {
             .background(Color.bgPrimary)
             .navigationTitle("Learn")
             .navigationBarTitleDisplayMode(.large)
-            .navigationDestination(for: UUID.self) { captureID in
-                SummaryDetailView(captureID: captureID)
+            .navigationDestination(for: LearnDestination.self) { destination in
+                switch destination {
+                case .capture(let captureID):
+                    SummaryDetailView(captureID: captureID)
+                case .deck(let deckID):
+                    DeckDetailView(deckID: deckID)
+                }
             }
             .task {
                 if model == nil {
@@ -44,12 +54,17 @@ struct LearnHubView: View {
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
                 tabSegmented(bound: bound)
 
+                if bound.dueTodayCount > 0 {
+                    dueCardsBanner(count: bound.dueTodayCount)
+                        .padding(.horizontal, AppSpacing.xl)
+                }
+
                 switch bound.tab {
                 case .today:
                     DailyQueueSection(
                         captures: bound.dailyQueue,
                         summaries: bound.summariesByID,
-                        onSelect: { capture in navigationPath.append(capture.id) },
+                        onSelect: { capture in navigationPath.append(LearnDestination.capture(capture.id)) },
                         onMarkDone: { bound.markDone(captureID: $0) },
                         onSkip: { bound.markSkipped(captureID: $0) }
                     )
@@ -60,11 +75,16 @@ struct LearnHubView: View {
                         InboxListView(
                             captures: bound.filteredInbox(),
                             summaries: bound.summariesByID,
-                            onSelect: { capture in navigationPath.append(capture.id) },
+                            onSelect: { capture in navigationPath.append(LearnDestination.capture(capture.id)) },
                             onArchive: { bound.archive(captureID: $0) }
                         )
                         .padding(.horizontal, AppSpacing.xl)
                     }
+                case .decks:
+                    DeckListView(onSelect: { deckID in
+                        navigationPath.append(LearnDestination.deck(deckID))
+                    })
+                    .padding(.horizontal, AppSpacing.xl)
                 }
             }
             .padding(.vertical, AppSpacing.lg)
@@ -95,6 +115,19 @@ struct LearnHubView: View {
             Spacer()
         }
         .padding(.horizontal, AppSpacing.xl)
+    }
+
+    private func dueCardsBanner(count: Int) -> some View {
+        AppCard(style: .elevated) {
+            HStack {
+                Image(systemName: "bell.badge.fill").foregroundStyle(Color.accent)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("\(count) card\(count == 1 ? "" : "s") due today").appFont(.body).fontWeight(.semibold)
+                    Text("Tap Decks to start a review session.").appFont(.caption).foregroundStyle(Color.textMuted)
+                }
+                Spacer()
+            }
+        }
     }
 
     private func resolveUserScopes() -> Set<ClassificationScope> {

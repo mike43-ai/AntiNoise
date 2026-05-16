@@ -3,13 +3,14 @@ import Observation
 import SwiftData
 
 enum LearnHubTab: String, CaseIterable, Identifiable {
-    case today, inbox
+    case today, inbox, decks
 
     var id: String { rawValue }
     var title: String {
         switch self {
         case .today: return "Today"
         case .inbox: return "Inbox"
+        case .decks: return "Decks"
         }
     }
 }
@@ -22,13 +23,16 @@ final class LearnHubModel {
     var inbox: [Capture] = []
     var summariesByID: [UUID: Summary] = [:]
     var scopeFilter: ClassificationScope?
+    var dueTodayCount: Int = 0
 
     private let modelContext: ModelContext
     private let priorityEngine: DailyPriorityEngine
+    private let reviewEngine: ReviewSessionEngine
 
     init(modelContext: ModelContext, priorityEngine: DailyPriorityEngine) {
         self.modelContext = modelContext
         self.priorityEngine = priorityEngine
+        self.reviewEngine = ReviewSessionEngine(modelContainer: modelContext.container)
     }
 
     func refresh() {
@@ -36,6 +40,7 @@ final class LearnHubModel {
         dailyQueue = priorityEngine.computeQueue(max: 5)
         inbox = fetchInbox()
         summariesByID = fetchSummariesByID()
+        dueTodayCount = reviewEngine.dueTodayCount()
     }
 
     func filteredInbox() -> [Capture] {
@@ -76,6 +81,6 @@ final class LearnHubModel {
     private func fetchSummariesByID() -> [UUID: Summary] {
         let descriptor = FetchDescriptor<Summary>()
         let rows = (try? modelContext.fetch(descriptor)) ?? []
-        return Dictionary(uniqueKeysWithValues: rows.map { ($0.captureID, $0) })
+        return Dictionary(rows.map { ($0.captureID, $0) }, uniquingKeysWith: { first, _ in first })
     }
 }

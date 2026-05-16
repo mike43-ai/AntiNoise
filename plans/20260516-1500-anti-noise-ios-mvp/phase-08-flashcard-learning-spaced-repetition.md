@@ -9,8 +9,8 @@
 - Date: 2026-05-16
 - Description: Generate flash cards from a Summary via OpenAI, persist as a Deck, drive review sessions with SM-2 spaced repetition algorithm.
 - Priority: P1
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 3d
 
 ## Key Insights

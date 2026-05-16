@@ -6,8 +6,10 @@ struct SummaryDetailView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(SummarizerHolder.self) private var summarizerHolder
+    @Environment(ReachabilityObserver.self) private var reachability
     @State private var model: SummaryDetailModel?
     @State private var isScopeSheetPresented = false
+    @State private var navigateToDeckID: UUID?
 
     var body: some View {
         ScrollView {
@@ -29,13 +31,27 @@ struct SummaryDetailView: View {
         .task {
             if model == nil {
                 let holder = summarizerHolder
+                let reach = reachability
+                let generator = CardGenerator(
+                    modelContainer: modelContext.container,
+                    isOnline: { reach.isOnline }
+                )
                 model = SummaryDetailModel(
                     captureID: captureID,
                     modelContext: modelContext,
-                    summarizerProvider: { holder.summarizer }
+                    summarizerProvider: { holder.summarizer },
+                    cardGenerator: generator
                 )
             }
             model?.load()
+        }
+        .navigationDestination(item: $navigateToDeckID) { deckID in
+            DeckDetailView(deckID: deckID)
+        }
+        .onChange(of: model?.generatedDeckID) { _, newValue in
+            if let id = newValue {
+                navigateToDeckID = id
+            }
         }
     }
 
@@ -83,16 +99,27 @@ struct SummaryDetailView: View {
         listSection(title: "Examples", items: summary.examples)
         section(title: "Go deeper", body: summary.deeperQuestion)
 
-        if summary.recommendDeepDive {
-            AppCard(style: .elevated) {
-                VStack(alignment: .leading, spacing: AppSpacing.sm) {
-                    Text("Recommended for deep-dive").appFont(.bodySmall).fontWeight(.semibold)
-                    Text("Generate flash cards to lock this in.")
-                        .appFont(.caption)
-                        .foregroundStyle(Color.textMuted)
-                    PrimaryButton(title: "Create flash cards", fullWidth: false) {
-                        // Wired in Phase 08.
-                    }
+        deepDiveCTA(summary: summary)
+    }
+
+    @ViewBuilder
+    private func deepDiveCTA(summary: Summary) -> some View {
+        AppCard(style: .elevated) {
+            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                Text(summary.recommendDeepDive ? "Recommended for deep-dive" : "Deep dive")
+                    .appFont(.bodySmall).fontWeight(.semibold)
+                Text("Generate flash cards to lock this in via spaced repetition.")
+                    .appFont(.caption)
+                    .foregroundStyle(Color.textMuted)
+                if let err = model?.deckError {
+                    Text(err).appFont(.caption).foregroundStyle(Color.danger)
+                }
+                PrimaryButton(
+                    title: "Create flash cards",
+                    isLoading: model?.isGeneratingDeck ?? false,
+                    fullWidth: false
+                ) {
+                    Task { await model?.generateDeck() }
                 }
             }
         }

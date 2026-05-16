@@ -8,19 +8,28 @@ final class SummaryDetailModel {
     var capture: Capture?
     var summary: Summary?
     var isRetrying = false
+    var isGeneratingDeck = false
+    var generatedDeckID: UUID?
+    var deckError: String?
 
     private let captureID: UUID
     private let modelContext: ModelContext
     private let summarizerProvider: () -> SummarizerService
+    private let cardGenerator: CardGenerator
 
     init(
         captureID: UUID,
         modelContext: ModelContext,
-        summarizerProvider: @escaping () -> SummarizerService
+        summarizerProvider: @escaping () -> SummarizerService,
+        cardGenerator: CardGenerator? = nil
     ) {
         self.captureID = captureID
         self.modelContext = modelContext
         self.summarizerProvider = summarizerProvider
+        self.cardGenerator = cardGenerator ?? CardGenerator(
+            modelContainer: modelContext.container,
+            isOnline: { true }
+        )
     }
 
     func load() {
@@ -36,6 +45,18 @@ final class SummaryDetailModel {
         try? ClassificationRepository(context: modelContext)
             .setUserClassification(captureID: captureID, scope: scope)
         load()
+    }
+
+    func generateDeck() async {
+        guard !isGeneratingDeck else { return }
+        isGeneratingDeck = true
+        deckError = nil
+        defer { isGeneratingDeck = false }
+        do {
+            generatedDeckID = try await cardGenerator.generate(fromSummaryWithCaptureID: captureID)
+        } catch {
+            deckError = error.localizedDescription
+        }
     }
 
     func retry() async {
