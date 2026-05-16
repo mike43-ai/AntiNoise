@@ -3,7 +3,7 @@ options:
   bundleIdPrefix: com.antinoise
   deploymentTarget:
     iOS: "17.0"
-  developmentLanguage: vi
+  developmentLanguage: en
   createIntermediateGroups: true
   generateEmptyDirectories: true
   groupSortPosition: top

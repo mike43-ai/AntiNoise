@@ -88,6 +88,5 @@ Each mockup folder also contains `code.html` (Tailwind reference) — treat as v
 
 None at plan-lock. New questions surfaced during implementation:
 
-- **Phase 01 — Vietnamese primary App Store language?** `developmentLanguage: vi` in `project.yml`. Switching the primary language post first-submission requires an Apple support ticket. Confirm before phase-12 archive.
 - **Phase 01 — `associated-domains` deferred.** Re-enable in phase 08 once `antinoise.app` is provisioned and AASA is hosted.
 - **Phase 01 — Simulator runtime install blocked by disk-full.** Re-run `xcodebuild -downloadPlatform iOS` after freeing ≥10 GB to verify the build.

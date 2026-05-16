@@ -86,7 +86,7 @@ AntiNoise.xcworkspace
 
 ## Notes (implementation)
 - Used xcodegen 2.42.0 prebuilt binary (Homebrew formula required Xcode 15.3; we have 15.2).
-- `developmentLanguage: vi` — Vietnamese primary, English as additional. Confirm before App Store Connect first submission.
+- `developmentLanguage: en` — English primary, Vietnamese as additional localization (locked 2026-05-16 per user decision).
 - `associated-domains` entitlement deferred to phase 08 (needs AASA hosting at antinoise.app).
 - DEVELOPMENT_TEAM left empty in project.yml — set locally via Xcode UI or `Config.local.xcconfig` (gitignored). Documented in README.
 - FirebaseCrashlytics added to SPM products in addition to Auth/Firestore/Analytics; symbol-upload run script deferred to phase 12.
