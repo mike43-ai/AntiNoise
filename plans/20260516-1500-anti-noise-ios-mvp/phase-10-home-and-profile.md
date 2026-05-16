@@ -9,8 +9,8 @@
 - Date: 2026-05-16
 - Description: Home dashboard (today snapshot) + Profile (user, stats, goals, settings).
 - Priority: P1
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16, MVP scope)
+- Review status: approved with fixes
 - Effort: 2d
 
 ## Key Insights

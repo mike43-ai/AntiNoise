@@ -1,84 +1,137 @@
+import SwiftData
 import SwiftUI
 
 struct ProfileRootView: View {
+    @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var auth
+
+    @State private var viewModel: ProfileViewModel?
     @State private var isAPIKeySheetPresented = false
     @State private var isGoalsSheetPresented = false
+    @State private var isDeleteSheetPresented = false
+    @State private var exportItems: ShareItemsBox?
+    @State private var errorMessage: String?
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.xl) {
-                    if let user = auth.currentUser {
-                        AppCard {
-                            VStack(alignment: .leading, spacing: AppSpacing.xs) {
-                                Text(user.displayName ?? "You")
-                                    .appFont(.h2)
-                                if let email = user.email {
-                                    Text(email)
-                                        .appFont(.bodySmall)
-                                        .foregroundStyle(Color.textMuted)
-                                }
+                    userCard
+
+                    if let viewModel {
+                        VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                            Text("Stats").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+                            StatsGrid(stats: viewModel.stats)
+                        }
+
+                        if !viewModel.goalsCountByScope.isEmpty {
+                            VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                                Text("Goals").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+                                goalsRow(viewModel: viewModel)
                             }
                         }
                     }
 
-                    VStack(alignment: .leading, spacing: AppSpacing.md) {
-                        Text("Learning")
-                            .appFont(.caption)
-                            .textCase(.uppercase)
-                            .foregroundStyle(Color.textMuted)
-                        SecondaryButton(
-                            title: "Manage learning goals",
-                            systemImage: "target"
-                        ) {
-                            isGoalsSheetPresented = true
-                        }
-                    }
-
-                    VStack(alignment: .leading, spacing: AppSpacing.md) {
-                        Text("AI")
-                            .appFont(.caption)
-                            .textCase(.uppercase)
-                            .foregroundStyle(Color.textMuted)
-                        SecondaryButton(
-                            title: hasKey ? "Manage OpenAI key" : "Add OpenAI key",
-                            systemImage: "key"
-                        ) {
-                            isAPIKeySheetPresented = true
-                        }
-                    }
-
-                    AppEmptyState(
-                        systemImage: "person.crop.circle",
-                        title: "More coming",
-                        message: "Stats, settings, subscription, and account controls land in Phase 10."
-                    )
-
-                    SecondaryButton(
-                        title: "Sign out",
-                        systemImage: "rectangle.portrait.and.arrow.right"
-                    ) {
-                        try? auth.signOut()
-                    }
-                    .padding(.top, AppSpacing.lg)
+                    settingsSection
+                    accountSection
                 }
                 .padding(AppSpacing.xl)
             }
             .background(Color.bgPrimary)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isAPIKeySheetPresented) {
-                APIKeyEntryView()
+            .sheet(isPresented: $isAPIKeySheetPresented) { APIKeyEntryView() }
+            .sheet(isPresented: $isGoalsSheetPresented) { GoalSetupView() }
+            .sheet(isPresented: $isDeleteSheetPresented) { DeleteAccountFlowView() }
+            .sheet(item: $exportItems) { box in ShareSheet(items: box.items) }
+            .task {
+                if viewModel == nil {
+                    viewModel = ProfileViewModel(modelContext: modelContext)
+                }
+                if let uid = auth.currentUser?.id {
+                    viewModel?.refresh(uid: uid)
+                }
             }
-            .sheet(isPresented: $isGoalsSheetPresented) {
-                GoalSetupView()
+            .alert("Export failed", isPresented: alertBinding, presenting: errorMessage) { _ in
+                Button("OK", role: .cancel) { errorMessage = nil }
+            } message: { msg in
+                Text(msg)
             }
         }
     }
 
+    @ViewBuilder
+    private var userCard: some View {
+        AppCard {
+            VStack(alignment: .leading, spacing: AppSpacing.xs) {
+                Text(auth.currentUser?.displayName ?? "You").appFont(.h2)
+                if let email = auth.currentUser?.email {
+                    Text(email).appFont(.bodySmall).foregroundStyle(Color.textMuted)
+                }
+            }
+        }
+    }
+
+    private func goalsRow(viewModel: ProfileViewModel) -> some View {
+        HStack(spacing: AppSpacing.sm) {
+            ForEach(ClassificationScope.allCases, id: \.self) { scope in
+                let count = viewModel.goalsCountByScope[scope] ?? 0
+                AppCard {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Image(systemName: scope.systemImage).foregroundStyle(Color.accent)
+                        Text(scope.title).appFont(.caption).foregroundStyle(Color.textMuted)
+                        Text("\(count) / \(LearningGoalRepository.maxPerScope)").appFont(.body).fontWeight(.semibold)
+                    }
+                }
+            }
+        }
+    }
+
+    private var settingsSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Settings").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+            SecondaryButton(title: "Manage learning goals", systemImage: "target") {
+                isGoalsSheetPresented = true
+            }
+            SecondaryButton(title: hasKey ? "Manage OpenAI key" : "Add OpenAI key", systemImage: "key") {
+                isAPIKeySheetPresented = true
+            }
+            SecondaryButton(title: "Export my data", systemImage: "square.and.arrow.up") {
+                exportAll()
+            }
+        }
+    }
+
+    private var accountSection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Account").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+            SecondaryButton(title: "Sign out", systemImage: "rectangle.portrait.and.arrow.right") {
+                try? auth.signOut()
+            }
+            GhostButton(title: "Delete account", systemImage: "trash", tint: .danger) {
+                isDeleteSheetPresented = true
+            }
+        }
+        .padding(.top, AppSpacing.lg)
+    }
+
     private var hasKey: Bool {
         SecretStore.get(forKey: SecretStore.openAIAPIKey)?.isEmpty == false
+    }
+
+    private var alertBinding: Binding<Bool> {
+        Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+    }
+
+    private func exportAll() {
+        guard let user = auth.currentUser else { return }
+        do {
+            let service = DataExportService(modelContainer: modelContext.container)
+            let url = try service.exportAll(userID: user.id, email: user.email)
+            exportItems = ShareItemsBox(items: [url])
+        } catch {
+            errorMessage = error.localizedDescription
+        }
     }
 }
 

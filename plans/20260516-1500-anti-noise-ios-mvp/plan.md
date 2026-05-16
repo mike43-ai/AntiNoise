@@ -32,7 +32,7 @@ created: 2026-05-16
 | 07 | Classification + daily priority engine | 2d | completed |
 | 08 | Flash cards + spaced repetition (SM-2) | 3d | completed |
 | 09 | Focus mode (timer + session) | 1.5d | completed |
-| 10 | Home dashboard + Profile screens | 2d | pending |
+| 10 | Home dashboard + Profile screens | 2d | completed (MVP scope; quick-cmd palette + theme picker deferred) |
 | 11 | RevenueCat paywall + subscription gating | 1.5d | pending |
 | 12 | Polish, telemetry, launch readiness | 2d | pending |
 
