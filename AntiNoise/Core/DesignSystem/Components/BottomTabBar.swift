@@ -1,0 +1,84 @@
+import SwiftUI
+
+enum AppTab: Hashable, CaseIterable {
+    case home, learn, capture, focus, profile
+
+    var title: String {
+        switch self {
+        case .home:    return "Home"
+        case .learn:   return "Learn"
+        case .capture: return "Capture"
+        case .focus:   return "Focus"
+        case .profile: return "Profile"
+        }
+    }
+
+    var systemImage: String {
+        switch self {
+        case .home:    return "house"
+        case .learn:   return "book"
+        case .capture: return "plus.circle.fill"
+        case .focus:   return "timer"
+        case .profile: return "person.crop.circle"
+        }
+    }
+
+    var isCenterAction: Bool { self == .capture }
+}
+
+struct BottomTabBar: View {
+    @Binding var selection: AppTab
+
+    var body: some View {
+        HStack(spacing: 0) {
+            ForEach(AppTab.allCases, id: \.self) { tab in
+                BottomTabButton(
+                    tab: tab,
+                    isSelected: selection == tab,
+                    action: { selection = tab }
+                )
+                .frame(maxWidth: .infinity)
+            }
+        }
+        .padding(.horizontal, AppSpacing.sm)
+        .padding(.vertical, AppSpacing.xs)
+        .background(
+            Color.surface
+                .overlay(Color.appBorder.frame(height: 1), alignment: .top)
+        )
+    }
+}
+
+private struct BottomTabButton: View {
+    let tab: AppTab
+    let isSelected: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            VStack(spacing: 2) {
+                Image(systemName: tab.systemImage)
+                    .font(.system(size: tab.isCenterAction ? 28 : 22, weight: tab.isCenterAction ? .semibold : .regular))
+                    .foregroundStyle(tab.isCenterAction ? Color.accent : (isSelected ? .textPrimary : .textMuted))
+                if !tab.isCenterAction {
+                    Text(tab.title)
+                        .appFont(.caption)
+                        .foregroundStyle(isSelected ? .textPrimary : .textMuted)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(tab.title)
+    }
+}
+
+#Preview {
+    @Previewable @State var sel: AppTab = .home
+    VStack {
+        Spacer()
+        BottomTabBar(selection: $sel)
+    }
+    .background(Color.bgPrimary)
+}

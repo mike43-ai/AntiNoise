@@ -24,7 +24,7 @@ created: 2026-05-16
 | # | Title | Effort | Status |
 |---|-------|--------|--------|
 | 01 | Project setup, Xcode workspace, SPM deps | 1d | completed (build-verify deferred — disk full) |
-| 02 | Design system tokens + reusable components | 2d | pending |
+| 02 | Design system tokens + reusable components | 2d | completed (visual QA deferred — no sim runtime) |
 | 03 | Firebase Auth (email + Apple) | 1.5d | pending |
 | 04 | Tab navigation shell (5 tabs) | 1d | pending |
 | 05 | Capture flow + Share Extension | 2.5d | pending |
