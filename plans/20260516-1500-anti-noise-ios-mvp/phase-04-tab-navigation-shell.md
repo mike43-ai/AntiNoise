@@ -9,8 +9,8 @@
 - Date: 2026-05-16
 - Description: Build `MainTabView` with 5 tabs (Home, Learn, Capture, Focus, Profile). Each tab is a placeholder screen filled in later phases. Capture tab is a center "+" action that opens a modal sheet, not a normal tab.
 - Priority: P0
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 1d
 
 ## Key Insights
@@ -61,13 +61,19 @@ App/AppRouter.swift                     (@Observable for cross-tab nav)
 8. QA on iPhone SE (smallest) and iPhone 15 Pro Max (largest).
 
 ## Todo
-- [ ] AppTab enum
-- [ ] AppRouter observable
-- [ ] MainTabView with custom bottom bar
-- [ ] Capture sheet presentation wired
-- [ ] 5 placeholder root views
-- [ ] RootView gated by auth
-- [ ] Layout verified on SE + Pro Max
+- [x] AppTab enum (already in Phase 02 BottomTabBar)
+- [x] AppRouter observable (@Observable @MainActor; selectedTab + isCaptureSheetPresented)
+- [x] MainTabView with `.safeAreaInset(edge: .bottom)` (per R1) hosting BottomTabBar
+- [x] Capture sheet presentation wired (.presentationDetents([.medium, .large]) per R2)
+- [x] 5 placeholder root views (Home/Learn/Focus/Profile own NavigationStack; Capture is a modal)
+- [x] RootView gated by auth (signed-in + onboarding-complete → MainTabView)
+- [~] Layout verified on SE + Pro Max — deferred (no simulator runtime)
+
+## Notes (implementation)
+- `selectTab(.capture)` opens the sheet without mutating `selectedTab`, so the bar never momentarily highlights Capture.
+- AppRouter is `@State` in MainTabView → fresh instance on each sign-in (intentional).
+- Sign-out error swallowed in Profile placeholder; full handling in Phase 10.
+- Code review applied 2 WARN fixes: switched from ZStack + magic `padding(.bottom, 60)` to `.safeAreaInset(edge: .bottom)`; removed unused `@Environment(AuthStore.self)` from MainTabView.
 
 ## Success Criteria
 - All 4 non-capture tabs switch within frame budget.

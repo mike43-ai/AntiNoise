@@ -14,7 +14,7 @@ struct RootView: View {
                 AuthLandingView(onEmailTap: { authSheet = .signIn })
             case .signedIn(let user):
                 if onboardingDone || OnboardingStore.isCompleted(uid: user.id) {
-                    SignedInPlaceholder()
+                    MainTabView()
                 } else {
                     OnboardingFlowView(
                         uid: user.id,
@@ -59,27 +59,4 @@ struct RootView: View {
 private enum AuthSheet: String, Identifiable {
     case signIn, signUp
     var id: String { rawValue }
-}
-
-// Placeholder shown after onboarding — replaced by MainTabView in Phase 04.
-private struct SignedInPlaceholder: View {
-    @Environment(AuthStore.self) private var auth
-
-    var body: some View {
-        VStack(spacing: AppSpacing.lg) {
-            Text("Signed in")
-                .appFont(.h1)
-            if let email = auth.currentUser?.email {
-                Text(email)
-                    .appFont(.bodySmall)
-                    .foregroundStyle(Color.textMuted)
-            }
-            SecondaryButton(title: "Sign out", systemImage: "rectangle.portrait.and.arrow.right", fullWidth: false) {
-                try? auth.signOut()
-            }
-        }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.bgPrimary.ignoresSafeArea())
-    }
 }
