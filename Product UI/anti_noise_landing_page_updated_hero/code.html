@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ANTi NOISE | Cut the Noise. Focus on What Matters.</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#FF4F00",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#FF4F00",
+                        "surface-container-high": "#eee7e1",
+                        "primary-container": "#FF4F00",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e5e2df",
+                        "surface-container-highest": "#e8e1dc",
+                        "on-surface-variant": "#5c4037",
+                        "on-secondary-fixed-variant": "#474746",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "secondary-container": "#e2dfde",
+                        "on-tertiary-container": "#f9ffeb",
+                        "tertiary-fixed-dim": "#c8c6c3",
+                        "primary-fixed-dim": "#ffb59e",
+                        "on-surface": "#1d1b18",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "secondary": "#5f5e5e",
+                        "inverse-primary": "#ffb59e",
+                        "surface-dim": "#dfd9d3",
+                        "inverse-surface": "#33302c",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-low": "#f9f2ed",
+                        "surface": "#F4F1EE",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-background": "#1d1b18",
+                        "tertiary-container": "#757472",
+                        "on-primary-fixed": "#3a0b00",
+                        "background": "#F4F1EE",
+                        "outline-variant": "#e6beb2",
+                        "outline": "#916f65",
+                        "on-primary-container": "#fffbff",
+                        "on-tertiary-fixed": "#1c1c1a",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#ffdbd0",
+                        "surface-container": "#f3ede7",
+                        "error-container": "#ffdad6",
+                        "tertiary": "#5d5c5a",
+                        "surface-bright": "#fff8f2",
+                        "on-primary-fixed-variant": "#842500",
+                        "inverse-on-surface": "#f6f0ea",
+                        "on-secondary-container": "#636262",
+                        "on-tertiary-fixed-variant": "#474745",
+                        "surface-variant": "#e8e1dc",
+                        "charcoal": "#1d1b18"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "container-padding": "32px",
+                        "xs": "4px",
+                        "unit": "4px",
+                        "lg": "24px",
+                        "xl": "48px",
+                        "gutter": "16px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Grotesk"],
+                        "display": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F4F1EE;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid #E5E0DA;
+        }
+        .kinetic-card {
+            background: #ffffff;
+            border: 1px solid #E5E0DA;
+            box-shadow: 0 4px 0px rgba(0,0,0,0.05);
+        }
+    </style>
+<style>
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-charcoal bg-[#F4F1EE]">
+<!-- Top Navigation Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#F4F1EE]/90 backdrop-blur-xl border-b border-[#E5E0DA]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#FF4F00] font-bold" data-icon="token">token</span>
+<span class="text-xl font-bold uppercase tracking-widest text-charcoal font-headline-md">ANTi NOISE</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-charcoal/60" data-icon="notifications">notifications</span>
+<button class="bg-[#FF4F00] text-white px-4 py-1.5 rounded-full font-label-sm uppercase tracking-wider text-[10px] font-bold">Access</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-lg mx-auto">
+<!-- Hero Section -->
+<section class="mb-20 text-center">
+<div class="inline-block mb-4 px-3 py-1 bg-[#FF4F00]/10 border border-[#FF4F00]/20 rounded-full">
+<span class="text-[#FF4F00] font-label-sm uppercase tracking-widest text-[10px] font-bold">Focus is a Superpower</span>
+</div>
+<h1 class="font-display text-display text-charcoal mb-6 leading-tight">
+                Cut the Noise. <br/> <span class="text-[#FF4F00]">Focus</span> on What Matters.
+            </h1>
+<p class="font-body-lg text-body-lg text-charcoal/70 mb-10 leading-relaxed">
+                Turn overwhelming information into personalized learning, daily priorities, and focused execution—so you keep growing without falling behind.
+            </p>
+<div class="flex flex-col gap-4">
+<button class="w-full bg-[#FF4F00] text-white py-5 rounded-xl font-headline-md shadow-[0_4px_0_#ad3300] active:translate-y-1 active:shadow-none transition-all">
+                    Join Early Access
+                </button>
+<button class="w-full py-4 font-headline-md text-charcoal border border-charcoal/20 bg-white/50 rounded-xl flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="play_circle">play_circle</span>
+                    Watch Demo
+                </button>
+</div>
+<div class="mt-12 rounded-2xl overflow-hidden border border-[#E5E0DA] bg-white p-2">
+<img class="w-full h-auto object-cover rounded-xl" data-alt="ANTi NOISE branded visual featuring a dark background with orange geometric lines and the tagline 'Cut the Noise. Focus on What Matters.'" src="https://lh3.googleusercontent.com/aida/ADBb0uiEoQkkkvRfvfEni_J5d_a8Y_p1RnBqJSDH5SQGTWC9pHzadwpi3R8PYHmGc22NyHfeI6KWVLMldkLIZK3UoG20vBEL56sU5KipBwGJr5ImpBetKiOiHUXSg8VELgC2YLBgt6gyVmtmMbQVZxiOvLyurj5Q3vrLrNZN_ajbjWNhJ66AgKODCWBoTd9SwcKcgSxMIkB-qqZoegShPsCjhgGEVm88bqWqMryVc_um3Cq0zHO3gP5AEh98JQ"/>
+</div>
+</section>
+<!-- The Problem Section -->
+<section class="mb-20">
+<div class="flex items-center gap-2 mb-4">
+<span class="h-[1px] w-8 bg-charcoal/20"></span>
+<span class="font-label-sm text-charcoal/50 uppercase font-bold">The Problem</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg mb-6 text-charcoal">Information <span class="line-through text-charcoal/30 decoration-charcoal/30">Overload</span> Inefficiency</h2>
+<p class="font-body-md text-charcoal/70 mb-8">We consume more information than ever— but most of it never becomes real growth.</p>
+<div class="grid gap-3">
+<div class="kinetic-card p-5 rounded-2xl flex items-start gap-4">
+<span class="material-symbols-outlined text-charcoal/40 mt-1" data-icon="tab">tab</span>
+<span class="font-body-md text-charcoal">Saved tabs pile up endlessly</span>
+</div>
+<div class="kinetic-card p-5 rounded-2xl flex items-start gap-4">
+<span class="material-symbols-outlined text-charcoal/40 mt-1" data-icon="event_busy">event_busy</span>
+<span class="font-body-md text-charcoal">Notes get buried and forgotten</span>
+</div>
+<div class="kinetic-card p-5 rounded-2xl flex items-start gap-4">
+<span class="material-symbols-outlined text-charcoal/40 mt-1" data-icon="lightbulb_circle">lightbulb_circle</span>
+<span class="font-body-md text-charcoal">Great ideas never get applied to work</span>
+</div>
+<div class="kinetic-card p-5 rounded-2xl flex items-start gap-4 bg-error/5 border-error/20">
+<span class="material-symbols-outlined text-error mt-1" data-icon="speed">speed</span>
+<span class="font-body-md font-semibold text-error">You stay busy, but not necessarily ahead</span>
+</div>
+</div>
+</section>
+<!-- Solution Section -->
+<section class="mb-20 bg-charcoal text-white p-8 rounded-3xl -mx-2 shadow-2xl">
+<h2 class="font-headline-lg text-headline-lg mb-6">ANTi NOISE Turns Information Into Growth</h2>
+<p class="font-body-md text-white/60 mb-10">Instead of another note-taking app, Anti Noise helps you transform what you save into a structured professional growth system.</p>
+<div class="space-y-12">
+<div class="relative pl-10 border-l-2 border-[#FF4F00]">
+<div class="absolute -left-3 top-0 bg-[#FF4F00] text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">1</div>
+<h3 class="font-headline-md mb-2">Save What Matters</h3>
+<p class="text-white/50 text-sm">Capture articles, screenshots, ideas, and insights from anywhere with a single tap.</p>
+</div>
+<div class="relative pl-10 border-l-2 border-white/20">
+<div class="absolute -left-3 top-0 bg-white/20 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">2</div>
+<h3 class="font-headline-md mb-2">Learn What’s Relevant</h3>
+<p class="text-white/50 text-sm">AI filters and prioritizes what aligns with your goals and professional growth.</p>
+</div>
+<div class="relative pl-10 border-l-2 border-white/20">
+<div class="absolute -left-3 top-0 bg-white/20 text-white w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs">3</div>
+<h3 class="font-headline-md mb-2">Apply With Focus</h3>
+<p class="text-white/50 text-sm">Receive structured lessons, daily plans, and focused execution sessions.</p>
+</div>
+</div>
+</section>
+<!-- Features Bento Section -->
+<section class="mb-20">
+<div class="flex items-center gap-2 mb-8">
+<span class="h-[1px] w-8 bg-charcoal/20"></span>
+<span class="font-label-sm text-charcoal/50 uppercase font-bold">Core OS Features</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="col-span-2 kinetic-card p-6 rounded-3xl">
+<div class="w-12 h-12 bg-primary/10 border border-[#FF4F00]/20 rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-[#FF4F00]" data-icon="schema">schema</span>
+</div>
+<h3 class="font-headline-md mb-2 text-charcoal">Learning Paths</h3>
+<p class="text-sm text-charcoal/60">Automatic mind maps and smart flashcards generated from your curated knowledge base.</p>
+</div>
+<div class="kinetic-card p-6 rounded-3xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-3xl font-bold" data-icon="auto_awesome">auto_awesome</span>
+<div>
+<h4 class="font-headline-md text-lg leading-tight mb-1 text-charcoal">AI Daily Planning</h4>
+<p class="text-[10px] uppercase font-bold tracking-wider text-charcoal/40">Task prioritization</p>
+</div>
+</div>
+<div class="kinetic-card p-6 rounded-3xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-primary text-3xl font-bold" data-icon="timer">timer</span>
+<div>
+<h4 class="font-headline-md text-lg leading-tight mb-1 text-charcoal">Focus Sessions</h4>
+<p class="text-[10px] uppercase font-bold tracking-wider text-charcoal/40">Deep work blocks</p>
+</div>
+</div>
+<div class="col-span-2 relative overflow-hidden kinetic-card rounded-3xl h-48 flex items-center">
+<div class="p-8 z-10 w-2/3">
+<h4 class="font-headline-md mb-2 text-charcoal">Growth Dashboard</h4>
+<p class="text-sm text-charcoal/60">Your central command center for all professional assets.</p>
+</div>
+<img class="absolute -right-10 top-0 h-full w-1/2 object-cover opacity-50 grayscale hover:grayscale-0 transition-all" data-alt="A sophisticated data visualization dashboard on a tablet screen. The design features minimalist charts and progress bars in action orange and neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD84h_w-qqvq89FcBsRuq8O7Y-9wICnCFTYNI-aVkJzzFe09NbeWMJN4gbrCTBqYxRblZO1m5lQBVXSOnYQBD3H-Z2IOlTwgIbWNASJEwb1R-d0lfcxmrvxJLZIAlW8YY5ADwxHpc8RYIiTCmpHTn3qOUcqNahgEASUBJHt5Jmzri0TZs7e2dt-HlFum9EvKgvjZa3TGrZ764RqUwiVGQ8mNNsqqs7S75coSjclmXJUKcUa5yrdlKYfa7-vEzdRDVCtK9MF0b1ZOw"/>
+</div>
+</div>
+</section>
+<!-- Aspiration Section -->
+<section class="mb-20 text-center">
+<h2 class="font-label-sm text-[#FF4F00] uppercase tracking-[0.2em] mb-6 font-bold">Not Another Productivity App</h2>
+<blockquote class="font-display text-headline-lg text-charcoal leading-tight italic">
+                "The best professionals don’t consume more. They <span class="text-[#FF4F00]">focus better</span>."
+            </blockquote>
+</section>
+<!-- Final CTA -->
+<section class="bg-[#a93100] p-10 rounded-[2.5rem] text-center shadow-2xl relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<svg fill="none" height="100%" width="100%" xmlns="http://www.w3.org/2000/svg">
+<pattern height="40" id="grid" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="0.5"></path>
+</pattern>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<h2 class="font-display text-headline-lg text-white mb-4 relative z-10">Upgrade Without the Noise.</h2>
+<p class="text-white/80 mb-8 font-body-md relative z-10">Secure your spot in the private beta and start turning information into execution.</p>
+<button class="bg-white text-[#a93100] font-headline-md py-5 px-10 rounded-2xl w-full active:scale-95 transition-all shadow-[0_4px_0_rgba(0,0,0,0.1)] relative z-10">
+                Join Early Access
+            </button>
+</section>
+<footer class="mt-20 pt-10 border-t border-charcoal/10 text-center pb-24">
+<p class="text-[10px] text-charcoal/40 font-label-sm tracking-[0.2em] uppercase font-bold">© 2024 ANTi NOISE SYSTEMS. ALL RIGHTS RESERVED.</p>
+</footer>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-center items-center px-4">
+<div class="w-full max-w-md rounded-2xl border border-white/20 bg-white/90 backdrop-blur-xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] flex justify-around items-center h-16 px-2 relative">
+<a class="flex flex-col items-center justify-center text-[#FF4F00] flex-1" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="home_max">home_max</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-charcoal/40 flex-1" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="all_inbox">all_inbox</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Inbox</span>
+</a>
+<!-- Highlighted Quick Capture Button -->
+<div class="flex-none -mt-12 px-2">
+<button class="bg-[#FF4F00] text-white w-16 h-16 rounded-2xl shadow-[0_8px_20px_rgba(255,79,0,0.4)] flex items-center justify-center transition-transform active:scale-90 border-4 border-[#F4F1EE]">
+<span class="material-symbols-outlined text-3xl font-bold" data-icon="add">add</span>
+</button>
+</div>
+<a class="flex flex-col items-center justify-center text-charcoal/40 flex-1" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="school">school</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Learn</span>
+</a>
+<a class="flex flex-col items-center justify-center text-charcoal/40 flex-1" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="person">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

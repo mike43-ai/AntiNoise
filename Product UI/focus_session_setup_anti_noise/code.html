@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Focus Session | ANTi NOISE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fff8f2",
+                        "primary-fixed": "#ffdbd0",
+                        "primary-fixed-dim": "#ffb59e",
+                        "surface-bright": "#fff8f2",
+                        "on-background": "#1d1b18",
+                        "surface-container-highest": "#e8e1dc",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#1c1c1a",
+                        "inverse-primary": "#ffb59e",
+                        "on-surface-variant": "#5c4037",
+                        "secondary": "#5f5e5e",
+                        "inverse-on-surface": "#f6f0ea",
+                        "on-surface": "#1d1b18",
+                        "on-primary-container": "#fffbff",
+                        "surface-container": "#f3ede7",
+                        "tertiary-fixed-dim": "#c8c6c3",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474745",
+                        "on-primary-fixed": "#3a0b00",
+                        "surface-container-low": "#f9f2ed",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#d34000",
+                        "surface": "#fff8f2",
+                        "on-primary-fixed-variant": "#842500",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "error": "#ba1a1a",
+                        "primary": "#a93100",
+                        "secondary-container": "#e2dfde",
+                        "surface-variant": "#e8e1dc",
+                        "surface-dim": "#dfd9d3",
+                        "on-secondary-container": "#636262",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-high": "#eee7e1",
+                        "on-secondary-fixed-variant": "#474746",
+                        "outline-variant": "#e6beb2",
+                        "on-tertiary-container": "#f9ffeb",
+                        "tertiary-fixed": "#e5e2df",
+                        "inverse-surface": "#33302c",
+                        "surface-tint": "#ad3300",
+                        "outline": "#916f65",
+                        "tertiary-container": "#757472",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#5d5c5a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "xl": "48px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "container-padding": "32px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "display": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="bg-[#F4F1EE]/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-[#E5E0DA] dark:border-stone-800 shadow-sm dark:shadow-none docked full-width top-0 sticky z-50">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="text-stone-500 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors active:scale-95 duration-200 p-2 rounded-full">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<h1 class="font-['Space_Grotesk'] font-bold tracking-tight text-xl">Focus Session</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full border border-[#E5E0DA] overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a creative individual in a modern studio environment. The subject is lit with soft, warm golden-hour lighting that emphasizes a focused and calm expression. The background is a clean, minimalist off-white wall with subtle architectural shadows, maintaining the premium brand aesthetic of a high-performance productivity app." src="https://lh3.googleusercontent.com/aida/ADBb0uhSN18EiuA4Z7-F-1IA88Nw_0CyjUMkVNmDliErZ_ZIcjPu6UL79PMgiMQ2s6tMbzB7VTl0zeRarwQC0fgD9KYPsiGblXHslPp4PgOtvmzx-N8Bs4Q2zyVMuuHAZJekN1NF7PaE_PNX8F4q88KE0F8lNDfUbSBx8OJA627GmG21PIQu8vsEjuiHQplJgCTZn4wwHYE02JilAlEIoWXARWn7Lnsb5kPRdIfsBXh0sbg358JFQgooPsu2j_IS0tt1wPlpV4-Lsng"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-12 pb-32">
+<!-- Motivation Quote Section -->
+<section class="mb-16 text-center animate-fade-in">
+<div class="inline-block px-4 py-1 mb-4 rounded-full bg-surface-container-high border border-surface-container-highest">
+<span class="font-label-sm text-label-sm text-secondary uppercase">Inspiration</span>
+</div>
+<blockquote class="font-headline-md text-headline-md italic text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+                “The best way to predict the future is to create it.”
+            </blockquote>
+</section>
+<!-- Kinetic Command: Timer Interface -->
+<section class="flex flex-col items-center justify-center mb-16 relative">
+<div class="relative w-80 h-80 flex items-center justify-center">
+<!-- Large Circular Progress (SVG) -->
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle cx="160" cy="160" fill="transparent" r="150" stroke="#E5E0DA" stroke-width="2"></circle>
+<circle class="transition-all duration-1000" cx="160" cy="160" fill="transparent" r="150" stroke="#FF4F00" stroke-dasharray="942" stroke-dashoffset="235" stroke-linecap="round" stroke-width="4"></circle>
+</svg>
+<!-- Digital Readout -->
+<div class="text-center z-10">
+<span class="font-display text-[84px] tracking-tighter leading-none block">25:00</span>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest mt-2 block">Minute Sprint</span>
+</div>
+<!-- Subtle adjustment buttons -->
+<div class="absolute top-1/2 -translate-y-1/2 -left-12">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E0DA] bg-white shadow-sm hover:bg-stone-50 active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+</div>
+<div class="absolute top-1/2 -translate-y-1/2 -right-12">
+<button class="w-10 h-10 flex items-center justify-center rounded-full border border-[#E5E0DA] bg-white shadow-sm hover:bg-stone-50 active:scale-90 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Controls & Secondary Options -->
+<section class="max-w-md mx-auto space-y-8">
+<div class="flex flex-col gap-4">
+<button class="w-full bg-[#FF4F00] text-white py-6 rounded-2xl font-['Space_Grotesk'] font-bold text-lg shadow-[0_10px_20px_rgba(255,79,0,0.2)] hover:brightness-110 active:scale-95 transition-all duration-200">
+                    Start Session
+                </button>
+</div>
+<!-- Toggles Cluster -->
+<div class="grid grid-cols-1 gap-3">
+<div class="flex items-center justify-between p-5 rounded-2xl bg-white border border-[#E5E0DA] hover:shadow-sm transition-shadow group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-600 group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications_off">notifications_off</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Do Not Disturb</p>
+<p class="font-label-sm text-[11px] text-stone-500 uppercase">Block all notifications</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4F00]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-5 rounded-2xl bg-white border border-[#E5E0DA] hover:shadow-sm transition-shadow group">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-stone-100 flex items-center justify-center text-stone-600 group-hover:bg-primary-fixed group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="graphic_eq">graphic_eq</span>
+</div>
+<div>
+<p class="font-body-md text-body-md font-bold">Lo-fi Focus Audio</p>
+<p class="font-label-sm text-[11px] text-stone-500 uppercase">Chill Beats for Flow</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-stone-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#FF4F00]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Session Visual Context -->
+<section class="mt-20">
+<div class="rounded-3xl overflow-hidden border border-[#E5E0DA] relative h-48">
+<img alt="Atmospheric Workspace" class="w-full h-full object-cover grayscale opacity-40 mix-blend-multiply" data-alt="A high-angle view of a minimal, clean desk setup featuring a notebook, a slim laptop, and a single cup of coffee. The environment is flooded with soft daylight coming from a side window, creating elongated, soft shadows. The aesthetic is extremely calm and organized, utilizing a warm paper and stone palette to promote a sense of deep mental focus and professional productivity." src="https://lh3.googleusercontent.com/aida/ADBb0uje68iCAN4CfVQMotSF1a-GsB2iIbCLOC8mlifMMIm9Mupn9ORwtQ-FnY5wQ3Z9ZbJa365zj2PMfavE2HCsg3YbX-QEMxLc1CH5b8swl6KUfFbQKrj0PM6higl15_AwiJHnFxI8IByJxkQ_7d-jYGUBVd-J6osjTgyXjhiOqvBciR4f547J7Nj7T-H6x5_dgtMcGkSz2WdT9Z7w1tjC5NWuAXauqGCcnU-UWTU5IY5yBsRywNRnrLFFLTeEPnOhI0N4J2nunfg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6 flex items-center justify-between">
+<div>
+<h4 class="font-bold text-lg">Your Workspace</h4>
+<p class="text-sm text-stone-600">San Francisco, CA • 68°F</p>
+</div>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-background bg-stone-200 flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-stone-300 flex items-center justify-center text-[10px] font-bold">AS</div>
+<div class="w-8 h-8 rounded-full border-2 border-background bg-primary text-white flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center justify-around gap-8 px-8 py-3 bg-[#F4F1EE]/80 dark:bg-stone-900/80 backdrop-blur-xl rounded-2xl border border-[#E5E0DA] dark:border-stone-800 shadow-[0_20px_40px_rgba(0,0,0,0.1)] dark:shadow-none min-w-[280px]">
+<button class="text-stone-400 dark:text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+</button>
+<!-- ACTIVE TAB: Focus (Using "auto_stories" as mapped content destination) -->
+<button class="text-[#FF4F00] relative after:content-[''] after:absolute after:-bottom-1 after:left-1/2 after:-translate-x-1/2 after:w-1 after:h-1 after:bg-[#FF4F00] after:rounded-full active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="auto_stories" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+</button>
+<button class="text-stone-400 dark:text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+</button>
+<button class="text-stone-400 dark:text-stone-500 hover:text-stone-900 dark:hover:text-stone-100 active:scale-90 transition-transform duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</nav>
+</body></html>

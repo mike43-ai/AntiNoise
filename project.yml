@@ -1,0 +1,136 @@
+name: AntiNoise
+options:
+  bundleIdPrefix: com.antinoise
+  deploymentTarget:
+    iOS: "17.0"
+  developmentLanguage: vi
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+  groupSortPosition: top
+
+settings:
+  base:
+    SWIFT_VERSION: "5.10"
+    IPHONEOS_DEPLOYMENT_TARGET: "17.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+    DEVELOPMENT_TEAM: ""
+    CODE_SIGN_STYLE: Automatic
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+    SWIFT_EMIT_LOC_STRINGS: YES
+
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: "10.29.0"
+  RevenueCat:
+    url: https://github.com/RevenueCat/purchases-ios
+    from: "5.0.0"
+
+targets:
+  AntiNoise:
+    type: application
+    platform: iOS
+    sources:
+      - path: AntiNoise
+        excludes:
+          - "Resources/Info.plist"
+    resources:
+      - path: AntiNoise/Resources/Assets.xcassets
+        optional: true
+    info:
+      path: AntiNoise/Resources/Info.plist
+      properties:
+        CFBundleDisplayName: Anti Noise
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen:
+          UIColorName: ""
+          UIImageName: ""
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        NSCameraUsageDescription: Anti Noise uses the camera to capture text and images for AI summary.
+        NSPhotoLibraryUsageDescription: Anti Noise reads images from your photo library to summarize them.
+        NSPhotoLibraryAddUsageDescription: Anti Noise saves captured screenshots back to your photo library on request.
+        ITSAppUsesNonExemptEncryption: false
+        CFBundleURLTypes:
+          - CFBundleURLName: com.antinoise.app
+            CFBundleURLSchemes:
+              - antinoise
+    entitlements:
+      path: AntiNoise/Resources/AntiNoise.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.antinoise.shared
+        com.apple.developer.applesignin:
+          - Default
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app
+        INFOPLIST_FILE: AntiNoise/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: AntiNoise/Resources/AntiNoise.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        GENERATE_INFOPLIST_FILE: NO
+    dependencies:
+      - package: Firebase
+        product: FirebaseAuth
+      - package: Firebase
+        product: FirebaseFirestore
+      - package: Firebase
+        product: FirebaseAnalytics
+      - package: Firebase
+        product: FirebaseCrashlytics
+      - package: RevenueCat
+        product: RevenueCat
+      - package: RevenueCat
+        product: RevenueCatUI
+      - target: AntiNoiseShareExtension
+        embed: true
+
+  AntiNoiseShareExtension:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: AntiNoiseShareExtension
+        excludes:
+          - "Info.plist"
+    info:
+      path: AntiNoiseShareExtension/Info.plist
+      properties:
+        CFBundleDisplayName: Anti Noise
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.share-services
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).ShareViewController
+          NSExtensionAttributes:
+            NSExtensionActivationRule:
+              NSExtensionActivationSupportsWebURLWithMaxCount: 1
+              NSExtensionActivationSupportsText: true
+              NSExtensionActivationSupportsImageWithMaxCount: 5
+    entitlements:
+      path: AntiNoiseShareExtension/AntiNoiseShareExtension.entitlements
+      properties:
+        com.apple.security.application-groups:
+          - group.com.antinoise.shared
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app.ShareExtension
+        INFOPLIST_FILE: AntiNoiseShareExtension/Info.plist
+        CODE_SIGN_ENTITLEMENTS: AntiNoiseShareExtension/AntiNoiseShareExtension.entitlements
+        TARGETED_DEVICE_FAMILY: "1"
+        GENERATE_INFOPLIST_FILE: NO
+
+schemes:
+  AntiNoise:
+    build:
+      targets:
+        AntiNoise: all
+        AntiNoiseShareExtension: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+    archive:
+      config: Release

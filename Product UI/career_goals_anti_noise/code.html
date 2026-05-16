@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f6f0ea",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e8e1dc",
+                    "surface-container-highest": "#e8e1dc",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-primary-container": "#fffbff",
+                    "background": "#F4F1EE",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffdbd0",
+                    "on-tertiary-container": "#f9ffeb",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-background": "#1d1b18",
+                    "tertiary-fixed": "#e5e2df",
+                    "surface-container": "#f3ede7",
+                    "secondary": "#5f5e5e",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary-container": "#757472",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "surface-bright": "#fff8f2",
+                    "surface-container-high": "#eee7e1",
+                    "inverse-surface": "#33302c",
+                    "on-secondary-container": "#636262",
+                    "surface": "#fff8f2",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#5c4037",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#FF4F00",
+                    "on-surface": "#1d1b18",
+                    "outline-variant": "#e6beb2",
+                    "outline": "#916f65",
+                    "on-tertiary-fixed-variant": "#474745",
+                    "on-tertiary-fixed": "#1c1c1a",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#e5e2e1",
+                    "primary-fixed-dim": "#ffb59e",
+                    "surface-container-low": "#f9f2ed",
+                    "on-primary-fixed": "#3a0b00",
+                    "surface-dim": "#dfd9d3",
+                    "secondary-container": "#e2dfde",
+                    "on-primary-fixed-variant": "#842500",
+                    "inverse-primary": "#ffb59e",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#FF4F00",
+                    "tertiary": "#5d5c5a",
+                    "primary": "#FF4F00",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "32px",
+                    "xl": "48px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "display": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F4F1EE;
+            color: #1d1b18; /* Charcoal typography */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<header class="bg-[#F4F1EE]/80 backdrop-blur-md sticky top-0 z-50 border-b border-[#E5E0DA] shadow-sm">
+<div class="flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#FF4F00]" data-icon="terminal">terminal</span>
+<span class="font-['Space_Grotesk'] font-black text-xl text-stone-900 uppercase tracking-widest">ANTi NOISE</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-stone-200/50 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-stone-500" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-12 mb-32">
+<div class="mb-12">
+<div class="flex items-center justify-between mb-6">
+<span class="font-label-sm text-label-sm text-[#FF4F00] uppercase tracking-widest bg-[#FF4F00]/10 px-3 py-1 rounded-full">Step 2 of 3</span>
+<div class="flex gap-2">
+<div class="w-8 h-1 bg-[#FF4F00]/20 rounded-full"></div>
+<div class="w-12 h-1 bg-[#FF4F00] rounded-full"></div>
+<div class="w-8 h-1 bg-surface-container-highest rounded-full"></div>
+</div>
+</div>
+<h1 class="font-display text-display text-on-surface mb-2">Define your trajectory.</h1>
+<p class="font-body-lg text-body-lg text-secondary max-w-xl">Clarify your career objectives to help ANTi NOISE architect your personalized learning path and network connections.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8">
+<div class="md:col-span-8 space-y-8">
+<section class="bg-surface-container-lowest p-8 rounded-xl border border-[#E5E0DA] shadow-sm">
+<div class="space-y-6">
+<div class="group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Current Role</label>
+<input class="w-full bg-[#F4F1EE] border-none rounded-lg p-4 focus:ring-2 focus:ring-[#FF4F00] text-on-surface font-body-md transition-all" placeholder="e.g. Senior Product Designer" type="text"/>
+</div>
+<div class="group">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-2">Target Role</label>
+<input class="w-full bg-[#F4F1EE] border-none rounded-lg p-4 focus:ring-2 focus:ring-[#FF4F00] text-on-surface font-body-md transition-all" placeholder="e.g. Design Director" type="text"/>
+</div>
+<div>
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-3">Industry Focus</label>
+<div class="grid grid-cols-2 gap-3">
+<label class="flex items-center p-4 bg-surface-container-low border border-[#E5E0DA] rounded-lg cursor-pointer hover:border-[#FF4F00] transition-all">
+<input class="text-[#FF4F00] focus:ring-[#FF4F00] mr-3" name="industry" type="radio"/>
+<span class="font-body-md">FinTech</span>
+</label>
+<label class="flex items-center p-4 bg-surface-container-low border border-[#FF4F00] rounded-lg cursor-pointer transition-all">
+<input checked="" class="text-[#FF4F00] focus:ring-[#FF4F00] mr-3" name="industry" type="radio"/>
+<span class="font-body-md text-[#FF4F00] font-bold">HealthTech</span>
+</label>
+<label class="flex items-center p-4 bg-surface-container-low border border-[#E5E0DA] rounded-lg cursor-pointer hover:border-[#FF4F00] transition-all">
+<input class="text-[#FF4F00] focus:ring-[#FF4F00] mr-3" name="industry" type="radio"/>
+<span class="font-body-md">SaaS</span>
+</label>
+<label class="flex items-center p-4 bg-surface-container-low border border-[#E5E0DA] rounded-lg cursor-pointer hover:border-[#FF4F00] transition-all">
+<input class="text-[#FF4F00] focus:ring-[#FF4F00] mr-3" name="industry" type="radio"/>
+<span class="font-body-md">ClimateTech</span>
+</label>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface-container-lowest p-8 rounded-xl border border-[#E5E0DA] shadow-sm">
+<label class="block font-label-sm text-label-sm text-on-surface-variant uppercase mb-4">Skills To Develop</label>
+<div class="flex flex-wrap gap-2">
+<span class="bg-[#FF4F00] text-on-primary px-4 py-2 rounded-full font-label-sm flex items-center gap-2">
+                        Strategic Leadership <span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</span>
+<span class="bg-[#FF4F00] text-on-primary px-4 py-2 rounded-full font-label-sm flex items-center gap-2">
+                        Market Analysis <span class="material-symbols-outlined text-sm" data-icon="close">close</span>
+</span>
+<button class="bg-[#F4F1EE] text-on-surface-variant px-4 py-2 rounded-full font-label-sm hover:bg-stone-200 transition-all border border-dashed border-outline-variant">
+                        + Add Skill
+                    </button>
+</div>
+<div class="mt-6 flex flex-wrap gap-2 opacity-50">
+<span class="border border-[#E5E0DA] px-4 py-2 rounded-full font-label-sm">Product Strategy</span>
+<span class="border border-[#E5E0DA] px-4 py-2 rounded-full font-label-sm">System Thinking</span>
+<span class="border border-[#E5E0DA] px-4 py-2 rounded-full font-label-sm">Data Viz</span>
+</div>
+</section>
+<div class="flex justify-end pt-4">
+<button class="bg-[#FF4F00] text-on-primary font-['Space_Grotesk'] font-bold uppercase tracking-widest px-8 py-4 rounded-xl flex items-center gap-3 hover:bg-[#D34000] active:scale-95 transition-all shadow-lg shadow-[#FF4F00]/20 w-full md:w-auto justify-center">
+                    Continue to Connectivity
+                    <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<aside class="md:col-span-4 space-y-6">
+<div class="bg-inverse-surface text-inverse-on-surface p-6 rounded-xl relative overflow-hidden">
+<div class="relative z-10">
+<span class="material-symbols-outlined text-[#FF4F00] text-3xl mb-4" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-headline-md text-headline-md mb-2">Growth Forecast</h3>
+<p class="text-stone-400 font-body-md text-sm leading-relaxed">Based on your target role in HealthTech, we've identified 12 high-impact mentors and 4 specialized certifications currently trending in your sector.</p>
+</div>
+<div class="absolute -bottom-8 -right-8 opacity-10">
+<span class="material-symbols-outlined text-[120px]" data-icon="query_stats">query_stats</span>
+</div>
+</div>
+<div class="rounded-xl overflow-hidden border border-[#E5E0DA] bg-surface-container-lowest">
+<img class="w-full h-48 object-cover" data-alt="A clean professional workspace" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbBOIoTxHZa1kAIdJSJF1BtV4_YEMmandYFZsL33PpKskY9_0aPvm-ptq9HeCUvvMmxgY_qSS5egoCvWM7N6hGdOTmwepQd7FN9tOSpEvksJWAaUNLsNmNAQdBLOWb8OQYC_PERB-sI_w_-So7JEU-3WlR6ZrmumwJBo8P-MI9qt6TB9OT_iWiDWLusNJRj5nUlqCUytcUt0sYR0O9q6VmegGAJlJg8gCFd1AjlibTweRClQF42HsdC0pOC6YWydF2gu4xztGniw"/>
+<div class="p-6">
+<h4 class="font-label-sm text-label-sm text-[#FF4F00] uppercase mb-2">Pro Tip</h4>
+<p class="font-body-md text-sm text-secondary">Focusing on 'Strategic Leadership' increases your visibility to executive recruiters by 40% in your selected industry.</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 right-0 bg-[#F4F1EE]/95 backdrop-blur-xl border-t border-[#E5E0DA] px-6 py-3 z-50">
+<div class="max-w-md mx-auto flex justify-between items-end">
+<a class="flex flex-col items-center gap-1 text-stone-500 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-wider">Focus</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#FF4F00] transition-all" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-wider">Learn</span>
+</a>
+<div class="flex flex-col items-center mb-1">
+<button class="bg-[#FF4F00] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-[#FF4F00]/40 hover:scale-105 transition-all active:scale-95 border-4 border-[#F4F1EE]">
+<span class="material-symbols-outlined text-2xl">add</span>
+</button>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-wider mt-1 text-[#FF4F00]">Quick Capture</span>
+</div>
+<a class="flex flex-col items-center gap-1 text-stone-500 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-wider">Plan</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-500 transition-all active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-wider">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

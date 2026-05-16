@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#FF4F00", // Action Orange
+                        "background": "#F4F1EE", // Warm Paper
+                        "on-surface": "#1A1A1A", // Charcoal Typography
+                        "surface": "#FFFFFF",
+                        "surface-variant": "#EBE7E2",
+                        "outline": "#D1CDC7",
+                        "secondary": "#5F5E5E",
+                        "tertiary": "#5D5C5A"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "3xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "container-padding": "32px",
+                        "unit": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "display": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F4F1EE;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #1A1A1A;
+        }
+        .modular-card {
+            background: #FFFFFF;
+            border: 1px solid #EBE7E2;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-[#F4F1EE]/90 backdrop-blur-md border-b border-[#EBE7E2] sticky top-0 z-50 flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface hover:bg-black/5 p-2 rounded-full transition-colors">menu</button>
+<div class="flex flex-col">
+<span class="font-bold text-xl tracking-tighter text-on-surface uppercase">ANTi NOISE</span>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-full border border-[#EBE7E2] shadow-sm">
+<span class="material-symbols-outlined text-[18px] text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-sm text-label-sm text-on-surface">12 DAY STREAK</span>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-primary p-0.5">
+<img alt="User Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA63ia4oxeP9sHZy1DNjPWv-94YbZvv8anOpxCHGM36VLyIIjB0oGJvbh3JZY87AGivbID9hXUqVFqrkVssxoQpJb_x4tKLZwO22Ykmcl9Sk1xfVYu2S64sVZ8eI72dwwwFesrzKr9QFy2xuGtSg64O3KB2zAUnjzAns5LVVmRKK0nP5-IzPyXUkCIl53KRB_EyAL-3y-ef4xkre3K7Er5hAz8wkw1I5l3pibQAeUG5tAKZwdfHqfIkD5BwTrOarF99z_TJPU1Gfw"/>
+</div>
+</div>
+</header>
+<main class="max-w-xl mx-auto px-6 pt-8 pb-32 w-full">
+<!-- Progress Header -->
+<div class="mb-8">
+<div class="flex justify-between items-end mb-3">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Current Session</span>
+<h1 class="font-headline-md text-headline-md text-on-surface mt-1">Cognitive Load Theory</h1>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-primary font-bold">1 / 10 CARDS</span>
+</div>
+</div>
+<div class="h-1.5 w-full bg-black/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[10%] rounded-full"></div>
+</div>
+</div>
+<!-- The Flashcard -->
+<div class="relative mb-xl">
+<!-- XP Badge -->
+<div class="absolute -top-3 -right-2 z-20 bg-primary text-white font-bold px-3 py-1 rounded-lg text-[12px] shadow-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+                +50 XP
+            </div>
+<div class="modular-card min-h-[420px] rounded-3xl p-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
+<div class="relative z-10 w-full">
+<span class="material-symbols-outlined text-primary text-[48px] mb-6 block">psychology</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-8 px-4">What is the split-attention effect?</h2>
+<div class="flex flex-col gap-4 items-center">
+<button class="bg-primary text-white px-10 py-4 rounded-xl font-label-sm text-label-sm uppercase tracking-widest shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all">
+                            Tap to Flip
+                        </button>
+<p class="text-secondary font-label-sm text-[10px] uppercase tracking-[0.2em]">Click to reveal core explanation</p>
+</div>
+</div>
+<!-- Card Footer Elements -->
+<div class="absolute bottom-8 left-8 right-8 flex justify-between items-center opacity-30 text-on-surface">
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100">share</span>
+<span class="material-symbols-outlined cursor-pointer hover:opacity-100">flag</span>
+</div>
+</div>
+</div>
+<!-- Action Grid -->
+<div class="grid grid-cols-2 gap-4 mb-xl">
+<button class="modular-card flex items-center justify-center gap-3 py-4 rounded-2xl hover:bg-surface-variant transition-colors group">
+<span class="material-symbols-outlined text-secondary group-hover:text-on-surface">bookmark</span>
+<span class="font-label-sm text-label-sm text-secondary group-hover:text-on-surface">SAVE NOTE</span>
+</button>
+<button class="bg-on-surface text-white flex items-center justify-center gap-3 py-4 rounded-2xl hover:bg-black transition-colors">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+<span class="font-label-sm text-label-sm">AI DEEPER DIVE</span>
+</button>
+<button class="col-span-2 bg-primary text-white flex items-center justify-center gap-3 py-5 rounded-2xl shadow-xl shadow-primary/20 hover:shadow-primary/30 active:scale-[0.98] transition-all">
+<span class="font-headline-md text-headline-md leading-none">Next Card</span>
+<span class="material-symbols-outlined text-[28px]">arrow_forward</span>
+</button>
+</div>
+<!-- Related Insights (Bento Style Section) -->
+<div class="space-y-4">
+<h3 class="font-label-sm text-label-sm text-secondary uppercase tracking-widest">Contextual Connections</h3>
+<div class="grid grid-cols-3 gap-3">
+<div class="col-span-2 modular-card rounded-2xl p-4 flex flex-col justify-between min-h-[140px] overflow-hidden relative group cursor-pointer">
+<img class="absolute inset-0 w-full h-full object-cover opacity-5 grayscale group-hover:opacity-10 transition-opacity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN-0y-DF7XbsDiflCwkSYoc6OBMEiw68W4I4vI5Q4cGPU2YL7Mvm1urd5sk0OgizygxrDeNcblsgjgdK-ZlxF4ZQX0SisWh7U5sCpMOQI6FTu3ASB-gRJy5fng0DKyNcvSGGJbPjf2ehrM3PPtLULtDIKciWvC4lAPK_9W1cqZaFpA4v4YT4cFlrURbqnHKGY-6PuKLlWQ8vv4qi40Gt0O-YPEfpqYP1xaDo_sZo845P8YZRfpa6B7aXTV20KcANEPq_Thb08cSg"/>
+<div>
+<span class="font-label-sm text-[10px] text-primary font-bold uppercase">Related Topic</span>
+<p class="font-body-md text-body-md text-on-surface mt-1 line-clamp-2">Working Memory Limits in Design</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-[20px]">trending_up</span>
+</div>
+<div class="modular-card rounded-2xl p-4 flex flex-col items-center justify-center gap-2 text-center bg-primary/5 border-primary/10">
+<span class="material-symbols-outlined text-primary text-[32px]">history</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-secondary">Last Seen</span>
+<span class="text-on-surface font-bold text-[11px]">2 days ago</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 bg-white/95 backdrop-blur-xl rounded-t-[32px] border-t border-[#EBE7E2] shadow-[0_-8px_30px_rgba(0,0,0,0.04)]">
+<!-- Focus -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">center_focus_strong</span>
+<span class="font-label-sm text-[10px] uppercase font-bold mt-1">Focus</span>
+</a>
+<!-- Learn (Active) -->
+<a class="flex flex-col items-center justify-center text-primary relative" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+<span class="font-label-sm text-[10px] uppercase font-bold mt-1">Learn</span>
+<div class="absolute -bottom-2 w-1 h-1 bg-primary rounded-full"></div>
+</a>
+<!-- Quick Capture (FAB) -->
+<div class="relative -top-10">
+<button class="bg-primary text-white w-16 h-16 rounded-full flex items-center justify-center shadow-[0_8px_24px_rgba(255,79,0,0.4)] hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[36px]" style="font-variation-settings: 'wght' 500;">add</span>
+</button>
+</div>
+<!-- Plan -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-label-sm text-[10px] uppercase font-bold mt-1">Plan</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-[10px] uppercase font-bold mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

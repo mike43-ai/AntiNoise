@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Learning Center - Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-highest": "#e8e1dc",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dfd9d3",
+                        "on-tertiary-fixed": "#1c1c1a",
+                        "surface": "#fff8f2",
+                        "inverse-primary": "#ffb59e",
+                        "error": "#ba1a1a",
+                        "on-error": "#ffffff",
+                        "inverse-surface": "#33302c",
+                        "surface-variant": "#e8e1dc",
+                        "surface-container": "#f3ede7",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#e6beb2",
+                        "surface-bright": "#fff8f2",
+                        "primary-fixed": "#ffdbd0",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "tertiary-fixed-dim": "#c8c6c3",
+                        "on-surface": "#1d1b18",
+                        "outline": "#916f65",
+                        "tertiary-fixed": "#e5e2df",
+                        "secondary-container": "#e2dfde",
+                        "secondary": "#5f5e5e",
+                        "primary-fixed-dim": "#ffb59e",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-tint": "#ad3300",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#fffbff",
+                        "primary": "#a93100",
+                        "surface-container-low": "#f9f2ed",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-tertiary-container": "#f9ffeb",
+                        "on-secondary-container": "#636262",
+                        "tertiary-container": "#757472",
+                        "background": "#fff8f2",
+                        "on-tertiary-fixed-variant": "#474745",
+                        "surface-container-high": "#eee7e1",
+                        "on-surface-variant": "#5c4037",
+                        "on-primary-fixed": "#3a0b00",
+                        "primary-container": "#d34000",
+                        "on-primary-fixed-variant": "#842500",
+                        "tertiary": "#5d5c5a",
+                        "on-background": "#1d1b18",
+                        "inverse-on-surface": "#f6f0ea"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "sm": "8px",
+                        "container-padding": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "display": ["Space Grotesk"],
+                        "body-lg": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .paper-bg { background-color: #F4F1EE; }
+        .action-orange { color: #FF4F00; }
+        .bg-action-orange { background-color: #FF4F00; }
+        .border-paper { border-color: #E5E0DA; }
+    </style>
+</head>
+<body class="paper-bg text-on-surface font-body-md antialiased min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-[#F4F1EE]/80 dark:bg-stone-900/80 backdrop-blur-xl border-b border-[#E5E0DA] dark:border-stone-800 shadow-sm dark:shadow-none docked full-width top-0 sticky z-50 flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-4">
+<button class="hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors p-2 rounded-full active:scale-95 duration-200">
+<span class="material-symbols-outlined text-stone-500" data-icon="menu">menu</span>
+</button>
+</div>
+<h1 class="font-['Space_Grotesk'] font-bold tracking-tight text-xl text-stone-900">Learning Center</h1>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-stone-200 border border-stone-300 overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a thoughtful user in a high-key, modern office setting. The lighting is soft and diffused, creating an editorial feel. The overall aesthetic is minimalist with a palette of warm grays and subtle orange accents, conveying a focused and intellectual atmosphere for a learning-oriented platform." src="https://lh3.googleusercontent.com/aida/ADBb0uhSN18EiuA4Z7-F-1IA88Nw_0CyjUMkVNmDliErZ_ZIcjPu6UL79PMgiMQ2s6tMbzB7VTl0zeRarwQC0fgD9KYPsiGblXHslPp4PgOtvmzx-N8Bs4Q2zyVMuuHAZJekN1NF7PaE_PNX8F4q88KE0F8lNDfUbSBx8OJA627GmG21PIQu8vsEjuiHQplJgCTZn4wwHYE02JilAlEIoWXARWn7Lnsb5kPRdIfsBXh0sbg358JFQgooPsu2j_IS0tt1wPlpV4-Lsng"/>
+</div>
+</div>
+</header>
+<main class="max-w-screen-md mx-auto px-6 py-8 pb-32">
+<!-- Search & Filter -->
+<section class="mb-xl">
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-stone-400" data-icon="search">search</span>
+</div>
+<input class="w-full bg-white border border-[#E5E0DA] rounded-xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-[#FF4F00] focus:border-transparent transition-all outline-none text-body-md" placeholder="Search your knowledge base..." type="text"/>
+</div>
+<div class="flex gap-sm mt-md overflow-x-auto no-scrollbar pb-2">
+<button class="px-6 py-2 rounded-full bg-stone-900 text-white font-label-sm text-label-sm">All</button>
+<button class="px-6 py-2 rounded-full bg-white border border-[#E5E0DA] text-stone-600 hover:bg-stone-100 transition-colors font-label-sm text-label-sm">Unread</button>
+<button class="px-6 py-2 rounded-full bg-white border border-[#E5E0DA] text-stone-600 hover:bg-stone-100 transition-colors font-label-sm text-label-sm">In Progress</button>
+</div>
+</section>
+<!-- Priority for Growth -->
+<section class="mb-xl">
+<div class="flex justify-between items-end mb-md">
+<h2 class="font-headline-md text-headline-md text-stone-900">Priority for Growth</h2>
+<span class="text-label-sm font-label-sm text-[#FF4F00] uppercase tracking-widest">Urgent Focus</span>
+</div>
+<div class="bg-white border border-[#E5E0DA] rounded-xl p-6 shadow-sm overflow-hidden relative group">
+<div class="flex flex-col md:flex-row gap-lg">
+<div class="w-full md:w-1/3 aspect-square rounded-lg overflow-hidden bg-stone-100">
+<img class="w-full h-full object-cover" data-alt="A sophisticated architectural visualization of a modular structure representing complex system design concepts. The image is bathed in soft, natural morning light, creating deep shadows and high-contrast highlights. The color palette is composed of warm sand tones and charcoal grays, aligning perfectly with the professional and clean UI aesthetic." src="https://lh3.googleusercontent.com/aida/ADBb0ui944NFDgJcTQEJe0lu7HsG4YwlW_iLru4-dbHdE5lHJDzMcwQcxeo2yXmMtoKyXQUPivG3DZ_ahRPXk8pfXxCE_DDquvatAM-15jO9rr1FxmcHShp3hGiAOMrK_Vlx9wsqlIwx0L7K3R6znsn33ePiyUGOt2rdZgG3jyb-6UgTylFvuEiH_KUr2FUxRUV6PMmPw2Kf22xsqQIc4Mr5zr8lISHJ5xmshGxPdbGbRJ9_8xeS2DCoGBFkyHBOLoEikCSOGHyJnbkr"/>
+</div>
+<div class="flex-1 flex flex-col justify-between py-2">
+<div>
+<div class="inline-flex items-center px-3 py-1 bg-stone-100 text-stone-600 rounded-full text-label-sm font-label-sm mb-sm">
+<span class="material-symbols-outlined text-[14px] mr-1" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+                                94% RELEVANT
+                            </div>
+<h3 class="font-headline-md text-headline-md text-stone-900 mb-sm">Mastering System Design</h3>
+<p class="text-stone-500 text-body-md line-clamp-2">Deep dive into distributed systems, load balancing, and high-availability architecture patterns for senior engineers.</p>
+</div>
+<button class="mt-lg bg-action-orange text-white px-8 py-3 rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-opacity self-start">
+                            START MODULE
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Paths -->
+<section class="mb-xl">
+<h2 class="font-headline-md text-headline-md text-stone-900 mb-md">Active Paths</h2>
+<div class="grid gap-md">
+<!-- Path 1 -->
+<div class="bg-white border border-[#E5E0DA] p-5 rounded-xl flex items-center justify-between group hover:border-[#FF4F00]/30 transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-stone-100 rounded-lg flex items-center justify-center text-stone-400 group-hover:bg-orange-50 group-hover:text-action-orange transition-colors">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-stone-900">Behavioral Psychology</h4>
+<div class="w-32 md:w-48 h-1 bg-stone-100 rounded-full mt-2">
+<div class="bg-[#FF4F00] h-full rounded-full" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-stone-400 hover:text-stone-900 border border-stone-200 hover:border-stone-900 px-4 py-2 rounded-lg transition-all">
+                        CONTINUE
+                    </button>
+</div>
+<!-- Path 2 -->
+<div class="bg-white border border-[#E5E0DA] p-5 rounded-xl flex items-center justify-between group hover:border-[#FF4F00]/30 transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 bg-stone-100 rounded-lg flex items-center justify-center text-stone-400 group-hover:bg-orange-50 group-hover:text-action-orange transition-colors">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+</div>
+<div>
+<h4 class="font-headline-md text-[18px] text-stone-900">Information Architecture</h4>
+<div class="w-32 md:w-48 h-1 bg-stone-100 rounded-full mt-2">
+<div class="bg-[#FF4F00] h-full rounded-full" style="width: 30%;"></div>
+</div>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-stone-400 hover:text-stone-900 border border-stone-200 hover:border-stone-900 px-4 py-2 rounded-lg transition-all">
+                        CONTINUE
+                    </button>
+</div>
+</div>
+</section>
+<!-- Saved Library -->
+<section class="mb-xl">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-md text-headline-md text-stone-900">Saved Library</h2>
+<button class="text-label-sm font-label-sm text-stone-400 hover:text-stone-900 transition-colors">VIEW ALL</button>
+</div>
+<div class="divide-y divide-[#E5E0DA] bg-white border border-[#E5E0DA] rounded-xl overflow-hidden">
+<!-- Item 1 -->
+<div class="p-4 flex items-center gap-md hover:bg-stone-50 transition-colors">
+<img class="w-16 h-16 rounded-lg object-cover bg-stone-100" data-alt="A clean, minimalist workspace with a single paper notebook and a sleek black pen. The lighting is crisp and bright, creating a serene, focused environment. The background is a soft ivory tone that complements the warm paper theme of the overall UI design, emphasizing organization and quiet study." src="https://lh3.googleusercontent.com/aida/ADBb0uiSgKYvDukpODciVP1MJAHP8X---0RGsYmq0mrZIramuhSe83qZNBcSVTD_gp0F2yS09aPVqyV-nqlEJPJ5c_9yVLo6b1FYjizTsln-9J77-po0xcSe8JGXuHdSbRGkwclcMqoHzsb8m5Z7TYAqZEgPju9bJHpHwJmpQy_7cSpyLUEGpljzqlfM--BFRDzmAfjEEiVm7kwlL2FW6UqXZsQGE7jFhSQnuG1TLArpnuXPW3Mz7MqyLczpIp0QG59xXTbQAdOrD-HM"/>
+<div class="flex-1">
+<h5 class="font-headline-md text-[16px] text-stone-900">Mental Models for Founders</h5>
+<p class="text-label-sm text-stone-400">Captured 2 days ago • Web Clip</p>
+</div>
+<button class="flex items-center gap-1 text-action-orange font-label-sm text-label-sm hover:underline">
+<span class="material-symbols-outlined text-[16px]" data-icon="bolt">bolt</span>
+                        CONVERT
+                    </button>
+</div>
+<!-- Item 2 -->
+<div class="p-4 flex items-center gap-md hover:bg-stone-50 transition-colors">
+<img class="w-16 h-16 rounded-lg object-cover bg-stone-100" data-alt="Macro photography of structured architectural blueprints on a warm wooden desk. The focus is sharp on the geometric lines and annotations, with a soft blur in the background. The aesthetic is professional and analytical, using a high-end editorial style to represent complex learning materials in the user's library." src="https://lh3.googleusercontent.com/aida/ADBb0uhkTLyHoGNHWawlQNhfAiMFh1tu8iWH59wp15h8EzJ_UIludRDVn3GzzPtu8CX5LUCnVuS9r4x6BEdz-lmBmwR0nynV8h8VVSWe-MxPVh595w1PFwgf3EMCaIqxvMSXEeLI1wlAqm-XBbluobWPEK9UbK0Rg7665GYMrpxXIRCZP7Gyc4YQb_LhjoGdBA3o01RVOSaOEmpOJcwEAjKvSSPVA8DJWI1i17Sff5sKpEKRABfwTjsYecPdn8qL0x5mSjcy2VyqSkf-"/>
+<div class="flex-1">
+<h5 class="font-headline-md text-[16px] text-stone-900">Sustainable Growth Patterns</h5>
+<p class="text-label-sm text-stone-400">Captured 5 days ago • PDF</p>
+</div>
+<button class="flex items-center gap-1 text-action-orange font-label-sm text-label-sm hover:underline">
+<span class="material-symbols-outlined text-[16px]" data-icon="bolt">bolt</span>
+                        CONVERT
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center justify-around gap-8 px-8 py-3 bg-[#F4F1EE]/80 dark:bg-stone-900/80 backdrop-blur-xl w-auto min-w-[320px] rounded-2xl border border-[#E5E0DA] dark:border-stone-800 shadow-[0_20px_40px_rgba(0,0,0,0.1)]">
+<a class="flex flex-col items-center gap-1 text-stone-400 hover:text-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Focus</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[#FF4F00] relative after:content-[''] after:absolute after:-bottom-1 after:w-1 after:h-1 after:bg-[#FF4F00] after:rounded-full" href="#">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Learn</span>
+</a>
+<!-- Quick Capture FAB -->
+<button class="w-14 h-14 bg-action-orange text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform -mt-10 border-4 border-[#F4F1EE]">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</button>
+<a class="flex flex-col items-center gap-1 text-stone-400 hover:text-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Plan</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-stone-400 hover:text-stone-900 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Profile</span>
+</a>
+</nav>
+</body></html>

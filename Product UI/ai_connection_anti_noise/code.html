@@ -1,0 +1,245 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#f6f0ea",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#e8e1dc",
+                    "surface-container-highest": "#e8e1dc",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-primary-container": "#fffbff",
+                    "background": "#F4F1EE",
+                    "on-primary": "#ffffff",
+                    "primary-fixed": "#ffdbd0",
+                    "on-tertiary-container": "#f9ffeb",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-background": "#1d1b18",
+                    "tertiary-fixed": "#e5e2df",
+                    "surface-container": "#f3ede7",
+                    "secondary": "#5f5e5e",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary-container": "#757472",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "surface-bright": "#fff8f2",
+                    "surface-container-high": "#eee7e1",
+                    "inverse-surface": "#33302c",
+                    "on-secondary-container": "#636262",
+                    "surface": "#F4F1EE",
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#5c4037",
+                    "on-secondary": "#ffffff",
+                    "surface-tint": "#FF4F00",
+                    "on-surface": "#1d1b18",
+                    "outline-variant": "#e6beb2",
+                    "outline": "#916f65",
+                    "on-tertiary-fixed-variant": "#474745",
+                    "on-tertiary-fixed": "#1c1c1a",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#e5e2e1",
+                    "primary-fixed-dim": "#ffb59e",
+                    "surface-container-low": "#f9f2ed",
+                    "on-primary-fixed": "#3a0b00",
+                    "surface-dim": "#dfd9d3",
+                    "secondary-container": "#e2dfde",
+                    "on-primary-fixed-variant": "#842500",
+                    "inverse-primary": "#ffb59e",
+                    "error-container": "#ffdad6",
+                    "on-error-container": "#93000a",
+                    "primary-container": "#FF4F00",
+                    "tertiary": "#5d5c5a",
+                    "primary": "#FF4F00",
+                    "error": "#ba1a1a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-padding": "32px",
+                    "xl": "48px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "xs": "4px",
+                    "unit": "4px",
+                    "sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "display": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #F4F1EE;
+            font-family: 'Space Grotesk', sans-serif;
+            color: #1d1b18; /* Charcoal Typography */
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen selection:bg-primary selection:text-white pb-32">
+<!-- TopAppBar -->
+<header class="bg-[#F4F1EE]/80 backdrop-blur-md font-['Space_Grotesk'] font-bold tracking-tight docked full-width top-0 sticky z-50 border-b border-[#E5E0DA] shadow-sm flex justify-between items-center w-full px-6 py-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#FF4F00]" data-icon="terminal">terminal</span>
+<span class="text-xl font-black text-[#1d1b18] uppercase tracking-widest">ANTi NOISE</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-stone-500 hover:bg-stone-200/50 transition-colors p-2 rounded-full active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-4xl mx-auto px-6 py-12">
+<!-- Step Indicator -->
+<div class="mb-12 flex flex-col items-center">
+<div class="flex items-center gap-2 mb-4">
+<div class="w-2 h-2 rounded-full bg-stone-300"></div>
+<div class="w-2 h-2 rounded-full bg-stone-300"></div>
+<div class="w-8 h-2 rounded-full bg-[#FF4F00]"></div>
+</div>
+<span class="font-label-sm text-label-sm text-[#FF4F00] uppercase tracking-[0.2em]">Step 3 of 3</span>
+<h1 class="font-display text-[40px] md:text-display mt-4 text-center leading-tight"><b>Connect AI Provider</b></h1>
+<p class="font-body-lg text-body-lg text-secondary text-center mt-2 max-w-lg">
+            Link your preferred intelligence engine to activate the autonomous workflow features.
+        </p>
+</div>
+<!-- Main Configuration Card -->
+<div class="bg-white border border-[#E5E0DA] rounded-2xl shadow-sm overflow-hidden mb-8">
+<div class="p-8 lg:p-12">
+<!-- Provider Selection Section -->
+<div class="mb-10">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-4 block">Select Intelligence Engine</label>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Provider Card: OpenAI -->
+<button class="flex items-center justify-between p-6 border-2 border-[#FF4F00] bg-[#FF4F00]/5 rounded-xl group transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[#FF4F00]" data-icon="hub">hub</span>
+</div>
+<div class="text-left">
+<p class="font-headline-md text-[20px] text-on-surface">OpenAI</p>
+<p class="font-body-md text-[14px] text-secondary">GPT-4o &amp; GPT-3.5 Turbo</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-[#FF4F00] fill-1" data-icon="check_circle" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
+</button>
+<!-- Provider Card: Anthropic -->
+<button class="flex items-center justify-between p-6 border border-[#E5E0DA] hover:border-[#FF4F00]/50 rounded-xl group transition-all">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-white rounded-lg border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-stone-400" data-icon="psychology">psychology</span>
+</div>
+<div class="text-left">
+<p class="font-headline-md text-[20px] text-on-surface">Anthropic</p>
+<p class="font-body-md text-[14px] text-secondary">Claude 3 Opus &amp; Sonnet</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-stone-300" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</button>
+</div>
+</div>
+<!-- API Key Input Section -->
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-end mb-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant uppercase block">Provider API Key</label>
+<a class="text-[12px] font-bold text-[#FF4F00] hover:underline transition-all" href="#">Where do I find this?</a>
+</div>
+<div class="relative">
+<input class="w-full bg-[#F9F6F3] border border-[#E5E0DA] rounded-xl px-4 py-4 font-mono text-body-md focus:ring-1 focus:ring-[#FF4F00] focus:border-[#FF4F00] outline-none transition-all pr-36" placeholder="sk-..." type="password" value="sk-proj-4j8k2l9m0n1p2q3r4s5t6u7v8w9x0y1z">
+<div class="absolute right-2 top-2 bottom-2">
+<button class="h-full px-4 bg-[#1d1b18] text-white rounded-lg font-label-sm text-[11px] uppercase tracking-wider hover:bg-stone-800 transition-colors active:scale-95">
+                                Test Connection
+                            </button>
+</div>
+</div>
+<div class="flex items-center gap-2 mt-3 text-stone-500">
+<span class="material-symbols-outlined text-[18px]" data-icon="verified_user">verified_user</span>
+<p class="font-body-md text-[13px]">Your key is encrypted and stored in a hardware security module (HSM).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Footer -->
+<div class="bg-[#F9F6F3] px-8 py-4 border-t border-[#E5E0DA] flex items-center gap-4">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border border-white bg-stone-200 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8il69VptPJ6NM3DjSjtrVhyxRGR57mGL8cDpO_iDTz5ONBr8B6IKpSY2dMxqZ4VIHyUEU2foN_jrHWpGlTNjmyh2ThioB6lU4uoGfIlVmEzsqWSWGEq6mgezrZMVrAOv75mEOw7ksgcZne5IOOaE_lrxAhzGyPWyhBwrRawHUSDfXGOlNUvrylEmmV4gR8Y5qOXoYFlTg22ykuozccFhAGHJ6lOyuxhoPN70ojpK7ZOgHjIkux_W1XyxOYEdG0rCV9KmcXAbxDw">
+</div>
+<div class="w-6 h-6 rounded-full border border-white bg-stone-200 flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKXOW2P_lQSe_pQwHx8chaeiS-pC1eIvzSoFYIT3kaDqnBp9hix-pV088Cjo4zua5r4Y7Ng0MXwA07WVmRi-HAYwRqioyeGc2yAJJXI1M8mHxAG9xwbt-GLtq2Rm_fkj3tjGoAqZMjlMil1-c4Q0lhbDt1HfjVJky7moP5IVVwAyN5-_rIUEGEQSbTb9tUaHjYH7556-emcKTHe8fhfiKTo9JiWKX4jncjM1R21urhI-myTc7oh1AXp2TMhNbCO3mNvEGbm5vDjg">
+</div>
+</div>
+<p class="font-body-md text-[12px] text-on-surface-variant">Trusted by 2,400+ security-first organizations worldwide.</p>
+</div>
+</div>
+<!-- Final CTA -->
+<div class="flex flex-col items-center gap-4">
+<button class="w-full max-w-md bg-[#FF4F00] text-white py-5 rounded-xl font-headline-md text-headline-md shadow-lg shadow-[#FF4F00]/20 hover:bg-[#E64700] transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+            Finish Setup &amp; Launch Dashboard
+            <span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+</button>
+<button class="text-secondary font-label-sm text-label-sm uppercase tracking-widest hover:text-[#1d1b18] transition-colors">
+            Configure manually later
+        </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar (5-item) -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[92%] max-w-md bg-[#F4F1EE]/90 backdrop-blur-xl rounded-2xl border border-[#E5E0DA] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex justify-around items-center py-3 px-4 z-50 font-['Space_Grotesk']">
+<div class="flex flex-col items-center justify-center text-stone-400 hover:text-[#1d1b18] cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[24px]" data-icon="grid_view">grid_view</span>
+<span class="text-[10px] font-bold uppercase mt-1">Focus</span>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 hover:text-[#1d1b18] cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[24px]" data-icon="psychology">psychology</span>
+<span class="text-[10px] font-bold uppercase mt-1">Learn</span>
+</div>
+<!-- Quick Capture Central Button -->
+<div class="flex flex-col items-center justify-center -mt-10 cursor-pointer group">
+<div class="w-14 h-14 bg-[#FF4F00] rounded-full flex items-center justify-center text-white shadow-lg shadow-[#FF4F00]/30 group-active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-[32px]" data-icon="add">add</span>
+</div>
+<span class="text-[#FF4F00] text-[9px] mt-2 font-black uppercase tracking-tighter">Quick Capture</span>
+</div>
+<div class="flex flex-col items-center justify-center text-[#FF4F00] relative cursor-pointer">
+<span class="material-symbols-outlined text-[24px]" data-icon="event_note">event_note</span>
+<span class="text-[10px] font-bold uppercase mt-1">Plan</span>
+<div class="absolute -bottom-1 w-1 h-1 bg-[#FF4F00] rounded-full"></div>
+</div>
+<div class="flex flex-col items-center justify-center text-stone-400 hover:text-[#1d1b18] cursor-pointer transition-all">
+<span class="material-symbols-outlined text-[24px]" data-icon="person">person</span>
+<span class="text-[10px] font-bold uppercase mt-1">Profile</span>
+</div>
+</nav>
+
+
+</body></html>

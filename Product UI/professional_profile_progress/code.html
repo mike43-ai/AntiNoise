@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary": "#ffffff",
+                    "on-surface-variant": "#5c4037",
+                    "surface-tint": "#FF4F00",
+                    "inverse-on-surface": "#f6f0ea",
+                    "secondary": "#5f5e5e",
+                    "on-tertiary-fixed-variant": "#474745",
+                    "tertiary-fixed": "#e5e2df",
+                    "surface-container-low": "#f9f2ed",
+                    "on-secondary-fixed-variant": "#474746",
+                    "tertiary": "#5d5c5a",
+                    "secondary-fixed": "#e5e2e1",
+                    "primary-container": "#FF4F00",
+                    "background": "#F4F1EE",
+                    "outline-variant": "#e6beb2",
+                    "outline": "#916f65",
+                    "inverse-primary": "#ffb59e",
+                    "on-background": "#1d1b18",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#fff8f2",
+                    "surface": "#F4F1EE",
+                    "on-tertiary-fixed": "#1c1c1a",
+                    "surface-dim": "#dfd9d3",
+                    "on-surface": "#1d1b18",
+                    "surface-container-high": "#eee7e1",
+                    "secondary-container": "#e2dfde",
+                    "primary-fixed": "#ffdbd0",
+                    "surface-container": "#f3ede7",
+                    "primary": "#FF4F00",
+                    "on-primary-container": "#ffffff",
+                    "surface-container-highest": "#e8e1dc",
+                    "on-tertiary-container": "#f9ffeb",
+                    "error-container": "#ffdad6",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#3a0b00",
+                    "tertiary-container": "#757472",
+                    "surface-variant": "#e8e1dc",
+                    "tertiary-fixed-dim": "#c8c6c3",
+                    "on-secondary-container": "#636262",
+                    "on-primary-fixed-variant": "#842500",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "inverse-surface": "#33302c",
+                    "primary-fixed-dim": "#ffb59e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xl": "48px",
+                    "xs": "4px",
+                    "gutter": "16px",
+                    "container-padding": "32px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "display": ["Space Grotesk"],
+                    "body-md": ["Space Grotesk"],
+                    "body-lg": ["Space Grotesk"],
+                    "label-sm": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #F4F1EE; }
+        .glass { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .skill-node { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .skill-node:hover { transform: scale(1.05); }
+        .kinetic-card { border-radius: 12px; background: white; border: 1px solid #E5E0DA; }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-white">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#F4F1EE]/80 backdrop-blur-xl border-b border-[#E5E0DA] shadow-sm">
+<div class="flex items-center gap-3">
+<div class="p-2 hover:bg-neutral-200/50 transition-colors rounded-lg active:scale-95 duration-100">
+<span class="material-symbols-outlined text-[#FF4F00]">grid_view</span>
+</div>
+<h1 class="text-xl font-bold uppercase tracking-widest text-neutral-900 font-['Space_Grotesk']">ANTi NOISE</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-neutral-200/50 transition-colors rounded-lg active:scale-95 duration-100">
+<span class="material-symbols-outlined text-neutral-500">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-[#E5E0DA]">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV-Fn4Fav85oks7dwoIf20Hr4RdMGXfDUnvpQ_hajSZSxawuMlKE7T2KQa1RmE0eBDh-WOu5et7UrMMznXb8g0U97LuDLF9Dg7aESzjD2pV1mLWVi7fxPfVgUEp9tbb1nQvoTrOWAdNlqoG-7LoIcuuouXSDafC8_eQ4SZaW3RG0VpPe2zxLnRL2Rnv9_zQAOfum6yIaftMMcw-g34mVGxax59ChwsBh1p1etbdhW2xwyDHJt5z6WIPE34TN75DKA_zXsUA2BaqQ"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-5xl mx-auto space-y-12">
+<!-- Profile Header Section -->
+<section class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<span class="font-label-sm text-label-sm uppercase text-primary tracking-widest px-3 py-1 bg-primary-fixed rounded-full">Pro Member</span>
+<h2 class="font-display text-display text-on-surface">Alex Sterling</h2>
+<p class="font-headline-md text-headline-md text-secondary">Senior Product Designer</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-3 bg-[#FF4F00] text-white font-bold rounded-xl active:scale-95 transition-all shadow-lg shadow-primary/20">Edit Profile</button>
+<button class="p-3 bg-[#33302c] text-[#f6f0ea] rounded-xl active:scale-95 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+</section>
+<!-- Growth Progress Snapshot (Modular Bento Grid) -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight text-neutral-900">Growth Progress Snapshot</h3>
+<span class="font-label-sm text-label-sm text-secondary">MARCH 2024</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Topics In Progress -->
+<div class="md:col-span-4 p-6 kinetic-card shadow-sm flex flex-col justify-between space-y-6">
+<div>
+<span class="font-label-sm text-label-sm uppercase text-secondary">Topics In Progress</span>
+<div class="mt-4 flex items-baseline gap-2">
+<span class="text-4xl font-bold">4</span>
+<span class="text-secondary">active tracks</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-bold uppercase tracking-wider">
+<span>Advanced AI UI</span>
+<span>82%</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-[#FF4F00]" style="width: 82%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Completed Lessons -->
+<div class="md:col-span-4 p-6 kinetic-card shadow-sm space-y-6">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Completed Lessons</span>
+<div class="flex items-center justify-center py-4 relative">
+<div class="text-center z-10">
+<span class="text-5xl font-bold text-on-surface">12</span>
+<p class="text-[10px] font-bold text-secondary uppercase tracking-widest">This month</p>
+</div>
+<svg class="absolute w-32 h-32 -rotate-90">
+<circle class="text-surface-container" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-[#FF4F00]" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="109.3" stroke-width="8"></circle>
+</svg>
+</div>
+</div>
+<!-- Weekly Growth Summary -->
+<div class="md:col-span-4 p-6 kinetic-card shadow-sm space-y-6">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Weekly Summary</span>
+<div class="h-32 flex items-end justify-between gap-2">
+<div class="flex-1 bg-surface-container rounded-t-sm h-1/2"></div>
+<div class="flex-1 bg-surface-container rounded-t-sm h-3/4"></div>
+<div class="flex-1 bg-[#FF4F00] rounded-t-sm h-full"></div>
+<div class="flex-1 bg-surface-container rounded-t-sm h-2/3"></div>
+<div class="flex-1 bg-surface-container rounded-t-sm h-1/2"></div>
+<div class="flex-1 bg-[#FF4F00] rounded-t-sm h-[85%]"></div>
+<div class="flex-1 bg-surface-container rounded-t-sm h-1/3"></div>
+</div>
+<div class="flex justify-between text-[10px] font-bold text-secondary uppercase tracking-tighter">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Skill Map Section -->
+<section class="space-y-6">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight text-neutral-900">Skill Map</h3>
+<button class="text-[#FF4F00] font-bold text-sm flex items-center gap-1 uppercase tracking-widest">
+                VIEW FULL RADAR <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="relative bg-white border border-[#E5E0DA] rounded-2xl p-8 overflow-hidden min-h-[400px] flex items-center justify-center">
+<!-- Background Decorative Grid -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: radial-gradient(#FF4F00 1px, transparent 1px); background-size: 24px 24px;"></div>
+<!-- Central Visual Cluster -->
+<div class="relative w-full max-w-lg aspect-square">
+<!-- Core Circles -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full border border-primary/10 rounded-full"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 border border-primary/10 rounded-full"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1/3 h-1/3 border border-primary/10 rounded-full"></div>
+<!-- Skill Nodes -->
+<!-- Design Systems -->
+<div class="skill-node absolute top-[20%] left-[30%] -translate-x-1/2 -translate-y-1/2 group">
+<div class="bg-[#FF4F00] p-6 rounded-full shadow-xl shadow-primary/30 flex flex-col items-center justify-center text-white text-center">
+<span class="material-symbols-outlined text-2xl mb-1">category</span>
+<span class="font-bold text-[10px] uppercase tracking-widest">Design Systems</span>
+<span class="text-[10px] opacity-80">95% Mastery</span>
+</div>
+</div>
+<!-- Strategic Leadership -->
+<div class="skill-node absolute top-[60%] left-[75%] -translate-x-1/2 -translate-y-1/2">
+<div class="bg-[#33302c] p-5 rounded-full shadow-lg flex flex-col items-center justify-center text-white text-center">
+<span class="material-symbols-outlined text-xl mb-1">insights</span>
+<span class="font-bold text-[9px] uppercase tracking-widest">Strategic Leadership</span>
+<span class="text-[9px] opacity-70">78% Mastery</span>
+</div>
+</div>
+<!-- AI Integration -->
+<div class="skill-node absolute top-[75%] left-[25%] -translate-x-1/2 -translate-y-1/2">
+<div class="bg-white border-2 border-[#FF4F00] p-5 rounded-full shadow-md flex flex-col items-center justify-center text-on-surface text-center">
+<span class="material-symbols-outlined text-[#FF4F00] text-xl mb-1">auto_awesome</span>
+<span class="font-bold text-[9px] uppercase tracking-widest">AI Integration</span>
+<span class="text-[9px] text-secondary">62% Mastery</span>
+</div>
+</div>
+<!-- Minor Skills -->
+<div class="skill-node absolute top-[40%] left-[60%] -translate-x-1/2 -translate-y-1/2 opacity-60">
+<div class="bg-surface-container p-3 rounded-full flex flex-col items-center justify-center">
+<span class="font-bold text-[8px] uppercase tracking-tighter">UX Research</span>
+</div>
+</div>
+<div class="skill-node absolute top-[30%] left-[80%] -translate-x-1/2 -translate-y-1/2 opacity-40">
+<div class="bg-surface-container p-2 rounded-full flex flex-col items-center justify-center">
+<span class="font-bold text-[8px] uppercase tracking-tighter">Prototyping</span>
+</div>
+</div>
+</div>
+<!-- Legend / Labels -->
+<div class="absolute bottom-6 left-6 flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-[#FF4F00] rounded-full"></div>
+<span class="text-[10px] font-bold uppercase text-secondary tracking-widest">Primary Expertise</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-[#33302c] rounded-full"></div>
+<span class="text-[10px] font-bold uppercase text-secondary tracking-widest">Emerging Strengths</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Insights / Recommendations -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-6 bg-[#FF4F00] text-white rounded-xl shadow-lg shadow-primary/20">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined">lightbulb</span>
+<h4 class="font-bold uppercase tracking-widest text-xs">AI Recommendation</h4>
+</div>
+<p class="font-body-lg text-body-lg mb-4">Your "Strategic Leadership" track is falling behind. Dedicate 2 hours this week to reach your milestone.</p>
+<button class="bg-white text-[#FF4F00] px-4 py-2 rounded-lg font-bold text-xs uppercase tracking-widest active:scale-95 transition-all">Schedule Focus Session</button>
+</div>
+<div class="p-6 kinetic-card flex items-center gap-6">
+<div class="w-24 h-24 rounded-lg overflow-hidden shrink-0 border border-[#E5E0DA]">
+<img alt="Upcoming Milestone" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE9zwlgJaeSJdqh4Gz_7V99GGSKWVhpsNozyuEAv7jjrzKaNmN-C4nDeOBzKWLW_sXeh6Wiw9SE_fLRtuQBQKoVj7G4r1KAZ11c-Wfbh2cAKRS0Vxjn_D5737iahoER8urM3tQ4eCoptHSmujp2rhHRNfHIJN6xOt6fpmx7EqHal7aB80XblfurHI9dTBB3nFIi2bVDT945TG4JVAfiBRU2IMDcFfRufqg5AEqW9n0yor923yn3mi9D9Wm8CslvSI4lMLHaoSjWg"/>
+</div>
+<div>
+<h4 class="font-bold text-xs uppercase tracking-widest mb-1 text-neutral-900">Upcoming Milestone</h4>
+<p class="text-xs text-secondary leading-relaxed mb-3">Complete "The Ethics of Generative Design" to earn your Level 4 AI Integrator badge.</p>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-[#FF4F00] tracking-widest">XP REWARD: +500</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-6 left-0 right-0 z-50 flex justify-center items-center pointer-events-none">
+<div class="bg-white/90 backdrop-blur-xl w-[90%] max-w-md rounded-2xl border border-[#E5E0DA] shadow-[0_20px_50px_rgba(0,0,0,0.1)] flex justify-around items-center h-16 px-4 pointer-events-auto relative">
+<!-- Focus (Home) -->
+<a class="flex flex-col items-center justify-center text-neutral-400 hover:text-[#FF4F00] transition-all active:scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">home_max</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Focus</span>
+</a>
+<!-- Learn -->
+<a class="flex flex-col items-center justify-center text-neutral-400 hover:text-[#FF4F00] transition-all active:scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">school</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Learn</span>
+</a>
+<!-- Quick Capture FAB -->
+<div class="relative">
+<button class="w-16 h-16 bg-[#FF4F00] text-white rounded-full shadow-lg shadow-[#FF4F00]/40 flex items-center justify-center active:scale-90 transition-transform -translate-y-8 border-4 border-[#F4F1EE]">
+<span class="material-symbols-outlined text-3xl font-bold">add</span>
+</button>
+</div>
+<!-- Plan -->
+<a class="flex flex-col items-center justify-center text-neutral-400 hover:text-[#FF4F00] transition-all active:scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined">event_note</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Plan</span>
+</a>
+<!-- Profile (Active) -->
+<a class="flex flex-col items-center justify-center text-[#FF4F00] relative active:scale-110 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">Profile</span>
+<div class="absolute -bottom-1 w-1 h-1 bg-[#FF4F00] rounded-full"></div>
+</a>
+</div>
+</nav>
+</body></html>
