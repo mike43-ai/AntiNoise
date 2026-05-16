@@ -9,8 +9,8 @@
 - Date: 2026-05-16
 - Description: Distraction-free session timer (pomodoro-style) optionally tied to a specific learning task (capture/deck/scope). Logs sessions for streaks + Profile stats.
 - Priority: P2
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 1.5d
 
 ## Key Insights

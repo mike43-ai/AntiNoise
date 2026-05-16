@@ -1,21 +1,76 @@
+import SwiftData
 import SwiftUI
 
 struct FocusRootView: View {
+    @Environment(\.modelContext) private var modelContext
+    @State private var engine: FocusSessionEngine?
+    @State private var navigateToDeckID: UUID?
+    @State private var lastPlannedSeconds: Int = 0
+    @State private var lastTargetID: UUID?
+
     var body: some View {
         NavigationStack {
-            VStack {
-                AppEmptyState(
-                    systemImage: "timer",
-                    title: "Focus",
-                    message: "Pomodoro sessions and deep-work blocks.\nPhase 09 fills this in."
-                )
+            Group {
+                if let engine {
+                    body(engine: engine)
+                } else {
+                    AppLoadingIndicator()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(Color.bgPrimary)
+            .background(Color.bgPrimary.ignoresSafeArea())
             .navigationTitle("Focus")
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(item: $navigateToDeckID) { deckID in
+                FlashcardReviewView(deckID: deckID)
+            }
+            .task {
+                if engine == nil {
+                    engine = FocusSessionEngine(modelContainer: modelContext.container)
+                }
+                await engine?.requestNotificationPermissionIfNeeded()
+            }
         }
+    }
+
+    @ViewBuilder
+    private func body(engine: FocusSessionEngine) -> some View {
+        switch engine.state {
+        case .idle:
+            FocusSetupView { duration, kind, id, label in
+                lastPlannedSeconds = duration
+                lastTargetID = (kind == .deck) ? id : nil
+                engine.start(durationSeconds: duration, targetKind: kind, targetID: id, targetLabel: label)
+            }
+        case .running, .paused:
+            FocusActiveView(
+                engine: engine,
+                targetLabel: engine.lastTargetLabel,
+                onEnd: { /* engine.state will flip to .finished */ }
+            )
+            .navigationBarHidden(true)
+        case .finished(let completed):
+            FocusResultView(
+                plannedSeconds: lastPlannedSeconds,
+                elapsedSeconds: engine.lastElapsedSeconds,
+                completed: completed,
+                linkedDeckID: lastTargetID,
+                onReview: { deckID in
+                    navigateToDeckID = deckID
+                    resetEngine()
+                },
+                onDone: { resetEngine() }
+            )
+        }
+    }
+
+    private func resetEngine() {
+        engine = FocusSessionEngine(modelContainer: modelContext.container)
+        lastTargetID = nil
+        lastPlannedSeconds = 0
     }
 }
 
-#Preview { FocusRootView() }
+#Preview {
+    FocusRootView()
+}
