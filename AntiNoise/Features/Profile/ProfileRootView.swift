@@ -3,6 +3,7 @@ import SwiftUI
 struct ProfileRootView: View {
     @Environment(AuthStore.self) private var auth
     @State private var isAPIKeySheetPresented = false
+    @State private var isGoalsSheetPresented = false
 
     var body: some View {
         NavigationStack {
@@ -19,6 +20,19 @@ struct ProfileRootView: View {
                                         .foregroundStyle(Color.textMuted)
                                 }
                             }
+                        }
+                    }
+
+                    VStack(alignment: .leading, spacing: AppSpacing.md) {
+                        Text("Learning")
+                            .appFont(.caption)
+                            .textCase(.uppercase)
+                            .foregroundStyle(Color.textMuted)
+                        SecondaryButton(
+                            title: "Manage learning goals",
+                            systemImage: "target"
+                        ) {
+                            isGoalsSheetPresented = true
                         }
                     }
 
@@ -56,6 +70,9 @@ struct ProfileRootView: View {
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isAPIKeySheetPresented) {
                 APIKeyEntryView()
+            }
+            .sheet(isPresented: $isGoalsSheetPresented) {
+                GoalSetupView()
             }
         }
     }

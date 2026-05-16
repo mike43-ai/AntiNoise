@@ -28,6 +28,16 @@ final class SummaryDetailModel {
         summary = fetchSummary()
     }
 
+    var effectiveScope: ClassificationScope? {
+        PriorityScorer.resolveScope(capture: capture, summary: summary)
+    }
+
+    func overrideClassification(_ scope: ClassificationScope?) {
+        try? ClassificationRepository(context: modelContext)
+            .setUserClassification(captureID: captureID, scope: scope)
+        load()
+    }
+
     func retry() async {
         guard !isRetrying else { return }
         isRetrying = true

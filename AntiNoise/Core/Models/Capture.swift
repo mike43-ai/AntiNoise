@@ -18,10 +18,20 @@ final class Capture {
     /// SummarizerService writes this. JSON-encoded `FeynmanSummaryPayload` (Phase 06).
     var summaryJSON: String?
 
-    /// 0..n retry attempts. Used by Phase 06 for exponential backoff.
+    /// Counts terminal AI failures, NOT in-attempt retries.
     var retryCount: Int
 
     var lastError: String?
+
+    // Phase 07 fields (SwiftData adds these as optional/zero-default on existing stores).
+    /// User-pinned classification — takes precedence over `summary.suggestedClassification`.
+    var userClassificationRaw: String?
+    /// Times the user has dismissed/skipped this in the daily queue. Lowers priority score.
+    var skipCount: Int = 0
+    /// Set when the user marks the capture "done" in the daily queue.
+    var completedAt: Date?
+    /// User-archived captures hide from inbox/queue but stay on disk.
+    var archivedAt: Date?
 
     init(
         id: UUID = UUID(),
@@ -42,6 +52,10 @@ final class Capture {
         self.summaryJSON = nil
         self.retryCount = 0
         self.lastError = nil
+        self.userClassificationRaw = nil
+        self.skipCount = 0
+        self.completedAt = nil
+        self.archivedAt = nil
     }
 
     var kind: CaptureKind {
@@ -55,5 +69,9 @@ final class Capture {
 
     var resolvedImageURL: URL? {
         imageFilename.flatMap { SharedQueueStore.resolveBlobURL(filename: $0) }
+    }
+
+    var userClassification: ClassificationScope? {
+        userClassificationRaw.flatMap { ClassificationScope(rawValue: $0) }
     }
 }

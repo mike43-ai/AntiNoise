@@ -7,6 +7,7 @@ struct SummaryDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(SummarizerHolder.self) private var summarizerHolder
     @State private var model: SummaryDetailModel?
+    @State private var isScopeSheetPresented = false
 
     var body: some View {
         ScrollView {
@@ -55,8 +56,25 @@ struct SummaryDetailView: View {
 
     @ViewBuilder
     private func sections(for summary: Summary) -> some View {
-        VStack(alignment: .leading, spacing: AppSpacing.xs) {
-            Chip(title: summary.suggestedClassification.title.uppercased(), variant: .accent, isSelected: false)
+        let resolvedScope: ClassificationScope = model?.effectiveScope ?? summary.suggestedClassification
+        HStack(spacing: AppSpacing.xs) {
+            Button { isScopeSheetPresented = true } label: {
+                Chip(title: shortScope(resolvedScope).uppercased(), variant: .accent, isSelected: false)
+            }
+            .buttonStyle(.plain)
+            if model?.capture?.userClassification == nil {
+                Text("· AI suggested")
+                    .appFont(.caption)
+                    .foregroundStyle(Color.textMuted)
+            } else {
+                Text("· you picked")
+                    .appFont(.caption)
+                    .foregroundStyle(Color.textMuted)
+            }
+        }
+        .sheet(isPresented: $isScopeSheetPresented) {
+            scopePickerSheet(current: resolvedScope)
+                .presentationDetents([.medium])
         }
 
         section(title: "Simple explanation", body: summary.simpleExplanation)
@@ -115,6 +133,60 @@ struct SummaryDetailView: View {
         VStack(alignment: .leading, spacing: AppSpacing.sm) {
             Text(title).appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
             Text(body).appFont(.body).foregroundStyle(Color.textPrimary)
+        }
+    }
+
+    private func scopePickerSheet(current: ClassificationScope) -> some View {
+        NavigationStack {
+            VStack(alignment: .leading, spacing: AppSpacing.md) {
+                Text("Change classification")
+                    .appFont(.h3)
+                ForEach(ClassificationScope.allCases, id: \.self) { scope in
+                    Button {
+                        model?.overrideClassification(scope)
+                        isScopeSheetPresented = false
+                    } label: {
+                        HStack(spacing: AppSpacing.md) {
+                            Image(systemName: scope.systemImage)
+                                .foregroundStyle(scope == current ? Color.accent : Color.textMuted)
+                            VStack(alignment: .leading) {
+                                Text(scope.title).appFont(.body).fontWeight(.semibold)
+                                Text(scope.subtitle).appFont(.caption).foregroundStyle(Color.textMuted)
+                            }
+                            Spacer()
+                            if scope == current {
+                                Image(systemName: "checkmark").foregroundStyle(Color.accent)
+                            }
+                        }
+                        .padding(AppSpacing.md)
+                        .frame(maxWidth: .infinity)
+                        .background(Color.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous)
+                                .stroke(Color.appBorder, lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                }
+                if model?.capture?.userClassification != nil {
+                    GhostButton(title: "Reset to AI suggestion") {
+                        model?.overrideClassification(nil)
+                        isScopeSheetPresented = false
+                    }
+                }
+                Spacer()
+            }
+            .padding(AppSpacing.xl)
+            .background(Color.bgPrimary.ignoresSafeArea())
+        }
+    }
+
+    private func shortScope(_ s: ClassificationScope) -> String {
+        switch s {
+        case .personal: return "Personal"
+        case .work:     return "Work"
+        case .business: return "Business"
         }
     }
 

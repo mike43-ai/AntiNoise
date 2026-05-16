@@ -10,8 +10,8 @@
 - Date: 2026-05-16
 - Description: Categorize each summary into one of 3 fixed scopes (Personal Dev / Work Dev / Business Dev) — set is LOCKED, no custom categories in MVP. Daily priority engine surfaces top N items to learn today based on user goals, recency, and urgency.
 - Priority: P1
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 2d
 
 ## Key Insights
