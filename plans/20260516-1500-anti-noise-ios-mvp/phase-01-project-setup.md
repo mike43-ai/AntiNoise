@@ -10,8 +10,8 @@
 - Date: 2026-05-16
 - Description: Bootstrap Xcode project + share extension target, SPM deps, folder skeleton, base configs.
 - Priority: P0 (gates all others)
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes (see Notes)
 - Effort: 1d
 
 ## Key Insights
@@ -74,15 +74,24 @@ AntiNoise.xcworkspace
 11. Commit: `feat: scaffold ios app + share extension targets`.
 
 ## Todo
-- [ ] git init + .gitignore
-- [ ] Xcode project created
-- [ ] Share Extension target added
-- [ ] App Group enabled both targets
-- [ ] SPM deps resolved
-- [ ] Folder skeleton created
-- [ ] Privacy Info.plist keys added
-- [ ] Builds + runs on simulator
-- [ ] First commit pushed
+- [x] git init + .gitignore
+- [x] Xcode project created (via xcodegen, project.yml)
+- [x] Share Extension target added
+- [x] App Group enabled both targets
+- [x] SPM deps resolved (Firebase 10.29.0 + RevenueCat 5.73.0)
+- [x] Folder skeleton created
+- [x] Privacy Info.plist keys added
+- [~] Builds + runs on simulator — DEFERRED: disk-full prevented iOS 17.2 simulator runtime install. Compile-graph + SPM resolution verified.
+- [x] First commit pushed (local; no remote configured yet)
+
+## Notes (implementation)
+- Used xcodegen 2.42.0 prebuilt binary (Homebrew formula required Xcode 15.3; we have 15.2).
+- `developmentLanguage: vi` — Vietnamese primary, English as additional. Confirm before App Store Connect first submission.
+- `associated-domains` entitlement deferred to phase 08 (needs AASA hosting at antinoise.app).
+- DEVELOPMENT_TEAM left empty in project.yml — set locally via Xcode UI or `Config.local.xcconfig` (gitignored). Documented in README.
+- FirebaseCrashlytics added to SPM products in addition to Auth/Firestore/Analytics; symbol-upload run script deferred to phase 12.
+- ShareViewController is a Phase-01 stub. Real payload extraction lands in phase 05. Do NOT submit to App Store until phase 06.
+- Code review findings #1 (DEV_TEAM docs), #2 (associated-domains defer), #4 (stub comment) applied. Findings #5 (keychain sharing) flagged for phase 03, #7 (VI primary language) open question.
 
 ## Success Criteria
 - `xcodebuild -scheme AntiNoise -destination 'platform=iOS Simulator,name=iPhone 15' build` succeeds.

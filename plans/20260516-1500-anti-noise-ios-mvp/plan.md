@@ -1,7 +1,7 @@
 ---
 title: "ANTI NOISE — iOS MVP Implementation"
 description: "iOS app + share extension that captures info, AI-summarizes via Feynman method, and turns deep-dives into flash cards."
-status: pending
+status: in_progress
 priority: P2
 effort: 22d
 branch: main
@@ -23,7 +23,7 @@ created: 2026-05-16
 
 | # | Title | Effort | Status |
 |---|-------|--------|--------|
-| 01 | Project setup, Xcode workspace, SPM deps | 1d | pending |
+| 01 | Project setup, Xcode workspace, SPM deps | 1d | completed (build-verify deferred — disk full) |
 | 02 | Design system tokens + reusable components | 2d | pending |
 | 03 | Firebase Auth (email + Apple) | 1.5d | pending |
 | 04 | Tab navigation shell (5 tabs) | 1d | pending |
@@ -86,4 +86,8 @@ Each mockup folder also contains `code.html` (Tailwind reference) — treat as v
 
 ## Unresolved Questions
 
-None at plan-lock. New questions surfaced during implementation go into per-phase files.
+None at plan-lock. New questions surfaced during implementation:
+
+- **Phase 01 — Vietnamese primary App Store language?** `developmentLanguage: vi` in `project.yml`. Switching the primary language post first-submission requires an Apple support ticket. Confirm before phase-12 archive.
+- **Phase 01 — `associated-domains` deferred.** Re-enable in phase 08 once `antinoise.app` is provisioned and AASA is hosted.
+- **Phase 01 — Simulator runtime install blocked by disk-full.** Re-run `xcodebuild -downloadPlatform iOS` after freeing ≥10 GB to verify the build.
