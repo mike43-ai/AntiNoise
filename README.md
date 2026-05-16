@@ -41,6 +41,16 @@ DEVELOPMENT_TEAM = ABC1234DEF
 
 Apple Sign-In (Phase 03) and the Share Extension both require a paid Apple Developer account on device.
 
+### Firebase setup
+
+1. Create a Firebase project at https://console.firebase.google.com.
+2. Add an iOS app with bundle ID `com.antinoise.app`.
+3. Download `GoogleService-Info.plist` and place it at `AntiNoise/Resources/GoogleService-Info.plist` (gitignored).
+4. Enable Email/Password + Apple Sign-In providers under Authentication.
+5. Add your Apple Sign-In Service ID + private key in Firebase Console (Authentication → Sign-in method → Apple).
+
+`GoogleService-Info.example.plist` is committed as a placeholder so the file structure is documented.
+
 ## Layout
 
 ```

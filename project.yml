@@ -66,6 +66,8 @@ targets:
           - group.com.antinoise.shared
         com.apple.developer.applesignin:
           - Default
+        keychain-access-groups:
+          - $(AppIdentifierPrefix)com.antinoise.shared
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app
@@ -114,6 +116,8 @@ targets:
       properties:
         com.apple.security.application-groups:
           - group.com.antinoise.shared
+        keychain-access-groups:
+          - $(AppIdentifierPrefix)com.antinoise.shared
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app.ShareExtension

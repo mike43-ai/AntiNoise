@@ -9,8 +9,8 @@
 - Date: 2026-05-16
 - Description: Firebase Auth integration with email/password + Sign in with Apple. Session persistence, sign-out, account deletion stub.
 - Priority: P0 (gates user-bound features)
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 1.5d
 
 ## Key Insights
@@ -72,16 +72,30 @@ Data flow:
 11. QA: kill app + relaunch → still signed in.
 
 ## Todo
-- [ ] GoogleService-Info.plist wired (gitignored)
-- [ ] Apple Sign-In capability enabled
-- [ ] AuthStore implemented
-- [ ] Apple Sign-In coordinator
-- [ ] AuthLandingView matches mockup
-- [ ] SignInView + SignUpView
-- [ ] OnboardingFlowView collects scopes
-- [ ] RootView routes by auth state
-- [ ] Sign-out flow tested
-- [ ] Delete-account stub present
+- [x] GoogleService-Info.example.plist committed; real .plist gitignored; configure guarded by file presence
+- [x] Apple Sign-In capability enabled (entitlements + keychain-access-groups on both targets)
+- [x] AuthStore implemented (@Observable, @MainActor)
+- [x] Apple Sign-In coordinator (32-char nonce + SHA256 hex, controller retained on instance)
+- [x] AuthLandingView with Apple + Email buttons
+- [x] SignInView + SignUpView (validates email + 8-char pw client-side)
+- [x] OnboardingFlowView collects scopes — UID-scoped via OnboardingStore (not @AppStorage)
+- [x] RootView routes by auth state with onboarding gate per-user
+- [~] Sign-out flow tested — runtime test deferred (no simulator runtime)
+- [x] Delete-account stub present (full UX in Phase 10)
+
+## Notes (implementation)
+- Auth providers locked to Email + Apple. No Google, no SMS.
+- Apple nonce: 32-char alphanumeric (SecRandomCopyBytes) → SHA256 hex → request.nonce; raw → Firebase via `OAuthProvider.appleCredential(withIDToken:rawNonce:fullName:)`.
+- Code review applied 3 BLOCKING + 2 important WARN:
+  - `AppleSignInCoordinator` now retains `currentController` on the instance (was a local — could be deallocated mid-flight).
+  - Replaced `@AppStorage` with `OnboardingStore` (UID-scoped UserDefaults). Switching accounts no longer leaks the previous user's name/scopes.
+  - `FirebaseApp.configure()` guarded by `Bundle.main.url(forResource: "GoogleService-Info")`. DEBUG `assertionFailure`, RELEASE soft-log.
+  - `OnboardingFlowView` auto-fills displayName from Firebase user metadata when local store is empty (Apple first-sign-in fullName captured by Firebase).
+  - Removed no-op `errorMessage: .flatMap { _ in nil }` from `SignInView`.
+- DEFERRED:
+  - Apple revocation detection (`getCredentialState(forUserID:)`) → Phase 10.
+  - Sheet-swap flicker between SignIn/SignUp → cosmetic, acceptable.
+  - Swift 6 strict-concurrency deinit pattern in `AuthStore` → harmless under 5.10 default mode; revisit when migrating.
 
 ## Success Criteria
 - Cold-launch with no session → AuthLanding.

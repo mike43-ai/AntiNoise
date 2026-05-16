@@ -25,7 +25,7 @@ created: 2026-05-16
 |---|-------|--------|--------|
 | 01 | Project setup, Xcode workspace, SPM deps | 1d | completed (build-verify deferred — disk full) |
 | 02 | Design system tokens + reusable components | 2d | completed (visual QA deferred — no sim runtime) |
-| 03 | Firebase Auth (email + Apple) | 1.5d | pending |
+| 03 | Firebase Auth (email + Apple) | 1.5d | completed (runtime test deferred) |
 | 04 | Tab navigation shell (5 tabs) | 1d | pending |
 | 05 | Capture flow + Share Extension | 2.5d | pending |
 | 06 | OpenAI Feynman summary service | 2d | pending |
@@ -90,3 +90,6 @@ None at plan-lock. New questions surfaced during implementation:
 
 - **Phase 01 — `associated-domains` deferred.** Re-enable in phase 08 once `antinoise.app` is provisioned and AASA is hosted.
 - **Phase 01 — Simulator runtime install blocked by disk-full.** Re-run `xcodebuild -downloadPlatform iOS` after freeing ≥10 GB to verify the build.
+- **Phase 03 — `GoogleService-Info.plist` not yet downloaded.** App is guarded so it boots without crashing, but Firebase auth is disabled until the real plist is dropped into `AntiNoise/Resources/`. See README → Firebase setup.
+- **Phase 03 — `DEVELOPMENT_TEAM` empty → keychain group resolves without team prefix.** Real device builds need a team ID set in Xcode UI or `Config.local.xcconfig`. Will silently break share-extension keychain reads in Phase 05/06 otherwise.
+- **Phase 03 — Apple Sign-In revocation detection deferred to Phase 10.** Plan R3 acknowledged.

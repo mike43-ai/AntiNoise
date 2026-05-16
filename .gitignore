@@ -54,6 +54,7 @@ fastlane/test_output
 .env.*
 !.env.example
 GoogleService-Info.plist
+!GoogleService-Info.example.plist
 *.p8
 *.p12
 *.mobileprovision
