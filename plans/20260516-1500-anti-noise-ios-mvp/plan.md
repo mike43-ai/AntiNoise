@@ -29,7 +29,7 @@ created: 2026-05-16
 | 04 | Tab navigation shell (5 tabs) | 1d | completed |
 | 05 | Capture flow + Share Extension | 2.5d | completed (runtime test deferred) |
 | 06 | OpenAI Feynman summary service | 2d | completed (runtime test deferred) |
-| 07 | Classification + daily priority engine | 2d | pending |
+| 07 | Classification + daily priority engine | 2d | completed |
 | 08 | Flash cards + spaced repetition (SM-2) | 3d | pending |
 | 09 | Focus mode (timer + session) | 1.5d | pending |
 | 10 | Home dashboard + Profile screens | 2d | pending |
