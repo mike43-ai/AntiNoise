@@ -37,7 +37,23 @@ struct AntiNoiseApp: App {
         reachability.start()
 
         let container = PersistenceContainer.shared
-        let drain = DrainQueueService(modelContainer: container, summarizer: summarizerHolder.summarizer)
+        let reach = reachability
+        let authStore = auth
+
+        let summarizer = AISummarizer(
+            modelContainer: container,
+            userScopesProvider: {
+                if let uid = authStore.currentUser?.id {
+                    return OnboardingStore.scopes(uid: uid)
+                }
+                return []
+            },
+            uidProvider: { authStore.currentUser?.id },
+            isOnline: { reach.isOnline }
+        )
+        summarizerHolder.summarizer = summarizer
+
+        let drain = DrainQueueService(modelContainer: container, summarizer: summarizer)
         drainService = drain
         drain.start()
         Task {
@@ -45,7 +61,7 @@ struct AntiNoiseApp: App {
             drain.cleanupOrphanedBlobs()
         }
 
-        let jobs = PendingJobQueue(modelContainer: container, summarizer: summarizerHolder.summarizer)
+        let jobs = PendingJobQueue(modelContainer: container, summarizer: summarizer)
         pendingJobs = jobs
 
         reachability.onChange = { online in

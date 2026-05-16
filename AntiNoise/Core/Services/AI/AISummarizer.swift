@@ -1,0 +1,151 @@
+import Foundation
+import SwiftData
+
+// Real summarizer implementation. Honors the protocol contract from Phase 05:
+// 1. Re-fetch the row.
+// 2. Short-circuit if status != .queued.
+// 3. Transition to .processing before any network work.
+// 4. Write .summarized + summaryJSON (and a Summary row) on success.
+// 5. Write .failed + lastError on giving up.
+final class AISummarizer: SummarizerService {
+    private let modelContainer: ModelContainer
+    private let client: OpenAIClient
+    private let userScopesProvider: @Sendable () -> Set<GrowthScope>
+    private let uidProvider: @Sendable () -> String?
+    private let isOnline: @Sendable () -> Bool
+
+    init(
+        modelContainer: ModelContainer,
+        client: OpenAIClient = OpenAIClient(),
+        userScopesProvider: @escaping @Sendable () -> Set<GrowthScope>,
+        uidProvider: @escaping @Sendable () -> String?,
+        isOnline: @escaping @Sendable () -> Bool
+    ) {
+        self.modelContainer = modelContainer
+        self.client = client
+        self.userScopesProvider = userScopesProvider
+        self.uidProvider = uidProvider
+        self.isOnline = isOnline
+    }
+
+    func process(captureID: UUID) async {
+        // Cheap check first: don't burn CPU on URL fetch + base64 if the
+        // user hasn't entered an API key.
+        guard let apiKey = SecretStore.get(forKey: SecretStore.openAIAPIKey), !apiKey.isEmpty else {
+            await markFailed(captureID: captureID, error: OpenAIClient.ClientError.missingAPIKey.errorDescription ?? "Missing OpenAI API key.")
+            return
+        }
+
+        let context = await MainActor.run { ModelContext(modelContainer) }
+
+        guard let capture = await fetchAndClaim(captureID: captureID, in: context) else { return }
+
+        do {
+            let normalized = try await CaptureNormalizer.normalize(capture)
+            let scopes = userScopesProvider()
+            let messages = PromptBuilder.build(
+                systemMessage: FeynmanPrompt.systemMessage,
+                normalized: normalized,
+                userScopes: scopes
+            )
+            let body = ChatCompletionRequest(
+                model: FeynmanPrompt.model,
+                messages: messages,
+                responseFormat: FeynmanPrompt.responseFormat(),
+                temperature: 0.4,
+                maxTokens: 1500
+            )
+
+            let online = isOnline
+            let raw = try await AIRetryEngine.runWithRetries(
+                isOnline: online,
+                work: { try await client.complete(request: body) },
+                isTransient: { error in
+                    if let e = error as? OpenAIClient.ClientError { return e.isTransient }
+                    return false
+                }
+            )
+
+            let payload = try decodePayload(raw)
+            await persist(captureID: captureID, payload: payload)
+            AIUsageTracker.incrementSuccessfulSummary(uid: uidProvider())
+
+        } catch {
+            let message = friendlyMessage(for: error)
+            await markFailed(captureID: captureID, error: message)
+        }
+    }
+
+    private func friendlyMessage(for error: Error) -> String {
+        let underlying: Error
+        if let giveUp = error as? AIRetryEngine.GiveUp {
+            underlying = giveUp.lastError
+        } else {
+            underlying = error
+        }
+        if let client = underlying as? OpenAIClient.ClientError, case .decode = client {
+            return "We couldn't read the AI's response. Tap retry to try again."
+        }
+        if underlying is DecodingError {
+            return "We couldn't read the AI's response. Tap retry to try again."
+        }
+        return underlying.localizedDescription
+    }
+
+    @MainActor
+    private func fetchAndClaim(captureID: UUID, in context: ModelContext) -> Capture? {
+        let descriptor = FetchDescriptor<Capture>(predicate: #Predicate { $0.id == captureID })
+        guard let capture = (try? context.fetch(descriptor))?.first else { return nil }
+        guard capture.status == .queued else { return nil }
+        capture.status = .processing
+        try? context.save()
+        return capture
+    }
+
+    @MainActor
+    private func persist(captureID: UUID, payload: FeynmanSummaryPayload) {
+        let context = ModelContext(modelContainer)
+        guard let capture = fetch(captureID: captureID, in: context) else { return }
+
+        // Replace any existing Summary row for this capture.
+        let existing = FetchDescriptor<Summary>(predicate: #Predicate { $0.captureID == captureID })
+        if let stale = try? context.fetch(existing).first {
+            context.delete(stale)
+        }
+        let summary = Summary(captureID: captureID, payload: payload)
+        context.insert(summary)
+
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        capture.summaryJSON = (try? encoder.encode(payload)).flatMap { String(data: $0, encoding: .utf8) }
+        capture.status = .summarized
+        capture.lastError = nil
+        try? context.save()
+    }
+
+    @MainActor
+    private func markFailed(captureID: UUID, error: String) {
+        let context = ModelContext(modelContainer)
+        guard let capture = fetch(captureID: captureID, in: context) else { return }
+        capture.status = .failed
+        capture.lastError = error
+        // `retryCount` reflects how many times we've terminally failed —
+        // increment only here. AIRetryEngine handles in-attempt backoff
+        // separately and doesn't touch this counter.
+        capture.retryCount += 1
+        try? context.save()
+    }
+
+    @MainActor
+    private func fetch(captureID: UUID, in context: ModelContext) -> Capture? {
+        let descriptor = FetchDescriptor<Capture>(predicate: #Predicate { $0.id == captureID })
+        return (try? context.fetch(descriptor))?.first
+    }
+
+    private func decodePayload(_ raw: String) throws -> FeynmanSummaryPayload {
+        guard let data = raw.data(using: .utf8) else {
+            throw OpenAIClient.ClientError.emptyResponse
+        }
+        return try JSONDecoder().decode(FeynmanSummaryPayload.self, from: data)
+    }
+}

@@ -57,7 +57,6 @@ struct OnboardingFlowView: View {
         }
         .background(Color.bgPrimary.ignoresSafeArea())
         .onAppear {
-            // Prefer the most recent name we have — stored draft, then Firebase profile.
             let stored = OnboardingStore.displayName(uid: uid)
             if !stored.isEmpty {
                 nameDraft = stored
@@ -104,36 +103,6 @@ struct OnboardingFlowView: View {
         OnboardingStore.setDisplayName(nameDraft, uid: uid)
         OnboardingStore.setScopes(selectedScopes, uid: uid)
         OnboardingStore.setCompleted(true, uid: uid)
-    }
-}
-
-enum GrowthScope: String, CaseIterable, Codable {
-    case personal
-    case work
-    case business
-
-    var title: String {
-        switch self {
-        case .personal: return "Personal development"
-        case .work:     return "Work performance"
-        case .business: return "Business growth"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .personal: return "Health, learning, relationships."
-        case .work:     return "Career skills and craft."
-        case .business: return "Founder ideas, products, sales."
-        }
-    }
-
-    var systemImage: String {
-        switch self {
-        case .personal: return "leaf"
-        case .work:     return "briefcase"
-        case .business: return "chart.line.uptrend.xyaxis"
-        }
     }
 }
 

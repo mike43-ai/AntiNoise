@@ -10,8 +10,8 @@
 - Date: 2026-05-16
 - Description: Pipeline that takes a `Capture` row, normalizes content (URL → readability text, image → GPT-4o vision multimodal input, text passthrough), calls OpenAI GPT-4o to produce a 5-section Feynman-method summary, persists `Summary`. Offline-aware with retry policy.
 - Priority: P0
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 2d
 
 ## Key Insights
@@ -131,18 +131,32 @@ struct FeynmanSummaryPayload: Codable {
 10. `SummaryDetailView` renders the 5 sections (Simple explanation, Analogy, Knowledge gaps, Examples, Deeper question); CTA: "Deep dive" (→ phase-08) or "Archive". Manual retry button when `status == .failed`.
 
 ## Todo
-- [ ] Summary model with 5 sections (simpleExplanation/analogy/knowledgeGaps/examples/deeperQuestion)
-- [ ] OpenAIClient with SSE streaming, pinned to `gpt-4o`
-- [ ] FeynmanPrompt (system) + json_schema strict response_format
-- [ ] FeynmanSummaryPayload Codable
-- [ ] ReadabilityExtractor for URLs
-- [ ] ImageEncoder for GPT-4o vision input (no on-device OCR)
-- [ ] AISummarizer orchestrator
-- [ ] AIRetryEngine (5 attempts, exp backoff 2/4/8/16/32s, reachability-gated)
-- [ ] AIUsageTracker monthly counter (feeds phase-11)
-- [ ] SummaryDetailView renders 5 sections
-- [ ] Streaming UI updates while summary generates
-- [ ] Failure → manual retry CTA
+- [x] Summary model with 5 sections (+ JSON-encoded arrays for the two list fields)
+- [x] OpenAIClient (non-streaming) pinned to `gpt-4o`
+- [x] FeynmanPrompt (system) + json_schema strict response_format
+- [x] FeynmanSummaryPayload Codable (snake_case CodingKeys)
+- [x] ReadabilityExtractor for URLs (regex heuristic, no SwiftSoup dep)
+- [x] ImageEncoder for GPT-4o vision input (no on-device OCR; MainActor.run for UIKit)
+- [x] AISummarizer orchestrator (honors Phase 05 SummarizerService contract)
+- [x] AIRetryEngine — 5 attempts with [2,4,8,16]s sleeps between, reachability-gated
+- [x] AIUsageTracker monthly counter (UID + YYYY-MM keyed)
+- [x] SummaryDetailView renders 5 sections + status states
+- [~] Streaming UI updates — DEFERRED to v1.1
+- [x] Failure → manual retry CTA wired
+
+## Notes (implementation)
+- Code review applied 1 BLOCKING + 5 important WARN:
+  - **BLOCKING**: Removed `JSONEncoder.keyEncodingStrategy = .convertToSnakeCase` from OpenAIClient. The strategy mangled the JSON-Schema spec key `additionalProperties` → `additional_properties`, which OpenAI strict mode rejects. Replaced with explicit `CodingKeys` on `ChatCompletionRequest` + `ResponseFormat`.
+  - **Backoff schedule trimmed**: was `[2,4,8,16,32]` with `32` unreachable; now `[2,4,8,16]` between 5 attempts (max ~30s wait).
+  - **API key precheck**: AISummarizer short-circuits to `.failed` if Keychain empty BEFORE running URL fetch / image encode.
+  - **Decode-error UX**: cryptic Foundation `DecodingError` → friendly "We couldn't read the AI's response. Tap retry to try again."
+  - **ReadabilityExtractor og:description regex**: split fallback into explicit patterns (was generating `og:og:description`).
+  - **retryCount semantics documented**: counts terminal failures, not in-attempt retries.
+- DEFERRED (post-MVP):
+  - Streaming SSE for progressive rendering.
+  - `CaptureNormalizer` taking primitives (not live `Capture`) for Swift 6 strict concurrency.
+  - Auto-orphan-cleanup for `Summary` rows when `Capture` is deleted (Phase 09).
+  - Phase 11 decision: gate AI behind sign-in, or merge anon usage into user bucket on sign-in.
 
 ## Success Criteria
 - Capture URL → 6s later, 5-section summary visible in Learn tab.

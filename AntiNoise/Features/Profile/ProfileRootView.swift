@@ -2,6 +2,7 @@ import SwiftUI
 
 struct ProfileRootView: View {
     @Environment(AuthStore.self) private var auth
+    @State private var isAPIKeySheetPresented = false
 
     var body: some View {
         NavigationStack {
@@ -21,9 +22,22 @@ struct ProfileRootView: View {
                         }
                     }
 
+                    VStack(alignment: .leading, spacing: AppSpacing.md) {
+                        Text("AI")
+                            .appFont(.caption)
+                            .textCase(.uppercase)
+                            .foregroundStyle(Color.textMuted)
+                        SecondaryButton(
+                            title: hasKey ? "Manage OpenAI key" : "Add OpenAI key",
+                            systemImage: "key"
+                        ) {
+                            isAPIKeySheetPresented = true
+                        }
+                    }
+
                     AppEmptyState(
                         systemImage: "person.crop.circle",
-                        title: "Profile coming soon",
+                        title: "More coming",
                         message: "Stats, settings, subscription, and account controls land in Phase 10."
                     )
 
@@ -40,7 +54,14 @@ struct ProfileRootView: View {
             .background(Color.bgPrimary)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
+            .sheet(isPresented: $isAPIKeySheetPresented) {
+                APIKeyEntryView()
+            }
         }
+    }
+
+    private var hasKey: Bool {
+        SecretStore.get(forKey: SecretStore.openAIAPIKey)?.isEmpty == false
     }
 }
 
