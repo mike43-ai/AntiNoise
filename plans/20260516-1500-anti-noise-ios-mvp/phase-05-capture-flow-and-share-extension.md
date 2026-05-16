@@ -10,8 +10,8 @@
 - Date: 2026-05-16
 - Description: In-app capture (image, URL, text) + iOS Share Extension that drops payloads into shared App Group queue. SwiftData model `Capture` persists items. AI processing kicked off in phase-06.
 - Priority: P0
-- Implementation status: pending
-- Review status: pending
+- Implementation status: completed (2026-05-16)
+- Review status: approved with fixes
 - Effort: 2.5d
 
 ## Key Insights
@@ -82,20 +82,36 @@ flowchart LR
 11. Test: kill app, share URL from Safari, relaunch → capture appears in Learn. Repeat with airplane-mode toggled → capture present + status badge `.queued`; flip airplane mode off → status flips to `.summarized` within ~10s.
 
 ## Todo
-- [ ] SwiftData models defined
-- [ ] PersistenceContainer with App Group URL
-- [ ] SharedQueueStore read/write
-- [ ] DrainQueueService drains on foreground
-- [ ] ShareViewController extracts URL/image/text
-- [ ] Darwin notification posted + observed
-- [ ] CaptureFlowView 3-mode input
-- [ ] CaptureFlowModel persists
-- [ ] Toast on success
-- [ ] End-to-end share-while-killed test passes
-- [ ] NSExtensionActivationRule lists URL + text + image explicitly
-- [ ] ReachabilityObserver wired
-- [ ] PendingJobQueue re-drives `.queued` rows on reachability restore
-- [ ] Offline capture → online resume flow verified
+- [x] SwiftData models defined (Capture, CaptureKind, CaptureStatus)
+- [x] PersistenceContainer with App Group URL + fallback for simulator-without-entitlement
+- [x] SharedQueueStore read/write + LocalizedError messages + Darwin notify post
+- [x] DrainQueueService drains on foreground + cleanupOrphanedBlobs() GC pass on bootstrap
+- [x] ShareViewController extracts URL/image/text + auto-persist + 300ms ack + dismiss
+- [x] Darwin notification posted by SharedQueueStore + observed by DrainQueueService
+- [x] CaptureFlowView 3-mode input (Link/Note/Image chip selector)
+- [x] CaptureFlowModel persists via injected ModelContext; summarizer accessed lazily
+- [~] Toast on success — model exposes toastMessage but the host MainTabView doesn't render it yet (deferred to Phase 10 dashboard polish)
+- [~] End-to-end share-while-killed test — deferred (no simulator runtime)
+- [x] NSExtensionActivationRule lists URL + text + image with explicit max-counts (not TRUEPREDICATE)
+- [x] ReachabilityObserver wired (NWPathMonitor + onChange callback)
+- [x] PendingJobQueue re-drives `.queued` rows on reachability restore; loops up to 5 batches × 20 rows
+- [~] Offline capture → online resume flow — code wired; runtime verification deferred
+
+## Notes (implementation)
+- Code review applied 3 BLOCKING + 7 important WARN:
+  - **B1** Replaced sketchy `Task.sleep(milliseconds:)` extension with `Task.sleep(for: .milliseconds(300))`.
+  - **B2** `CaptureFlowModel` now takes `summarizerProvider: () -> SummarizerService` so Phase 06 swap propagates to in-flight sheets.
+  - **B3** Inlined `"queued"` literal in `#Predicate`; `SummarizerService` protocol contract requires implementations to short-circuit if `status != .queued` (prevents double-processing when DrainQueueService + PendingJobQueue race).
+  - **W4** Wrapped UIKit image downscale + JPEG encode in `MainActor.run` (Swift 6 readiness).
+  - **W5** `CaptureFlowModel` uses the env `ModelContext` (not a fresh one) so SwiftUI `@Query` observers see new rows without a merge round-trip.
+  - **W6** `SharedQueueStore.StoreError` now conforms to `LocalizedError` with actionable copy.
+  - **W7** Added `DrainQueueService.cleanupOrphanedBlobs()`; runs once on app bootstrap after drain.
+  - **W8** `PendingJobQueue.drain()` now loops up to 5 batches of 20 rows so deep offline backlogs unblock fully.
+  - **W11** Added `Capture.resolvedImageURL` helper so Phase 06 doesn't reach into `SharedQueueStore.resolveBlobURL` from view code.
+  - Restricted in-app URL capture to http/https (security flavor, N6).
+- DEFERRED:
+  - Toast surfacing into MainTabView (model has it, view doesn't render — Phase 10).
+  - Share Extension App Review risk (W2: `isContentValid() = false` + headless auto-persist) — accept for TestFlight first; if Apple rejects, switch to user-tap-to-post variant.
 
 ## Success Criteria
 - Share URL from Safari with app killed → URL appears in Learn inbox after relaunch.

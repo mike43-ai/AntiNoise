@@ -35,6 +35,7 @@ targets:
       - path: AntiNoise
         excludes:
           - "Resources/Info.plist"
+      - path: Shared
     resources:
       - path: AntiNoise/Resources/Assets.xcassets
         optional: true
@@ -99,6 +100,7 @@ targets:
       - path: AntiNoiseShareExtension
         excludes:
           - "Info.plist"
+      - path: Shared
     info:
       path: AntiNoiseShareExtension/Info.plist
       properties:

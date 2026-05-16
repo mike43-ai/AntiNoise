@@ -1,19 +1,40 @@
-import UIKit
 import Social
+import UIKit
 import UniformTypeIdentifiers
 
-// Phase-01 stub. Real payload extraction (URL/text/image) lands in Phase 05.
-// Do NOT submit to App Store until Phase 06 — Apple rejects non-functional extensions.
+// Drops the extension UI almost entirely — we just persist the payload and
+// dismiss. Apple-style "saving…" toast is implicit because the extension
+// closes within ~1s and the user is back in the source app.
 final class ShareViewController: SLComposeServiceViewController {
-    override func isContentValid() -> Bool { true }
-
-    override func didSelectPost() {
-        let appGroupID = "group.com.antinoise.shared"
-        if let defaults = UserDefaults(suiteName: appGroupID) {
-            defaults.set(Date(), forKey: "lastSharePayloadAt")
-        }
-        extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        textView.isEditable = false
+        textView.text = "Saving to Anti Noise…"
+        placeholder = "Anti Noise"
+        Task { await persistAndExit() }
     }
 
+    // We want the post action invisible — the user sees zero UI between tap
+    // and dismiss. But SLComposeServiceViewController requires us to allow
+    // post for the bar button to be tappable; we hide it via empty config items.
+    override func isContentValid() -> Bool { false }
     override func configurationItems() -> [Any]! { [] }
+    override func didSelectPost() { /* unused — auto-persist path */ }
+
+    private func persistAndExit() async {
+        let payloads = await ShareItemExtractor.extractAll(from: extensionContext)
+        for payload in payloads {
+            do {
+                try SharedQueueStore.enqueue(payload)
+            } catch {
+                NSLog("[AntiNoiseShareExtension] enqueue failed: %@", "\(error)")
+            }
+        }
+        SharedQueueStore.postUpdateNotification()
+        // Brief visual ack before dismiss so the user knows it worked.
+        try? await Task.sleep(for: .milliseconds(300))
+        await MainActor.run {
+            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
+        }
+    }
 }

@@ -27,7 +27,7 @@ created: 2026-05-16
 | 02 | Design system tokens + reusable components | 2d | completed (visual QA deferred — no sim runtime) |
 | 03 | Firebase Auth (email + Apple) | 1.5d | completed (runtime test deferred) |
 | 04 | Tab navigation shell (5 tabs) | 1d | completed |
-| 05 | Capture flow + Share Extension | 2.5d | pending |
+| 05 | Capture flow + Share Extension | 2.5d | completed (runtime test deferred) |
 | 06 | OpenAI Feynman summary service | 2d | pending |
 | 07 | Classification + daily priority engine | 2d | pending |
 | 08 | Flash cards + spaced repetition (SM-2) | 3d | pending |
@@ -93,3 +93,6 @@ None at plan-lock. New questions surfaced during implementation:
 - **Phase 03 — `GoogleService-Info.plist` not yet downloaded.** App is guarded so it boots without crashing, but Firebase auth is disabled until the real plist is dropped into `AntiNoise/Resources/`. See README → Firebase setup.
 - **Phase 03 — `DEVELOPMENT_TEAM` empty → keychain group resolves without team prefix.** Real device builds need a team ID set in Xcode UI or `Config.local.xcconfig`. Will silently break share-extension keychain reads in Phase 05/06 otherwise.
 - **Phase 03 — Apple Sign-In revocation detection deferred to Phase 10.** Plan R3 acknowledged.
+- **Phase 05 — Toast surfacing.** `CaptureFlowModel.toastMessage` is set but not yet rendered by `MainTabView` overlay. Add in Phase 10.
+- **Phase 05 — Share Extension App Review risk.** `isContentValid()` returns `false` + auto-persist in `viewDidLoad`. Apple may flag headless extensions. Fallback ready: switch to user-tap-to-post if rejected.
+- **Phase 05 — Status-transition contract for SummarizerService.** Phase 06 implementation MUST re-fetch the row, short-circuit if `status != .queued`, and transition to `.processing` before network work. Documented in protocol comment.

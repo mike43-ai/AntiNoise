@@ -1,9 +1,16 @@
 import FirebaseCore
+import SwiftData
 import SwiftUI
 
 @main
 struct AntiNoiseApp: App {
     @State private var auth = AuthStore()
+    @State private var reachability = ReachabilityObserver()
+    @State private var summarizerHolder = SummarizerHolder(summarizer: NoopSummarizerService())
+    @State private var drainService: DrainQueueService?
+    @State private var pendingJobs: PendingJobQueue?
+
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         configureFirebaseIfPossible()
@@ -13,8 +20,44 @@ struct AntiNoiseApp: App {
         WindowGroup {
             RootView()
                 .environment(auth)
-                .task { auth.bootstrap() }
+                .environment(reachability)
+                .environment(summarizerHolder)
+                .modelContainer(PersistenceContainer.shared)
+                .task {
+                    bootstrap()
+                }
+                .onChange(of: scenePhase) { _, newPhase in
+                    handleScenePhase(newPhase)
+                }
         }
+    }
+
+    private func bootstrap() {
+        auth.bootstrap()
+        reachability.start()
+
+        let container = PersistenceContainer.shared
+        let drain = DrainQueueService(modelContainer: container, summarizer: summarizerHolder.summarizer)
+        drainService = drain
+        drain.start()
+        Task {
+            await drain.drainNow()
+            drain.cleanupOrphanedBlobs()
+        }
+
+        let jobs = PendingJobQueue(modelContainer: container, summarizer: summarizerHolder.summarizer)
+        pendingJobs = jobs
+
+        reachability.onChange = { online in
+            if online {
+                Task { await jobs.drain() }
+            }
+        }
+    }
+
+    private func handleScenePhase(_ phase: ScenePhase) {
+        guard phase == .active else { return }
+        Task { await drainService?.drainNow() }
     }
 
     private func configureFirebaseIfPossible() {
@@ -25,7 +68,6 @@ struct AntiNoiseApp: App {
                 Missing GoogleService-Info.plist.
                 Download from Firebase Console → Project Settings → iOS app
                 and drop it into AntiNoise/Resources/.
-                The .example.plist in the repo is a placeholder, not loaded by Firebase.
                 """)
             #else
             print("[AntiNoise] GoogleService-Info.plist missing — auth disabled.")
