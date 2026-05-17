@@ -1,238 +1,879 @@
 {
   "sourceLanguage" : "en",
-  "version" : "1.0",
   "strings" : {
-    "Home" : {
-      "comment" : "Bottom tab label",
-      "extractionState" : "manual",
+    "· AI suggested" : {
+
+    },
+    "· you picked" : {
+
+    },
+    "%lld" : {
+
+    },
+    "%lld / %lld" : {
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Home" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang chủ" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld / %2$lld"
+          }
+        }
       }
     },
-    "Learn" : {
-      "comment" : "Bottom tab label",
+    "%lld card%@ due today" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld card%2$@ due today"
+          }
+        }
+      }
+    },
+    "%lld min" : {
+
+    },
+    "%lld min of %lld planned" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld min of %2$lld planned"
+          }
+        }
+      }
+    },
+    "%lld of 5" : {
+
+    },
+    "•" : {
+
+    },
+    "3 captures/day · 5 AI summaries/month" : {
+
+    },
+    "A daily nudge at 7 PM to review what you captured. Plus a streak reminder if you're close to losing it." : {
+
+    },
+    "Account" : {
+      "comment" : "Profile account section",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Learn" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Học" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tài khoản"
+          }
+        }
       }
+    },
+    "Account scheduled for deletion" : {
+
+    },
+    "Add a goal" : {
+
+    },
+    "Already have an account?" : {
+
+    },
+    "ANTi NOISE" : {
+
+    },
+    "API key" : {
+
+    },
+    "Archive" : {
+
+    },
+    "Body — the lazy quick brown fox jumps over the dog." : {
+
+    },
+    "Body small — secondary explanatory text." : {
+
+    },
+    "Buttons" : {
+
+    },
+    "By continuing you agree to our Terms & Privacy." : {
+
+    },
+    "Cancel" : {
+
+    },
+    "Caption label" : {
+
     },
     "Capture" : {
       "comment" : "Bottom tab label / capture button",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Capture" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thu thập" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Capture"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thu thập"
+          }
+        }
       }
     },
-    "Focus" : {
-      "comment" : "Bottom tab label",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Focus" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tập trung" } }
-      }
+    "Capture a link or a screenshot — items appear here once AI finishes summarizing." : {
+
     },
-    "Profile" : {
-      "comment" : "Bottom tab label / Profile screen title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profile" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hồ sơ" } }
-      }
+    "Capture a link or screenshot — it'll appear here once AI summarizes." : {
+
     },
-    "Let's tune Anti Noise" : {
-      "comment" : "Onboarding title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Let's tune Anti Noise" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cùng thiết lập Anti Noise" } }
-      }
+    "Capture an idea, a quote, a thought to chew on later…" : {
+
     },
-    "Stay on track" : {
-      "comment" : "Notification permission step headline",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stay on track" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Luôn đúng nhịp" } }
-      }
+    "Capture, summarize, learn — in one quiet stack." : {
+
     },
-    "Enable reminders" : {
-      "comment" : "Notification permission primary CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enable reminders" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bật nhắc nhở" } }
-      }
+    "Cards" : {
+
     },
-    "Not now" : {
-      "comment" : "Skip / defer CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để sau" } }
-      }
+    "Change classification" : {
+
+    },
+    "Color" : {
+
     },
     "Continue" : {
       "comment" : "Generic continue CTA",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiếp tục" } }
-      }
-    },
-    "You've used today's free captures." : {
-      "comment" : "QuotaHitSheet capture title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You've used today's free captures." } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn đã dùng hết lượt thu thập miễn phí hôm nay." } }
-      }
-    },
-    "You've used this month's free AI summaries." : {
-      "comment" : "QuotaHitSheet AI summary title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "You've used this month's free AI summaries." } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn đã dùng hết tóm tắt AI miễn phí trong tháng." } }
-      }
-    },
-    "See Pro plan" : {
-      "comment" : "Paywall primary CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "See Pro plan" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem gói Pro" } }
-      }
-    },
-    "Maybe later" : {
-      "comment" : "Paywall dismiss CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Maybe later" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để sau" } }
-      }
-    },
-    "Your 7-day Pro trial just ended." : {
-      "comment" : "TrialExpirySheet title",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your 7-day Pro trial just ended." } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bản dùng thử Pro 7 ngày của bạn vừa kết thúc." } }
-      }
-    },
-    "Stay on Pro" : {
-      "comment" : "Trial conversion CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stay on Pro" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiếp tục Pro" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiếp tục"
+          }
+        }
       }
     },
     "Continue on Free" : {
       "comment" : "Trial decline CTA",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue on Free" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Dùng bản miễn phí" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue on Free"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dùng bản miễn phí"
+          }
+        }
       }
     },
-    "Pro Member" : {
-      "comment" : "Profile pro badge",
+    "Continue with Apple" : {
+
+    },
+    "Create your account" : {
+
+    },
+    "Custom" : {
+
+    },
+    "Cut The Noise.\nFocus on What Matters." : {
+
+    },
+    "Deep dive" : {
+
+    },
+    "Default surface, 1pt border." : {
+
+    },
+    "Delete account" : {
+      "comment" : "Profile delete account CTA",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pro Member" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thành viên Pro" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete account"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xoá tài khoản"
+          }
+        }
+      }
+    },
+    "Design System" : {
+
+    },
+    "Display" : {
+
+    },
+    "Done" : {
+
+    },
+    "Due" : {
+
+    },
+    "Duration" : {
+
+    },
+    "Elevated card" : {
+
+    },
+    "Elevated Card" : {
+
+    },
+    "Enable reminders" : {
+      "comment" : "Notification permission primary CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable reminders"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bật nhắc nhở"
+          }
+        }
+      }
+    },
+    "Enable them in iOS Settings → Anti Noise to get review reminders and streak nudges." : {
+
+    },
+    "Export failed" : {
+
+    },
+    "Final step" : {
+
+    },
+    "Flat Card" : {
+
+    },
+    "Flat card — bordered, no shadow" : {
+
+    },
+    "Focus" : {
+      "comment" : "Bottom tab label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tập trung"
+          }
+        }
       }
     },
     "Free plan" : {
       "comment" : "Profile free plan section",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Free plan" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Gói miễn phí" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free plan"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gói miễn phí"
+          }
+        }
       }
     },
-    "Upgrade to Pro" : {
-      "comment" : "Profile upgrade CTA",
+    "Generate flash cards to lock this in via spaced repetition." : {
+
+    },
+    "Goals" : {
+
+    },
+    "Heading 1" : {
+
+    },
+    "Heading 2" : {
+
+    },
+    "Heading 3" : {
+
+    },
+    "Home" : {
+      "comment" : "Bottom tab label",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Pro" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nâng cấp lên Pro" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trang chủ"
+          }
+        }
       }
     },
-    "Settings" : {
-      "comment" : "Profile settings section",
+    "I understand this will delete my account in 7 days." : {
+
+    },
+    "Inputs" : {
+
+    },
+    "Learn" : {
+      "comment" : "Bottom tab label",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cài đặt" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Học"
+          }
+        }
       }
+    },
+    "Let's tune Anti Noise" : {
+      "comment" : "Onboarding title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's tune Anti Noise"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cùng thiết lập Anti Noise"
+          }
+        }
+      }
+    },
+    "Loading" : {
+
+    },
+    "Mark done" : {
+
+    },
+    "Maybe later" : {
+      "comment" : "Paywall dismiss CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Để sau"
+          }
+        }
+      }
+    },
+    "Mono 14" : {
+
+    },
+    "New here?" : {
+
+    },
+    "Next: %@" : {
+
+    },
+    "No decks yet — create one from a summary's Deep dive." : {
+
+    },
+    "No goals here yet." : {
+
+    },
+    "No image yet" : {
+
+    },
+    "Not now" : {
+      "comment" : "Skip / defer CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Để sau"
+          }
+        }
+      }
+    },
+    "Nothing queued for today." : {
+
+    },
+    "Nothing queued." : {
+
     },
     "Notifications" : {
       "comment" : "Profile notifications section",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thông báo" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notifications"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thông báo"
+          }
+        }
       }
+    },
+    "Notifications are turned off" : {
+
+    },
+    "Offset shadow, no border — kinetic style." : {
+
+    },
+    "Offset shadow, no border." : {
+
+    },
+    "OK" : {
+
+    },
+    "Optional: link a deck" : {
+
+    },
+    "Outline Card" : {
+
+    },
+    "Outline card — same bg as parent" : {
+
+    },
+    "Paste your OpenAI API key. It stays in your device's Keychain — Anti Noise never sees it on a server." : {
+
+    },
+    "Pick a duration. Optionally tie this session to a flash-card deck." : {
+
+    },
+    "Pick from library" : {
+
     },
     "Privacy" : {
       "comment" : "Profile privacy section",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Quyền riêng tư" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quyền riêng tư"
+          }
+        }
       }
     },
-    "Account" : {
-      "comment" : "Profile account section",
+    "Pro Member" : {
+      "comment" : "Profile pro badge",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tài khoản" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro Member"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Thành viên Pro"
+          }
+        }
       }
+    },
+    "Profile" : {
+      "comment" : "Bottom tab label / Profile screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profile"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hồ sơ"
+          }
+        }
+      }
+    },
+    "Quick note" : {
+
+    },
+    "Recommended for deep-dive" : {
+
+    },
+    "Reminder time" : {
+
+    },
+    "Replace" : {
+
     },
     "Restore purchases" : {
       "comment" : "Profile restore purchases CTA",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore purchases" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khôi phục mua hàng" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restore purchases"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Khôi phục mua hàng"
+          }
+        }
       }
     },
-    "Sign out" : {
-      "comment" : "Profile sign out CTA",
+    "Review" : {
+
+    },
+    "Saved. Continue when ready." : {
+
+    },
+    "Scope" : {
+
+    },
+    "See Pro plan" : {
+      "comment" : "Paywall primary CTA",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign out" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đăng xuất" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See Pro plan"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xem gói Pro"
+          }
+        }
       }
     },
-    "Delete account" : {
-      "comment" : "Profile delete account CTA",
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete account" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xoá tài khoản" } }
-      }
+    "Session complete" : {
+
     },
-    "Share product analytics" : {
-      "comment" : "Privacy consent toggle",
+    "Session ended early" : {
+
+    },
+    "Settings" : {
+      "comment" : "Profile settings section",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share product analytics" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ phân tích sản phẩm" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cài đặt"
+          }
+        }
       }
     },
     "Share crash reports" : {
       "comment" : "Privacy consent toggle",
       "extractionState" : "manual",
       "localizations" : {
-        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share crash reports" } },
-        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ báo cáo lỗi" } }
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share crash reports"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ báo cáo lỗi"
+          }
+        }
+      }
+    },
+    "Share product analytics" : {
+      "comment" : "Privacy consent toggle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Share product analytics"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chia sẻ phân tích sản phẩm"
+          }
+        }
+      }
+    },
+    "Sign in failed" : {
+
+    },
+    "Sign in with your email to continue." : {
+
+    },
+    "Sign out" : {
+      "comment" : "Profile sign out CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Đăng xuất"
+          }
+        }
+      }
+    },
+    "Skip" : {
+
+    },
+    "State" : {
+
+    },
+    "Stats" : {
+
+    },
+    "Stay on Pro" : {
+      "comment" : "Trial conversion CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay on Pro"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiếp tục Pro"
+          }
+        }
+      }
+    },
+    "Stay on track" : {
+      "comment" : "Notification permission step headline",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay on track"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luôn đúng nhịp"
+          }
+        }
+      }
+    },
+    "Step 1 of 2 · Download your data" : {
+
+    },
+    "Step 2 of 2" : {
+
+    },
+    "Summarizing…" : {
+
+    },
+    "Summary" : {
+
+    },
+    "Summary failed" : {
+
+    },
+    "Surfaces" : {
+
+    },
+    "Tap Decks to start a review session." : {
+
+    },
+    "Tell us what you're working toward. The priority engine surfaces captures that align with these." : {
+
+    },
+    "This will delete your Anti Noise account." : {
+
+    },
+    "Tip: share from Safari, X, Reddit — anywhere with a URL." : {
+
+    },
+    "Today" : {
+
+    },
+    "Today's queue" : {
+
+    },
+    "Trial ends %@" : {
+
+    },
+    "Two quick questions. You can change these later in Profile." : {
+
+    },
+    "Type" : {
+
+    },
+    "Up next" : {
+
+    },
+    "Upgrade to Pro" : {
+      "comment" : "Profile upgrade CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade to Pro"
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nâng cấp lên Pro"
+          }
+        }
+      }
+    },
+    "We'll keep your data for 7 days in case you change your mind. After that, captures, summaries, decks, flashcards, goals, and focus sessions are permanently removed." : {
+
+    },
+    "Welcome back" : {
+
+    },
+    "Where do you want to grow?" : {
+
+    },
+    "You can keep using Anti Noise on Free: 3 captures a day, 5 AI summaries a month. Or stay Pro for unlimited everything." : {
+
+    },
+    "You're now signed out. Sign in within 7 days to cancel. After that we permanently delete your data on next launch." : {
+
+    },
+    "You've used this month's free AI summaries." : {
+      "comment" : "QuotaHitSheet AI summary title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used this month's free AI summaries."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đã dùng hết tóm tắt AI miễn phí trong tháng."
+          }
+        }
+      }
+    },
+    "You've used today's free captures." : {
+      "comment" : "QuotaHitSheet capture title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You've used today's free captures."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bạn đã dùng hết lượt thu thập miễn phí hôm nay."
+          }
+        }
+      }
+    },
+    "Your 7-day Pro trial just ended." : {
+      "comment" : "TrialExpirySheet title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your 7-day Pro trial just ended."
+          }
+        },
+        "vi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bản dùng thử Pro 7 ngày của bạn vừa kết thúc."
+          }
+        }
       }
     }
-  }
+  },
+  "version" : "1.0"
 }
