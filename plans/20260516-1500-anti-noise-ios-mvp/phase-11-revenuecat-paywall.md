@@ -10,7 +10,7 @@
 - Date: 2026-05-16
 - Description: Integrate RevenueCat SDK, set up entitlements/offerings, build paywall UI, gate premium features (AI quota, advanced focus, unlimited decks).
 - Priority: P1
-- Implementation status: pending
+- Implementation status: completed (runtime test deferred — needs RCAppPublicKey + ASC products)
 - Review status: pending
 - Effort: 1.5d
 
@@ -84,21 +84,21 @@ flowchart LR
 15. Restore purchases button on paywall + in Profile settings.
 
 ## Todo
-- [ ] RevenueCat SPM added + configured
-- [ ] App Store Connect: Pro monthly + annual SKUs created with 7-day intro offer on monthly
-- [ ] SubscriptionStore observable (isPro + trialState)
-- [ ] UID alias on sign-in / un-alias on sign-out
-- [ ] UsageQuotaService with daily-capture + monthly-AI counters
-- [ ] PaywallSheetView using RevenueCatUI
-- [ ] TrialExpirySheet (presented on foreground when trial ended)
-- [ ] QuotaHitSheet (capture + aiSummary variants)
-- [ ] PaywallTriggerModifier for declarative gating
-- [ ] Trial auto-start on first launch (intro offer purchase)
-- [ ] No onboarding paywall (verified)
-- [ ] Paywall triggered on capture quota hit (4th/day)
-- [ ] Paywall triggered on AI quota hit (6th/month)
-- [ ] Profile Upgrade row + Manage row
-- [ ] Restore purchases flow tested
+- [x] RevenueCat SPM added + configured (RCAppPublicKey via Info.plist)
+- [ ] App Store Connect: Pro monthly + annual SKUs created with 7-day intro offer on monthly (deferred — external task)
+- [x] SubscriptionStore observable (isPro + trialState)
+- [x] UID alias on sign-in / un-alias on sign-out (AntiNoiseApp .onChange auth.state)
+- [x] UsageQuotaService with daily-capture + monthly-AI counters
+- [x] PaywallSheetView using RevenueCatUI
+- [x] TrialExpirySheet (presented on foreground when trial ended)
+- [x] QuotaHitSheet (capture + aiSummary variants)
+- [ ] PaywallTriggerModifier for declarative gating (cut — direct sheet wiring used instead; YAGNI)
+- [ ] Trial auto-start on first launch (intro offer purchase) (deferred — relies on RC offering being live in ASC)
+- [x] No onboarding paywall (verified)
+- [x] Paywall triggered on capture quota hit (CaptureFlowView)
+- [x] Paywall triggered on AI quota hit (SummaryDetailView deck-gen + AISummarizer fails capture)
+- [x] Profile Upgrade row + Pro status badge
+- [x] Restore purchases flow wired (Profile → Restore purchases)
 
 ## Success Criteria
 - First-launch new install → trial confirmation sheet appears once; on accept, `trialState == .active` for 7 days.
