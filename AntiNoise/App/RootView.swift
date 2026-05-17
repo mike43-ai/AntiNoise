@@ -2,8 +2,11 @@ import SwiftUI
 
 struct RootView: View {
     @Environment(AuthStore.self) private var auth
+    @Environment(SubscriptionStore.self) private var subscription
     @State private var authSheet: AuthSheet?
     @State private var onboardingDone = false
+    @State private var showTrialExpiry = false
+    @State private var showPaywall = false
 
     var body: some View {
         ZStack {
@@ -36,13 +39,38 @@ struct RootView: View {
             }
         }
         .onChange(of: auth.state) { _, newState in
-            // Reset transient flag when the user changes; persistent state lives in OnboardingStore.
             if case .signedIn(let user) = newState {
                 onboardingDone = OnboardingStore.isCompleted(uid: user.id)
             } else {
                 onboardingDone = false
             }
         }
+        .onChange(of: subscription.trialState) { _, newState in
+            if newState == .expired, !trialExpirySeen(uid: auth.currentUser?.id) {
+                showTrialExpiry = true
+            }
+        }
+        .sheet(isPresented: $showTrialExpiry) {
+            TrialExpirySheet(
+                onUpgrade: { showTrialExpiry = false; showPaywall = true },
+                onContinueFree: { setTrialExpirySeen(true, uid: auth.currentUser?.id) }
+            )
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallSheetView(offering: subscription.currentOffering)
+        }
+    }
+
+    // Per-UID so signing out then back in with the same Apple ID doesn't
+    // re-trigger the sheet, but a different account starts fresh.
+    private func trialExpirySeen(uid: String?) -> Bool {
+        guard let uid else { return true }
+        return UserDefaults.standard.bool(forKey: "trialExpirySeen.\(uid)")
+    }
+
+    private func setTrialExpirySeen(_ value: Bool, uid: String?) {
+        guard let uid else { return }
+        UserDefaults.standard.set(value, forKey: "trialExpirySeen.\(uid)")
     }
 
     private var splash: some View {

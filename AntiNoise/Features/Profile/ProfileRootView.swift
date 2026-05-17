@@ -4,6 +4,7 @@ import SwiftUI
 struct ProfileRootView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var auth
+    @Environment(SubscriptionStore.self) private var subscription
 
     @State private var viewModel: ProfileViewModel?
     @State private var isAPIKeySheetPresented = false
@@ -11,12 +12,14 @@ struct ProfileRootView: View {
     @State private var isDeleteSheetPresented = false
     @State private var exportItems: ShareItemsBox?
     @State private var errorMessage: String?
+    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: AppSpacing.xl) {
                     userCard
+                    subscriptionSection
 
                     if let viewModel {
                         VStack(alignment: .leading, spacing: AppSpacing.sm) {
@@ -44,6 +47,7 @@ struct ProfileRootView: View {
             .sheet(isPresented: $isGoalsSheetPresented) { GoalSetupView() }
             .sheet(isPresented: $isDeleteSheetPresented) { DeleteAccountFlowView() }
             .sheet(item: $exportItems) { box in ShareSheet(items: box.items) }
+            .sheet(isPresented: $showPaywall) { PaywallSheetView(offering: subscription.currentOffering) }
             .task {
                 if viewModel == nil {
                     viewModel = ProfileViewModel(modelContext: modelContext)
@@ -87,6 +91,37 @@ struct ProfileRootView: View {
         }
     }
 
+    @ViewBuilder
+    private var subscriptionSection: some View {
+        if subscription.isPro {
+            AppCard {
+                HStack(spacing: AppSpacing.md) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .foregroundStyle(Color.accent)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Pro Member").appFont(.body).fontWeight(.semibold)
+                        if case .active(let endsAt) = subscription.trialState {
+                            Text("Trial ends \(endsAt.formatted(date: .abbreviated, time: .omitted))")
+                                .appFont(.caption).foregroundStyle(Color.textMuted)
+                        }
+                    }
+                    Spacer()
+                }
+            }
+        } else {
+            AppCard(style: .elevated) {
+                VStack(alignment: .leading, spacing: AppSpacing.sm) {
+                    Text("Free plan").appFont(.bodySmall).fontWeight(.semibold)
+                    Text("3 captures/day · 5 AI summaries/month")
+                        .appFont(.caption).foregroundStyle(Color.textMuted)
+                    PrimaryButton(title: "Upgrade to Pro", fullWidth: false) {
+                        showPaywall = true
+                    }
+                }
+            }
+        }
+    }
+
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("Settings").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
@@ -105,6 +140,9 @@ struct ProfileRootView: View {
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("Account").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+            SecondaryButton(title: "Restore purchases", systemImage: "arrow.clockwise") {
+                Task { await subscription.restorePurchases() }
+            }
             SecondaryButton(title: "Sign out", systemImage: "rectangle.portrait.and.arrow.right") {
                 try? auth.signOut()
             }
@@ -138,4 +176,5 @@ struct ProfileRootView: View {
 #Preview {
     ProfileRootView()
         .environment(AuthStore())
+        .environment(SubscriptionStore())
 }

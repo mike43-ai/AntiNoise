@@ -11,17 +11,22 @@ final class SummaryDetailModel {
     var isGeneratingDeck = false
     var generatedDeckID: UUID?
     var deckError: String?
+    var deckQuotaExceeded = false
 
     private let captureID: UUID
     private let modelContext: ModelContext
     private let summarizerProvider: () -> SummarizerService
     private let cardGenerator: CardGenerator
+    private let quotaUIDProvider: () -> String?
+    private let isProProvider: () -> Bool
 
     init(
         captureID: UUID,
         modelContext: ModelContext,
         summarizerProvider: @escaping () -> SummarizerService,
-        cardGenerator: CardGenerator? = nil
+        cardGenerator: CardGenerator? = nil,
+        quotaUIDProvider: @escaping () -> String? = { nil },
+        isProProvider: @escaping () -> Bool = { false }
     ) {
         self.captureID = captureID
         self.modelContext = modelContext
@@ -30,6 +35,8 @@ final class SummaryDetailModel {
             modelContainer: modelContext.container,
             isOnline: { true }
         )
+        self.quotaUIDProvider = quotaUIDProvider
+        self.isProProvider = isProProvider
     }
 
     func load() {
@@ -49,6 +56,10 @@ final class SummaryDetailModel {
 
     func generateDeck() async {
         guard !isGeneratingDeck else { return }
+        guard UsageQuotaService.consume(.aiSummary, uid: quotaUIDProvider(), isPro: isProProvider()) else {
+            deckQuotaExceeded = true
+            return
+        }
         isGeneratingDeck = true
         deckError = nil
         defer { isGeneratingDeck = false }

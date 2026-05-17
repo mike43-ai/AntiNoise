@@ -7,9 +7,13 @@ struct SummaryDetailView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(SummarizerHolder.self) private var summarizerHolder
     @Environment(ReachabilityObserver.self) private var reachability
+    @Environment(AuthStore.self) private var auth
+    @Environment(SubscriptionStore.self) private var subscription
     @State private var model: SummaryDetailModel?
     @State private var isScopeSheetPresented = false
     @State private var navigateToDeckID: UUID?
+    @State private var showDeckQuotaSheet = false
+    @State private var showPaywall = false
 
     var body: some View {
         ScrollView {
@@ -32,6 +36,8 @@ struct SummaryDetailView: View {
             if model == nil {
                 let holder = summarizerHolder
                 let reach = reachability
+                let authRef = auth
+                let subRef = subscription
                 let generator = CardGenerator(
                     modelContainer: modelContext.container,
                     isOnline: { reach.isOnline }
@@ -40,7 +46,9 @@ struct SummaryDetailView: View {
                     captureID: captureID,
                     modelContext: modelContext,
                     summarizerProvider: { holder.summarizer },
-                    cardGenerator: generator
+                    cardGenerator: generator,
+                    quotaUIDProvider: { authRef.currentUser?.id },
+                    isProProvider: { subRef.isPro }
                 )
             }
             model?.load()
@@ -52,6 +60,20 @@ struct SummaryDetailView: View {
             if let id = newValue {
                 navigateToDeckID = id
             }
+        }
+        .onChange(of: model?.deckQuotaExceeded) { _, exceeded in
+            if exceeded == true { showDeckQuotaSheet = true }
+        }
+        .sheet(isPresented: $showDeckQuotaSheet, onDismiss: { model?.deckQuotaExceeded = false }) {
+            QuotaHitSheet(
+                kind: .aiSummary,
+                offering: subscription.currentOffering,
+                onUpgrade: { showDeckQuotaSheet = false; showPaywall = true },
+                onLater: {}
+            )
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallSheetView(offering: subscription.currentOffering)
         }
     }
 

@@ -13,24 +13,25 @@ final class AISummarizer: SummarizerService {
     private let userScopesProvider: @Sendable () -> Set<GrowthScope>
     private let uidProvider: @Sendable () -> String?
     private let isOnline: @Sendable () -> Bool
+    private let isProProvider: @Sendable () -> Bool
 
     init(
         modelContainer: ModelContainer,
         client: OpenAIClient = OpenAIClient(),
         userScopesProvider: @escaping @Sendable () -> Set<GrowthScope>,
         uidProvider: @escaping @Sendable () -> String?,
-        isOnline: @escaping @Sendable () -> Bool
+        isOnline: @escaping @Sendable () -> Bool,
+        isProProvider: @escaping @Sendable () -> Bool = { false }
     ) {
         self.modelContainer = modelContainer
         self.client = client
         self.userScopesProvider = userScopesProvider
         self.uidProvider = uidProvider
         self.isOnline = isOnline
+        self.isProProvider = isProProvider
     }
 
     func process(captureID: UUID) async {
-        // Cheap check first: don't burn CPU on URL fetch + base64 if the
-        // user hasn't entered an API key.
         guard let apiKey = SecretStore.get(forKey: SecretStore.openAIAPIKey), !apiKey.isEmpty else {
             await markFailed(captureID: captureID, error: OpenAIClient.ClientError.missingAPIKey.errorDescription ?? "Missing OpenAI API key.")
             return
@@ -38,7 +39,16 @@ final class AISummarizer: SummarizerService {
 
         let context = await MainActor.run { ModelContext(modelContainer) }
 
+        // Claim BEFORE consuming quota so a losing race-claim doesn't burn a slot.
         guard let capture = await fetchAndClaim(captureID: captureID, in: context) else { return }
+
+        let uid = uidProvider()
+        let isPro = isProProvider()
+        let quotaOk = await MainActor.run { UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro) }
+        guard quotaOk else {
+            await markFailed(captureID: captureID, error: "Monthly AI summary limit reached. Upgrade to Pro for unlimited summaries.")
+            return
+        }
 
         do {
             let normalized = try await CaptureNormalizer.normalize(capture)
@@ -68,7 +78,6 @@ final class AISummarizer: SummarizerService {
 
             let payload = try decodePayload(raw)
             await persist(captureID: captureID, payload: payload)
-            AIUsageTracker.incrementSuccessfulSummary(uid: uidProvider())
 
         } catch {
             let message = friendlyMessage(for: error)

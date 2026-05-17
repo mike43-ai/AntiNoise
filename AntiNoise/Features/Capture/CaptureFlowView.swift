@@ -6,8 +6,12 @@ struct CaptureFlowView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(SummarizerHolder.self) private var summarizerHolder
     @Environment(ReachabilityObserver.self) private var reachability
+    @Environment(AuthStore.self) private var auth
+    @Environment(SubscriptionStore.self) private var subscription
 
     @State private var model: CaptureFlowModel?
+    @State private var showQuotaSheet = false
+    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack {
@@ -31,16 +35,29 @@ struct CaptureFlowView: View {
             }
             .task {
                 if model == nil {
-                    // Capture holder by reference so a Phase-06 swap of
-                    // `summarizerHolder.summarizer` propagates to in-flight captures.
                     let holder = summarizerHolder
                     let reach = reachability
+                    let authRef = auth
+                    let subRef = subscription
                     model = CaptureFlowModel(
                         modelContext: modelContext,
                         summarizerProvider: { holder.summarizer },
-                        isOnline: { reach.isOnline }
+                        isOnline: { reach.isOnline },
+                        quotaUIDProvider: { authRef.currentUser?.id },
+                        isProProvider: { subRef.isPro }
                     )
                 }
+            }
+            .sheet(isPresented: $showQuotaSheet) {
+                QuotaHitSheet(
+                    kind: .capture,
+                    offering: subscription.currentOffering,
+                    onUpgrade: { showQuotaSheet = false; showPaywall = true },
+                    onLater: {}
+                )
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallSheetView(offering: subscription.currentOffering)
             }
         }
     }
@@ -72,8 +89,11 @@ struct CaptureFlowView: View {
                 isDisabled: !bound.canSave
             ) {
                 Task {
-                    let ok = await bound.save()
-                    if ok { dismiss() }
+                    switch await bound.save() {
+                    case .saved:        dismiss()
+                    case .quotaExceeded: showQuotaSheet = true
+                    case .failed:       break
+                    }
                 }
             }
         }

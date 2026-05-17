@@ -23,6 +23,12 @@ enum CaptureMode: String, CaseIterable {
     }
 }
 
+enum CaptureSaveOutcome {
+    case saved
+    case quotaExceeded
+    case failed(String)
+}
+
 @Observable
 @MainActor
 final class CaptureFlowModel {
@@ -37,15 +43,21 @@ final class CaptureFlowModel {
     private let modelContext: ModelContext
     private let summarizerProvider: () -> SummarizerService
     private let isOnline: () -> Bool
+    private let quotaUIDProvider: () -> String?
+    private let isProProvider: () -> Bool
 
     init(
         modelContext: ModelContext,
         summarizerProvider: @escaping () -> SummarizerService,
-        isOnline: @escaping () -> Bool
+        isOnline: @escaping () -> Bool,
+        quotaUIDProvider: @escaping () -> String? = { nil },
+        isProProvider: @escaping () -> Bool = { false }
     ) {
         self.modelContext = modelContext
         self.summarizerProvider = summarizerProvider
         self.isOnline = isOnline
+        self.quotaUIDProvider = quotaUIDProvider
+        self.isProProvider = isProProvider
     }
 
     var canSave: Bool {
@@ -61,10 +73,16 @@ final class CaptureFlowModel {
         }
     }
 
-    func save() async -> Bool {
-        guard canSave else { return false }
+    func save() async -> CaptureSaveOutcome {
+        guard canSave else { return .failed("Fill in the field first.") }
         isSaving = true
         defer { isSaving = false }
+
+        let uid = quotaUIDProvider()
+        let isPro = isProProvider()
+        guard UsageQuotaService.consume(.capture, uid: uid, isPro: isPro) else {
+            return .quotaExceeded
+        }
 
         let repo = CaptureRepository(context: modelContext)
         do {
@@ -79,10 +97,10 @@ final class CaptureFlowModel {
                 toastMessage = "Captured. Will summarize when online."
             }
             reset()
-            return true
+            return .saved
         } catch {
             errorMessage = error.localizedDescription
-            return false
+            return .failed(error.localizedDescription)
         }
     }
 
