@@ -7,6 +7,7 @@ import UniformTypeIdentifiers
 // Pulls payloads off NSItemProvider into the shared queue. Stays cheap on
 // memory: images are downscaled + EXIF-stripped before write.
 enum ShareItemExtractor {
+    @MainActor
     static func extractAll(from context: NSExtensionContext?) async -> [QueuedPayload] {
         guard let items = context?.inputItems as? [NSExtensionItem] else { return [] }
         var results: [QueuedPayload] = []

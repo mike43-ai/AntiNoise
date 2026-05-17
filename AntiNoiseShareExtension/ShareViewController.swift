@@ -11,7 +11,7 @@ final class ShareViewController: SLComposeServiceViewController {
         textView.isEditable = false
         textView.text = "Saving to Anti Noise…"
         placeholder = "Anti Noise"
-        Task { await persistAndExit() }
+        Task { @MainActor in await persistAndExit() }
     }
 
     // We want the post action invisible — the user sees zero UI between tap
@@ -21,6 +21,7 @@ final class ShareViewController: SLComposeServiceViewController {
     override func configurationItems() -> [Any]! { [] }
     override func didSelectPost() { /* unused — auto-persist path */ }
 
+    @MainActor
     private func persistAndExit() async {
         let payloads = await ShareItemExtractor.extractAll(from: extensionContext)
         for payload in payloads {
@@ -33,8 +34,6 @@ final class ShareViewController: SLComposeServiceViewController {
         SharedQueueStore.postUpdateNotification()
         // Brief visual ack before dismiss so the user knows it worked.
         try? await Task.sleep(for: .milliseconds(300))
-        await MainActor.run {
-            self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
-        }
+        extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
     }
 }
