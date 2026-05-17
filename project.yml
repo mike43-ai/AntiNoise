@@ -60,7 +60,7 @@ targets:
         NSPhotoLibraryAddUsageDescription: Anti Noise saves captured screenshots back to your photo library on request.
         ITSAppUsesNonExemptEncryption: false
         CFBundleURLTypes:
-          - CFBundleURLName: com.antinoise.app
+          - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:
               - antinoise
     entitlements:
@@ -75,7 +75,7 @@ targets:
           - $(AppIdentifierPrefix)com.antinoise.shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app
+        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.focus
         INFOPLIST_FILE: AntiNoise/Resources/Info.plist
         CODE_SIGN_ENTITLEMENTS: AntiNoise/Resources/AntiNoise.entitlements
         TARGETED_DEVICE_FAMILY: "1"
@@ -136,7 +136,7 @@ targets:
           - $(AppIdentifierPrefix)com.antinoise.shared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.app.ShareExtension
+        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.focus.ShareExtension
         INFOPLIST_FILE: AntiNoiseShareExtension/Info.plist
         CODE_SIGN_ENTITLEMENTS: AntiNoiseShareExtension/AntiNoiseShareExtension.entitlements
         TARGETED_DEVICE_FAMILY: "1"
