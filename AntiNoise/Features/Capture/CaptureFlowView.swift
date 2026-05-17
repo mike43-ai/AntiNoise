@@ -55,6 +55,7 @@ struct CaptureFlowView: View {
                     onUpgrade: { showQuotaSheet = false; showPaywall = true },
                     onLater: {}
                 )
+                .onAppear { Telemetry.track(.paywallShown(trigger: .quotaCapture)) }
             }
             .sheet(isPresented: $showPaywall) {
                 PaywallSheetView(offering: subscription.currentOffering)

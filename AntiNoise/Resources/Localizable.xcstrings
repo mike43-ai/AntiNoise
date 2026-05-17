@@ -1,0 +1,238 @@
+{
+  "sourceLanguage" : "en",
+  "version" : "1.0",
+  "strings" : {
+    "Home" : {
+      "comment" : "Bottom tab label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Home" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Trang chủ" } }
+      }
+    },
+    "Learn" : {
+      "comment" : "Bottom tab label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Learn" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Học" } }
+      }
+    },
+    "Capture" : {
+      "comment" : "Bottom tab label / capture button",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Capture" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thu thập" } }
+      }
+    },
+    "Focus" : {
+      "comment" : "Bottom tab label",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Focus" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tập trung" } }
+      }
+    },
+    "Profile" : {
+      "comment" : "Bottom tab label / Profile screen title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Profile" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Hồ sơ" } }
+      }
+    },
+    "Let's tune Anti Noise" : {
+      "comment" : "Onboarding title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Let's tune Anti Noise" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cùng thiết lập Anti Noise" } }
+      }
+    },
+    "Stay on track" : {
+      "comment" : "Notification permission step headline",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stay on track" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Luôn đúng nhịp" } }
+      }
+    },
+    "Enable reminders" : {
+      "comment" : "Notification permission primary CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Enable reminders" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bật nhắc nhở" } }
+      }
+    },
+    "Not now" : {
+      "comment" : "Skip / defer CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not now" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để sau" } }
+      }
+    },
+    "Continue" : {
+      "comment" : "Generic continue CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiếp tục" } }
+      }
+    },
+    "You've used today's free captures." : {
+      "comment" : "QuotaHitSheet capture title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You've used today's free captures." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn đã dùng hết lượt thu thập miễn phí hôm nay." } }
+      }
+    },
+    "You've used this month's free AI summaries." : {
+      "comment" : "QuotaHitSheet AI summary title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "You've used this month's free AI summaries." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bạn đã dùng hết tóm tắt AI miễn phí trong tháng." } }
+      }
+    },
+    "See Pro plan" : {
+      "comment" : "Paywall primary CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "See Pro plan" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xem gói Pro" } }
+      }
+    },
+    "Maybe later" : {
+      "comment" : "Paywall dismiss CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Maybe later" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Để sau" } }
+      }
+    },
+    "Your 7-day Pro trial just ended." : {
+      "comment" : "TrialExpirySheet title",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Your 7-day Pro trial just ended." } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Bản dùng thử Pro 7 ngày của bạn vừa kết thúc." } }
+      }
+    },
+    "Stay on Pro" : {
+      "comment" : "Trial conversion CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Stay on Pro" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tiếp tục Pro" } }
+      }
+    },
+    "Continue on Free" : {
+      "comment" : "Trial decline CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Continue on Free" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Dùng bản miễn phí" } }
+      }
+    },
+    "Pro Member" : {
+      "comment" : "Profile pro badge",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pro Member" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thành viên Pro" } }
+      }
+    },
+    "Free plan" : {
+      "comment" : "Profile free plan section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Free plan" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Gói miễn phí" } }
+      }
+    },
+    "Upgrade to Pro" : {
+      "comment" : "Profile upgrade CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Upgrade to Pro" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Nâng cấp lên Pro" } }
+      }
+    },
+    "Settings" : {
+      "comment" : "Profile settings section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Cài đặt" } }
+      }
+    },
+    "Notifications" : {
+      "comment" : "Profile notifications section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Thông báo" } }
+      }
+    },
+    "Privacy" : {
+      "comment" : "Profile privacy section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Quyền riêng tư" } }
+      }
+    },
+    "Account" : {
+      "comment" : "Profile account section",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Account" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Tài khoản" } }
+      }
+    },
+    "Restore purchases" : {
+      "comment" : "Profile restore purchases CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Restore purchases" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Khôi phục mua hàng" } }
+      }
+    },
+    "Sign out" : {
+      "comment" : "Profile sign out CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign out" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Đăng xuất" } }
+      }
+    },
+    "Delete account" : {
+      "comment" : "Profile delete account CTA",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete account" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Xoá tài khoản" } }
+      }
+    },
+    "Share product analytics" : {
+      "comment" : "Privacy consent toggle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share product analytics" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ phân tích sản phẩm" } }
+      }
+    },
+    "Share crash reports" : {
+      "comment" : "Privacy consent toggle",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share crash reports" } },
+        "vi" : { "stringUnit" : { "state" : "translated", "value" : "Chia sẻ báo cáo lỗi" } }
+      }
+    }
+  }
+}

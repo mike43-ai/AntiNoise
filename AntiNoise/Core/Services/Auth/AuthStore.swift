@@ -45,6 +45,7 @@ final class AuthStore {
                 change.displayName = displayName
                 try await change.commitChanges()
             }
+            Telemetry.track(.signUp(method: .email))
         } catch {
             throw AuthError(error)
         }
@@ -54,6 +55,7 @@ final class AuthStore {
         try Self.validate(email: email, password: password)
         do {
             _ = try await Auth.auth().signIn(withEmail: email, password: password)
+            Telemetry.track(.login(method: .email))
         } catch {
             throw AuthError(error)
         }
@@ -62,7 +64,9 @@ final class AuthStore {
     // MARK: Apple
 
     func signInWithApple() async throws {
-        _ = try await appleCoordinator.signIn()
+        let result = try await appleCoordinator.signIn()
+        let isNewUser = result.additionalUserInfo?.isNewUser == true
+        Telemetry.track(isNewUser ? .signUp(method: .apple) : .login(method: .apple))
     }
 
     // MARK: Session

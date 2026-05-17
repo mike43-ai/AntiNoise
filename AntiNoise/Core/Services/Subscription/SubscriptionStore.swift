@@ -112,5 +112,41 @@ final class SubscriptionStore {
         } else {
             trialState = .notStarted
         }
+
+        emitTransitions(productID: entitlement?.productIdentifier, uid: Purchases.shared.appUserID)
+    }
+
+    // Telemetry edge-detection backed by UserDefaults so cold launches after
+    // a previous emission don't inflate `trial_started` / `subscription_started`.
+    // Keyed by RC's appUserId (post-alias = Firebase UID; pre-alias = anonymous RC ID).
+    private func emitTransitions(productID: String?, uid: String) {
+        let proKey = "subscription.lastEmittedIsPro.\(uid)"
+        let trialKey = "subscription.lastEmittedTrialState.\(uid)"
+        let defaults = UserDefaults.standard
+        let lastPro = defaults.object(forKey: proKey) as? Bool
+        let lastTrialRaw = defaults.string(forKey: trialKey)
+
+        if isPro, lastPro != true, let productID {
+            Telemetry.track(.subscriptionStarted(productID: productID))
+        }
+        let trialRaw = Self.trialStateRawValue(trialState)
+        if case .active = trialState, lastTrialRaw != trialRaw, lastTrialRaw != "active" {
+            Telemetry.track(.trialStarted)
+        }
+        if trialState == .expired, lastTrialRaw != "expired" {
+            Telemetry.track(.trialExpired)
+        }
+
+        defaults.set(isPro, forKey: proKey)
+        defaults.set(trialRaw, forKey: trialKey)
+    }
+
+    private static func trialStateRawValue(_ state: TrialState) -> String {
+        switch state {
+        case .notStarted: return "notStarted"
+        case .active:     return "active"
+        case .expired:    return "expired"
+        case .converted:  return "converted"
+        }
     }
 }

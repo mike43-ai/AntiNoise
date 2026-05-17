@@ -71,6 +71,7 @@ struct SummaryDetailView: View {
                 onUpgrade: { showDeckQuotaSheet = false; showPaywall = true },
                 onLater: {}
             )
+            .onAppear { Telemetry.track(.paywallShown(trigger: .quotaAI)) }
         }
         .sheet(isPresented: $showPaywall) {
             PaywallSheetView(offering: subscription.currentOffering)

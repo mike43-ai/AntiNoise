@@ -63,6 +63,7 @@ targets:
     entitlements:
       path: AntiNoise/Resources/AntiNoise.entitlements
       properties:
+        aps-environment: development
         com.apple.security.application-groups:
           - group.com.antinoise.shared
         com.apple.developer.applesignin:
@@ -77,6 +78,14 @@ targets:
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         GENERATE_INFOPLIST_FILE: NO
+    postBuildScripts:
+      - name: Crashlytics Upload Symbols
+        script: |
+          "${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run"
+        inputFiles:
+          - $(DWARF_DSYM_FOLDER_PATH)/$(DWARF_DSYM_FILE_NAME)/Contents/Resources/DWARF/$(TARGET_NAME)
+          - $(BUILT_PRODUCTS_DIR)/$(INFOPLIST_PATH)
+        runOnlyWhenInstalling: false
     dependencies:
       - package: Firebase
         product: FirebaseAuth

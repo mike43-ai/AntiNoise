@@ -18,10 +18,12 @@ final class ReviewSessionModel {
 
     private let deckID: UUID
     private let engine: ReviewSessionEngine
+    private let uidProvider: () -> String?
 
-    init(deckID: UUID, modelContainer: ModelContainer) {
+    init(deckID: UUID, modelContainer: ModelContainer, uidProvider: @escaping () -> String? = { nil }) {
         self.deckID = deckID
         self.engine = ReviewSessionEngine(modelContainer: modelContainer)
+        self.uidProvider = uidProvider
     }
 
     func start() {
@@ -55,6 +57,11 @@ final class ReviewSessionModel {
         isAnswerVisible = false
         if index >= queue.count {
             state = .finished
+            StreakEngine(uid: uidProvider()).markReviewedToday()
+            Telemetry.track(.reviewSessionCompleted(
+                cardsReviewed: totalReviewed,
+                correctCount: correctCount
+            ))
         }
     }
 

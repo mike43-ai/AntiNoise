@@ -33,7 +33,7 @@ final class AISummarizer: SummarizerService {
 
     func process(captureID: UUID) async {
         guard let apiKey = SecretStore.get(forKey: SecretStore.openAIAPIKey), !apiKey.isEmpty else {
-            await markFailed(captureID: captureID, error: OpenAIClient.ClientError.missingAPIKey.errorDescription ?? "Missing OpenAI API key.")
+            await markFailed(captureID: captureID, kind: nil, error: OpenAIClient.ClientError.missingAPIKey.errorDescription ?? "Missing OpenAI API key.", errorCode: "missing_api_key")
             return
         }
 
@@ -41,14 +41,18 @@ final class AISummarizer: SummarizerService {
 
         // Claim BEFORE consuming quota so a losing race-claim doesn't burn a slot.
         guard let capture = await fetchAndClaim(captureID: captureID, in: context) else { return }
+        let kind = capture.kind
 
         let uid = uidProvider()
         let isPro = isProProvider()
         let quotaOk = await MainActor.run { UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro) }
         guard quotaOk else {
-            await markFailed(captureID: captureID, error: "Monthly AI summary limit reached. Upgrade to Pro for unlimited summaries.")
+            Telemetry.track(.quotaHit(kind: .aiSummary))
+            await markFailed(captureID: captureID, kind: kind, error: "Monthly AI summary limit reached. Upgrade to Pro for unlimited summaries.", errorCode: "quota_exceeded")
             return
         }
+
+        let startedAt = Date()
 
         do {
             let normalized = try await CaptureNormalizer.normalize(capture)
@@ -78,11 +82,26 @@ final class AISummarizer: SummarizerService {
 
             let payload = try decodePayload(raw)
             await persist(captureID: captureID, payload: payload)
+            Telemetry.track(.summarySucceeded(kind: kind, latencyMs: Int(Date().timeIntervalSince(startedAt) * 1000)))
 
         } catch {
             let message = friendlyMessage(for: error)
-            await markFailed(captureID: captureID, error: message)
+            await markFailed(captureID: captureID, kind: kind, error: message, errorCode: errorCode(for: error))
         }
+    }
+
+    private func errorCode(for error: Error) -> String {
+        let underlying: Error = (error as? AIRetryEngine.GiveUp)?.lastError ?? error
+        if let client = underlying as? OpenAIClient.ClientError {
+            switch client {
+            case .missingAPIKey:           return "missing_api_key"
+            case .emptyResponse:           return "empty_response"
+            case .decode:                  return "decode_error"
+            case .transport:               return "transport"
+            case .http(let status, _):     return "http_\(status)"
+            }
+        }
+        return "unknown"
     }
 
     private func friendlyMessage(for error: Error) -> String {
@@ -133,7 +152,7 @@ final class AISummarizer: SummarizerService {
     }
 
     @MainActor
-    private func markFailed(captureID: UUID, error: String) {
+    private func markFailed(captureID: UUID, kind: CaptureKind?, error: String, errorCode: String) {
         let context = ModelContext(modelContainer)
         guard let capture = fetch(captureID: captureID, in: context) else { return }
         capture.status = .failed
@@ -143,6 +162,7 @@ final class AISummarizer: SummarizerService {
         // separately and doesn't touch this counter.
         capture.retryCount += 1
         try? context.save()
+        Telemetry.track(.summaryFailed(kind: kind ?? capture.kind, errorCode: errorCode))
     }
 
     @MainActor

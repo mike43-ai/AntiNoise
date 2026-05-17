@@ -36,6 +36,8 @@ struct ProfileRootView: View {
                     }
 
                     settingsSection
+                    NotificationSettingsSection()
+                    privacySection
                     accountSection
                 }
                 .padding(AppSpacing.xl)
@@ -47,7 +49,10 @@ struct ProfileRootView: View {
             .sheet(isPresented: $isGoalsSheetPresented) { GoalSetupView() }
             .sheet(isPresented: $isDeleteSheetPresented) { DeleteAccountFlowView() }
             .sheet(item: $exportItems) { box in ShareSheet(items: box.items) }
-            .sheet(isPresented: $showPaywall) { PaywallSheetView(offering: subscription.currentOffering) }
+            .sheet(isPresented: $showPaywall) {
+                PaywallSheetView(offering: subscription.currentOffering)
+                    .onAppear { Telemetry.track(.paywallShown(trigger: .profileUpgrade)) }
+            }
             .task {
                 if viewModel == nil {
                     viewModel = ProfileViewModel(modelContext: modelContext)
@@ -137,6 +142,14 @@ struct ProfileRootView: View {
         }
     }
 
+    private var privacySection: some View {
+        VStack(alignment: .leading, spacing: AppSpacing.md) {
+            Text("Privacy").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+            PrivacyConsentRow()
+        }
+        .padding(.top, AppSpacing.lg)
+    }
+
     private var accountSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("Account").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
@@ -167,6 +180,7 @@ struct ProfileRootView: View {
             let service = DataExportService(modelContainer: modelContext.container)
             let url = try service.exportAll(userID: user.id, email: user.email)
             exportItems = ShareItemsBox(items: [url])
+            Telemetry.track(.accountExport)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -177,4 +191,6 @@ struct ProfileRootView: View {
     ProfileRootView()
         .environment(AuthStore())
         .environment(SubscriptionStore())
+        .environment(PrivacyConsentStore())
+        .environment(NotificationService())
 }

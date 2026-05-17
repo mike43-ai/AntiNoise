@@ -56,7 +56,9 @@ final class SummaryDetailModel {
 
     func generateDeck() async {
         guard !isGeneratingDeck else { return }
+        Telemetry.track(.deepDiveStarted)
         guard UsageQuotaService.consume(.aiSummary, uid: quotaUIDProvider(), isPro: isProProvider()) else {
+            Telemetry.track(.quotaHit(kind: .aiSummary))
             deckQuotaExceeded = true
             return
         }
@@ -64,10 +66,17 @@ final class SummaryDetailModel {
         deckError = nil
         defer { isGeneratingDeck = false }
         do {
-            generatedDeckID = try await cardGenerator.generate(fromSummaryWithCaptureID: captureID)
+            let deckID = try await cardGenerator.generate(fromSummaryWithCaptureID: captureID)
+            generatedDeckID = deckID
+            Telemetry.track(.deckGenerated(cardCount: cardCount(forDeckID: deckID)))
         } catch {
             deckError = error.localizedDescription
         }
+    }
+
+    private func cardCount(forDeckID deckID: UUID) -> Int {
+        let descriptor = FetchDescriptor<Flashcard>(predicate: #Predicate { $0.deckID == deckID })
+        return (try? modelContext.fetchCount(descriptor)) ?? 0
     }
 
     func retry() async {

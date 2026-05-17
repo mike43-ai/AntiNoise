@@ -151,6 +151,7 @@ struct DeleteAccountFlowView: View {
         do {
             let service = AccountDeletionService(modelContainer: modelContext.container)
             try await service.softDelete(uid: user.id, email: user.email)
+            Telemetry.track(.accountDeleted)
             step = .done
         } catch {
             errorMessage = error.localizedDescription

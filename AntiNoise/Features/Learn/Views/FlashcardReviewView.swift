@@ -6,6 +6,7 @@ struct FlashcardReviewView: View {
 
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Environment(AuthStore.self) private var auth
     @State private var model: ReviewSessionModel?
     @State private var dragOffset: CGSize = .zero
 
@@ -29,7 +30,12 @@ struct FlashcardReviewView: View {
         }
         .task {
             if model == nil {
-                model = ReviewSessionModel(deckID: deckID, modelContainer: modelContext.container)
+                let authRef = auth
+                model = ReviewSessionModel(
+                    deckID: deckID,
+                    modelContainer: modelContext.container,
+                    uidProvider: { authRef.currentUser?.id }
+                )
                 model?.start()
             }
         }

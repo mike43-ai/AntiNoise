@@ -186,6 +186,9 @@ final class FocusSessionEngine {
         session.completed = completed && (planned == 0 || elapsed >= planned * 0.9)
         context.insert(session)
         try? context.save()
+        if session.completed {
+            Telemetry.track(.focusSessionCompleted(durationMinutes: Int(elapsed / 60)))
+        }
     }
 
     private func scheduleCompletionNotification(at fireDate: Date) {

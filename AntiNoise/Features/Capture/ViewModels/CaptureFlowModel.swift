@@ -81,6 +81,7 @@ final class CaptureFlowModel {
         let uid = quotaUIDProvider()
         let isPro = isProProvider()
         guard UsageQuotaService.consume(.capture, uid: uid, isPro: isPro) else {
+            Telemetry.track(.quotaHit(kind: .capture))
             return .quotaExceeded
         }
 
@@ -88,6 +89,7 @@ final class CaptureFlowModel {
         do {
             let capture = try buildCapture()
             try repo.insert(capture)
+            Telemetry.track(.captureCreated(kind: capture.kind, source: .inApp))
 
             if isOnline() {
                 toastMessage = "Captured. Summarizing…"

@@ -5,14 +5,27 @@ import SwiftUI
 // accounts on the same device doesn't leak the previous user's answers.
 // Phase 07 reads these scopes for the priority engine.
 struct OnboardingFlowView: View {
+    enum Step { case profile, notifications }
+
     let uid: String
     let initialDisplayName: String?
     let onFinish: () -> Void
 
+    @State private var step: Step = .profile
     @State private var nameDraft = ""
     @State private var selectedScopes: Set<GrowthScope> = []
 
     var body: some View {
+        Group {
+            switch step {
+            case .profile:        profileStep
+            case .notifications:  NotificationPermissionStep(onFinish: onFinish)
+            }
+        }
+        .animation(AppMotion.standard, value: step)
+    }
+
+    private var profileStep: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.xl) {
                 VStack(alignment: .leading, spacing: AppSpacing.xs) {
@@ -48,7 +61,7 @@ struct OnboardingFlowView: View {
                     isDisabled: nameDraft.trimmingCharacters(in: .whitespaces).isEmpty || selectedScopes.isEmpty
                 ) {
                     persist()
-                    onFinish()
+                    step = .notifications
                 }
             }
             .padding(.horizontal, AppSpacing.xl)
@@ -108,4 +121,5 @@ struct OnboardingFlowView: View {
 
 #Preview {
     OnboardingFlowView(uid: "preview-user", initialDisplayName: nil, onFinish: {})
+        .environment(NotificationService())
 }

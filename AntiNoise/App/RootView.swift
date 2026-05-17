@@ -55,6 +55,7 @@ struct RootView: View {
                 onUpgrade: { showTrialExpiry = false; showPaywall = true },
                 onContinueFree: { setTrialExpirySeen(true, uid: auth.currentUser?.id) }
             )
+            .onAppear { Telemetry.track(.paywallShown(trigger: .trialExpiry)) }
         }
         .sheet(isPresented: $showPaywall) {
             PaywallSheetView(offering: subscription.currentOffering)

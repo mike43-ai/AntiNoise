@@ -6,6 +6,8 @@ import SwiftUI
 struct AntiNoiseApp: App {
     @State private var auth = AuthStore()
     @State private var subscription = SubscriptionStore()
+    @State private var consent = PrivacyConsentStore()
+    @State private var notifications = NotificationService()
     @State private var reachability = ReachabilityObserver()
     @State private var summarizerHolder = SummarizerHolder(summarizer: NoopSummarizerService())
     @State private var drainService: DrainQueueService?
@@ -22,6 +24,8 @@ struct AntiNoiseApp: App {
             RootView()
                 .environment(auth)
                 .environment(subscription)
+                .environment(consent)
+                .environment(notifications)
                 .environment(reachability)
                 .environment(summarizerHolder)
                 .modelContainer(PersistenceContainer.shared)
@@ -33,15 +37,23 @@ struct AntiNoiseApp: App {
                 }
                 .onChange(of: auth.state) { _, newState in
                     switch newState {
-                    case .signedIn(let user): Task { await subscription.signedIn(uid: user.id) }
-                    case .signedOut:          Task { await subscription.signedOut() }
-                    case .unknown:            break
+                    case .signedIn(let user):
+                        Telemetry.setUserID(user.id)
+                        Task { await subscription.signedIn(uid: user.id) }
+                    case .signedOut:
+                        Telemetry.setUserID(nil)
+                        Task { await subscription.signedOut() }
+                    case .unknown:
+                        break
                     }
                 }
         }
     }
 
     private func bootstrap() {
+        Telemetry.attach(consent)
+        consent.apply()
+        notifications.bootstrap()
         auth.bootstrap()
         subscription.bootstrap()
         reachability.start()
