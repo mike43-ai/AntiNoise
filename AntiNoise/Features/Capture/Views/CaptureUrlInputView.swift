@@ -20,9 +20,16 @@ struct CaptureUrlInputView: View {
     }
 }
 
+private struct CaptureUrlInputViewPreview: View {
+    @State private var text = ""
+
+    var body: some View {
+        CaptureUrlInputView(text: $text)
+            .padding()
+            .background(Color.bgPrimary)
+    }
+}
+
 #Preview {
-    @Previewable @State var text = ""
-    CaptureUrlInputView(text: $text)
-        .padding()
-        .background(Color.bgPrimary)
+    CaptureUrlInputViewPreview()
 }

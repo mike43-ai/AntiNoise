@@ -34,7 +34,7 @@ enum AuthError: LocalizedError {
 
     init(_ error: Error) {
         let ns = error as NSError
-        guard ns.domain == AuthErrorDomain, let code = AuthErrorCode(rawValue: ns.code) else {
+        guard ns.domain == AuthErrorDomain, let code = AuthErrorCode.Code(rawValue: ns.code) else {
             self = .unknown(ns.localizedDescription)
             return
         }

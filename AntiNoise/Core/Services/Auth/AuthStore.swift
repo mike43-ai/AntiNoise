@@ -28,11 +28,8 @@ final class AuthStore {
         }
     }
 
-    deinit {
-        if let stateHandle {
-            Auth.auth().removeStateDidChangeListener(stateHandle)
-        }
-    }
+    // No deinit cleanup: AuthStore is a singleton owned by App for the
+    // process lifetime, so the Firebase listener never needs removal.
 
     // MARK: Email / password
 

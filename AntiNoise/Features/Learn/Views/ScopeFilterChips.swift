@@ -44,9 +44,16 @@ struct ScopeFilterChips: View {
     }
 }
 
+private struct ScopeFilterChipsPreview: View {
+    @State private var sel: ClassificationScope? = nil
+
+    var body: some View {
+        ScopeFilterChips(selection: $sel)
+            .padding(.vertical)
+            .background(Color.bgPrimary)
+    }
+}
+
 #Preview {
-    @Previewable @State var sel: ClassificationScope? = nil
-    ScopeFilterChips(selection: $sel)
-        .padding(.vertical)
-        .background(Color.bgPrimary)
+    ScopeFilterChipsPreview()
 }

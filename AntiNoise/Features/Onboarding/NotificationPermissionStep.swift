@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct NotificationPermissionStep: View {
     @Environment(NotificationService.self) private var notifications
     let onFinish: () -> Void

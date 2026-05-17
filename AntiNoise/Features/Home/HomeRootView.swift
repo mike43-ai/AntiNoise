@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct HomeRootView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var auth

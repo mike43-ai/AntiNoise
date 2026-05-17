@@ -23,12 +23,12 @@ final class CardGenerator {
 
     private let modelContainer: ModelContainer
     private let client: OpenAIClient
-    private let isOnline: @Sendable () -> Bool
+    private let isOnline: @MainActor () -> Bool
 
     init(
         modelContainer: ModelContainer,
         client: OpenAIClient = OpenAIClient(),
-        isOnline: @escaping @Sendable () -> Bool
+        isOnline: @escaping @MainActor () -> Bool
     ) {
         self.modelContainer = modelContainer
         self.client = client
@@ -53,8 +53,9 @@ final class CardGenerator {
 
         let raw: String
         do {
+            let onlineSnapshot = await MainActor.run { isOnline() }
             raw = try await AIRetryEngine.runWithRetries(
-                isOnline: isOnline,
+                isOnline: { onlineSnapshot },
                 work: { try await client.complete(request: body) },
                 isTransient: { error in
                     if let e = error as? OpenAIClient.ClientError { return e.isTransient }

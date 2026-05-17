@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct SignUpView: View {
     @Environment(AuthStore.self) private var auth
     @Environment(\.dismiss) private var dismiss

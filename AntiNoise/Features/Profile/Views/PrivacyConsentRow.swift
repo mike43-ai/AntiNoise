@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct PrivacyConsentRow: View {
     @Environment(PrivacyConsentStore.self) private var consent
 

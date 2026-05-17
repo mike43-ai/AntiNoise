@@ -8,7 +8,7 @@ import Foundation
 // to bootstrap before Firebase is configured: calls are still typesafe but
 // don't reach the SDK.
 enum Telemetry {
-    nonisolated(unsafe) private static var consentProvider: () -> (analytics: Bool, crashlytics: Bool) = { (true, true) }
+    private static var consentProvider: () -> (analytics: Bool, crashlytics: Bool) = { (true, true) }
 
     @MainActor
     static func attach(_ store: PrivacyConsentStore) {

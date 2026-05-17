@@ -2,7 +2,7 @@ import SwiftUI
 
 struct FlashcardFaceView: View {
     let title: String
-    let body: String
+    let text: String
     let footer: String?
     let isAnswer: Bool
 
@@ -18,7 +18,7 @@ struct FlashcardFaceView: View {
                     .foregroundStyle(isAnswer ? Color.accent : Color.textMuted)
             }
             Spacer()
-            Text(body)
+            Text(text)
                 .appFont(.h2)
                 .multilineTextAlignment(.center)
                 .foregroundStyle(Color.textPrimary)

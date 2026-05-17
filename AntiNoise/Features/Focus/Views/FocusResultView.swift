@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct FocusResultView: View {
     let plannedSeconds: Int
     let elapsedSeconds: Int

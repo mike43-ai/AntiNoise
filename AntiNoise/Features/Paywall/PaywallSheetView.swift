@@ -4,6 +4,7 @@ import SwiftUI
 
 // Thin wrapper around RevenueCatUI's prebuilt PaywallView. Skips designing
 // a custom paywall for the MVP. Dismissal is owned by the parent sheet.
+@MainActor
 struct PaywallSheetView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(SubscriptionStore.self) private var subscription

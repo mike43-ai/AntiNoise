@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct FlashcardReviewView: View {
     let deckID: UUID
 
@@ -83,8 +84,8 @@ struct FlashcardReviewView: View {
 
     private func cardStack(card: Flashcard, isAnswer: Bool) -> some View {
         let face = isAnswer
-            ? FlashcardFaceView(title: "Answer", body: card.answer, footer: card.hint, isAnswer: true)
-            : FlashcardFaceView(title: "Question", body: card.question, footer: card.hint.map { "Hint: \($0)" }, isAnswer: false)
+            ? FlashcardFaceView(title: "Answer", text: card.answer, footer: card.hint, isAnswer: true)
+            : FlashcardFaceView(title: "Question", text: card.question, footer: card.hint.map { "Hint: \($0)" }, isAnswer: false)
 
         return face
             .frame(maxHeight: 360)

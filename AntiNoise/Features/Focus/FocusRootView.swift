@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct FocusRootView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var engine: FocusSessionEngine?

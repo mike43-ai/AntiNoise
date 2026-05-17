@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct FocusSetupView: View {
     let onStart: (_ duration: Int, _ kind: FocusTargetKind, _ id: UUID?, _ label: String?) -> Void
 
@@ -60,7 +61,8 @@ struct FocusSetupView: View {
     }
 
     private func durationSection(bound: FocusSetupModel) -> some View {
-        VStack(alignment: .leading, spacing: AppSpacing.md) {
+        @Bindable var bound = bound
+        return VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("Duration").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
 
             HStack(spacing: AppSpacing.sm) {

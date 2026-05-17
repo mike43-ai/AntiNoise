@@ -1,6 +1,7 @@
 import SwiftUI
 import UserNotifications
 
+@MainActor
 struct NotificationSettingsSection: View {
     @Environment(NotificationService.self) private var notifications
 

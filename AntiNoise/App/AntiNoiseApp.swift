@@ -3,6 +3,7 @@ import SwiftData
 import SwiftUI
 
 @main
+@MainActor
 struct AntiNoiseApp: App {
     @State private var auth = AuthStore()
     @State private var subscription = SubscriptionStore()

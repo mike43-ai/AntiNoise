@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct SummaryDetailView: View {
     let captureID: UUID
 

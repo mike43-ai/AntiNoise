@@ -63,15 +63,22 @@ struct AppTextField: View {
     }
 }
 
-#Preview {
-    @Previewable @State var email = ""
-    @Previewable @State var pass = ""
-    @Previewable @State var withError = "huy"
-    VStack(spacing: AppSpacing.lg) {
-        AppTextField(label: "Email", text: $email, placeholder: "you@email.com", systemImage: "envelope", keyboard: .emailAddress, autocapitalization: .never)
-        AppTextField(label: "Password", text: $pass, placeholder: "••••••••", systemImage: "lock", isSecure: true)
-        AppTextField(label: "Display Name", text: $withError, errorMessage: "Must be at least 4 characters")
+private struct AppTextFieldPreview: View {
+    @State private var email = ""
+    @State private var pass = ""
+    @State private var withError = "huy"
+
+    var body: some View {
+        VStack(spacing: AppSpacing.lg) {
+            AppTextField(label: "Email", text: $email, placeholder: "you@email.com", systemImage: "envelope", keyboard: .emailAddress, autocapitalization: .never)
+            AppTextField(label: "Password", text: $pass, placeholder: "••••••••", systemImage: "lock", isSecure: true)
+            AppTextField(label: "Display Name", text: $withError, errorMessage: "Must be at least 4 characters")
+        }
+        .padding()
+        .background(Color.bgPrimary)
     }
-    .padding()
-    .background(Color.bgPrimary)
+}
+
+#Preview {
+    AppTextFieldPreview()
 }

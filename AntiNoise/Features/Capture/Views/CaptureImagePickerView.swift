@@ -71,9 +71,16 @@ struct CaptureImagePickerView: View {
     }
 }
 
+private struct CaptureImagePickerViewPreview: View {
+    @State private var image: UIImage?
+
+    var body: some View {
+        CaptureImagePickerView(image: $image)
+            .padding()
+            .background(Color.bgPrimary)
+    }
+}
+
 #Preview {
-    @Previewable @State var image: UIImage?
-    CaptureImagePickerView(image: $image)
-        .padding()
-        .background(Color.bgPrimary)
+    CaptureImagePickerViewPreview()
 }

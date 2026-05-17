@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct RootView: View {
     @Environment(AuthStore.self) private var auth
     @Environment(SubscriptionStore.self) private var subscription

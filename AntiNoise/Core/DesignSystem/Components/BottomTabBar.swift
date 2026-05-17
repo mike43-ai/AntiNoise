@@ -59,11 +59,11 @@ private struct BottomTabButton: View {
             VStack(spacing: 2) {
                 Image(systemName: tab.systemImage)
                     .font(.system(size: tab.isCenterAction ? 28 : 22, weight: tab.isCenterAction ? .semibold : .regular))
-                    .foregroundStyle(tab.isCenterAction ? Color.accent : (isSelected ? .textPrimary : .textMuted))
+                    .foregroundStyle(tab.isCenterAction ? Color.accent : (isSelected ? Color.textPrimary : Color.textMuted))
                 if !tab.isCenterAction {
                     Text(tab.title)
                         .appFont(.caption)
-                        .foregroundStyle(isSelected ? .textPrimary : .textMuted)
+                        .foregroundStyle(isSelected ? Color.textPrimary : Color.textMuted)
                 }
             }
             .frame(maxWidth: .infinity, minHeight: 44)
@@ -74,11 +74,18 @@ private struct BottomTabButton: View {
     }
 }
 
-#Preview {
-    @Previewable @State var sel: AppTab = .home
-    VStack {
-        Spacer()
-        BottomTabBar(selection: $sel)
+private struct BottomTabBarPreview: View {
+    @State private var sel: AppTab = .home
+
+    var body: some View {
+        VStack {
+            Spacer()
+            BottomTabBar(selection: $sel)
+        }
+        .background(Color.bgPrimary)
     }
-    .background(Color.bgPrimary)
+}
+
+#Preview {
+    BottomTabBarPreview()
 }

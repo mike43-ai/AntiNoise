@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct FocusActiveView: View {
     @Bindable var engine: FocusSessionEngine
     let targetLabel: String?

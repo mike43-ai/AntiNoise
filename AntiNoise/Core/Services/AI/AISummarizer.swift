@@ -10,18 +10,18 @@ import SwiftData
 final class AISummarizer: SummarizerService {
     private let modelContainer: ModelContainer
     private let client: OpenAIClient
-    private let userScopesProvider: @Sendable () -> Set<GrowthScope>
-    private let uidProvider: @Sendable () -> String?
-    private let isOnline: @Sendable () -> Bool
-    private let isProProvider: @Sendable () -> Bool
+    private let userScopesProvider: @MainActor () -> Set<GrowthScope>
+    private let uidProvider: @MainActor () -> String?
+    private let isOnline: @MainActor () -> Bool
+    private let isProProvider: @MainActor () -> Bool
 
     init(
         modelContainer: ModelContainer,
         client: OpenAIClient = OpenAIClient(),
-        userScopesProvider: @escaping @Sendable () -> Set<GrowthScope>,
-        uidProvider: @escaping @Sendable () -> String?,
-        isOnline: @escaping @Sendable () -> Bool,
-        isProProvider: @escaping @Sendable () -> Bool = { false }
+        userScopesProvider: @escaping @MainActor () -> Set<GrowthScope>,
+        uidProvider: @escaping @MainActor () -> String?,
+        isOnline: @escaping @MainActor () -> Bool,
+        isProProvider: @escaping @MainActor () -> Bool = { false }
     ) {
         self.modelContainer = modelContainer
         self.client = client
@@ -43,8 +43,7 @@ final class AISummarizer: SummarizerService {
         guard let capture = await fetchAndClaim(captureID: captureID, in: context) else { return }
         let kind = capture.kind
 
-        let uid = uidProvider()
-        let isPro = isProProvider()
+        let (uid, isPro) = await MainActor.run { (uidProvider(), isProProvider()) }
         let quotaOk = await MainActor.run { UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro) }
         guard quotaOk else {
             Telemetry.track(.quotaHit(kind: .aiSummary))
@@ -56,7 +55,7 @@ final class AISummarizer: SummarizerService {
 
         do {
             let normalized = try await CaptureNormalizer.normalize(capture)
-            let scopes = userScopesProvider()
+            let scopes = await MainActor.run { userScopesProvider() }
             let messages = PromptBuilder.build(
                 systemMessage: FeynmanPrompt.systemMessage,
                 normalized: normalized,
@@ -70,9 +69,11 @@ final class AISummarizer: SummarizerService {
                 maxTokens: 1500
             )
 
-            let online = isOnline
+            // Snapshot reachability once. Trade-off: we lose live re-check
+            // between retries, but avoid cross-actor hops inside the retry loop.
+            let onlineSnapshot = await MainActor.run { isOnline() }
             let raw = try await AIRetryEngine.runWithRetries(
-                isOnline: online,
+                isOnline: { onlineSnapshot },
                 work: { try await client.complete(request: body) },
                 isTransient: { error in
                     if let e = error as? OpenAIClient.ClientError { return e.isTransient }

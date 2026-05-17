@@ -1,6 +1,7 @@
 import AuthenticationServices
 import SwiftUI
 
+@MainActor
 struct AuthLandingView: View {
     @Environment(AuthStore.self) private var auth
     @State private var isAppleLoading = false

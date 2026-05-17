@@ -1,6 +1,7 @@
 import SwiftData
 import SwiftUI
 
+@MainActor
 struct LearnHubView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var auth

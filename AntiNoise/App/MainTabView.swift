@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 struct MainTabView: View {
     @State private var router = AppRouter()
 

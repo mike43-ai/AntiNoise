@@ -39,9 +39,16 @@ struct CaptureNoteInputView: View {
     }
 }
 
+private struct CaptureNoteInputViewPreview: View {
+    @State private var text = ""
+
+    var body: some View {
+        CaptureNoteInputView(text: $text)
+            .padding()
+            .background(Color.bgPrimary)
+    }
+}
+
 #Preview {
-    @Previewable @State var text = ""
-    CaptureNoteInputView(text: $text)
-        .padding()
-        .background(Color.bgPrimary)
+    CaptureNoteInputViewPreview()
 }
