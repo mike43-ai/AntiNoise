@@ -58,7 +58,7 @@ targets:
         NSPhotoLibraryUsageDescription: Anti Noise reads images from your photo library to summarize them.
         NSPhotoLibraryAddUsageDescription: Anti Noise saves captured screenshots back to your photo library on request.
         ITSAppUsesNonExemptEncryption: false
-        RCAppPublicKey: test_fBSxwCyZnWfqxFxSesLSGcudGUj
+        RCAppPublicKey: appl_TDhiRXcoLJLcbQcRKhdRbVJOwuV
         CFBundleURLTypes:
           - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:
@@ -66,7 +66,7 @@ targets:
     entitlements:
       path: AntiNoise/Resources/AntiNoise.entitlements
       properties:
-        aps-environment: development
+        aps-environment: production
         com.apple.security.application-groups:
           - group.com.antinoise.shared
         com.apple.developer.applesignin:
