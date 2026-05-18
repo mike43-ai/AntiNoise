@@ -161,16 +161,23 @@ Gợi ý: dựng 2 trang static đơn giản trên Cloudflare Pages / GitHub Pag
 
 ```
 Anti Noise requires sign-in to function. Please use the demo account:
-- Email: review@antinoise.app
-- Password: [PROVIDED IN ASC]
+- Email: nvhuy2708@gmail.com
+- Password: [PASTE IN ASC — see Firebase Auth user]
 
-The demo account is pre-seeded with sample captures, AI summaries, and flashcards so you can exercise the full flow without making OpenAI API calls. Pro features are pre-entitled on this account.
+The demo account is pre-seeded with sample captures, AI summaries, and flashcards so you can exercise the full flow without making OpenAI API calls. Pro features are pre-entitled on this account via RevenueCat promotional grant.
 
 Notes:
 - The app uses an OpenAI API key entered by the user (Profile → API Key) for AI summaries. The demo account already has summaries persisted, so no key entry is needed.
 - Push notifications are local-only (review reminders). No remote push.
 - Sign In with Apple is supported. Email/password account creation also available.
 ```
+
+**Internal reference (do not paste to ASC — kept here for debugging):**
+
+- Firebase Auth UID: `AaEQK2j7uHUeKNpdYoNhS0VActP2`
+- RevenueCat App User ID: same as Firebase UID
+- Pro entitlement: granted Lifetime via RC dashboard promotional
+- Password NOT stored in repo — paste directly from password manager into ASC App Review Information field
 
 ## Open Questions
 

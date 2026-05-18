@@ -4,13 +4,13 @@ Items required before App Store submission. Each item is external to the codebas
 
 ## Secrets + Credentials
 
-- [ ] **Firebase `GoogleService-Info.plist`** dropped into `AntiNoise/Resources/` (currently only an `.example.plist` placeholder). App boots without it but auth + analytics are disabled.
-- [ ] **RevenueCat public API key** set in `Info.plist` under key `RCAppPublicKey`. Without it, `SubscriptionStore.bootstrap` short-circuits (logged in DEBUG).
-- [ ] **`DEVELOPMENT_TEAM` set** in `AntiNoise.xcodeproj` (or via `Config.local.xcconfig`). Required for keychain-access-groups + share extension keychain reads.
+- [x] **Firebase `GoogleService-Info.plist`** installed locally from project `antinoise-6601f` (gitignored).
+- [x] **RevenueCat public API key** = `appl_TDhiRXcoLJLcbQcRKhdRbVJOwuV` (production) in `Info.plist`.
+- [x] **`DEVELOPMENT_TEAM`** = `68MQXVWJZ4` in `project.yml`.
 
 ## Entitlements + Capabilities
 
-- [ ] **`aps-environment`** in `AntiNoise/Resources/AntiNoise.entitlements` is `development`. **Flip to `production` for App Store archives** (or wire a Debug/Release split via xcconfig). Without this flip, APNs deliveries to production builds will fail silently.
+- [x] **`aps-environment`** flipped to `production` in `project.yml` (2026-05-18).
 - [ ] **APNs key uploaded** to Firebase Console → Cloud Messaging (only if remote push is added post-MVP; local notifications work without this).
 - [ ] **Sign In with Apple** capability enabled in Apple Developer portal (already in entitlements).
 
@@ -24,9 +24,9 @@ Items required before App Store submission. Each item is external to the codebas
   - Name, subtitle, description, keywords (VI + EN)
   - Support URL, Privacy URL
 - [ ] **Privacy nutrition label** filled to match `AntiNoise/Resources/PrivacyInfo.xcprivacy` (data types: User ID, Email, Name, Purchase History, Product Interaction, Performance Data, Crash Data, User Content). All linked to identity, none used for tracking.
-- [ ] **Demo account** provisioned with sample captures, summaries, and Pro entitlement so App Review can exercise paywall flows.
+- [x] **Demo account** `nvhuy2708@gmail.com` (UID `AaEQK2j7uHUeKNpdYoNhS0VActP2`) provisioned 2026-05-18 with 3 captures + summaries + flashcards + 1 completed Focus session. Pro entitlement granted Lifetime via RC. Password in password manager — paste into ASC App Review Information.
 - [ ] **6.7" + 6.1" screenshots** generated from in-app captures (re-shoot mockups in the real running app, not from `Product UI/` Tailwind exports).
-- [ ] **1024×1024 app icon** from `anti_noise_minimal_wordmark` mockup, exported to `Assets.xcassets`.
+- [x] **1024×1024 app icon** in `Assets.xcassets/AppIcon.appiconset/Icon-1024.png` (no alpha, RGB).
 
 ## Beta + Submission
 
