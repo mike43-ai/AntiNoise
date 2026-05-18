@@ -12,11 +12,14 @@ Items required before App Store submission. Each item is external to the codebas
 
 - [x] **`aps-environment`** flipped to `production` in `project.yml` (2026-05-18).
 - [ ] **APNs key uploaded** to Firebase Console → Cloud Messaging (only if remote push is added post-MVP; local notifications work without this).
-- [ ] **Sign In with Apple** capability enabled in Apple Developer portal (already in entitlements).
+- [x] **Sign In with Apple** capability enabled on App ID `com.antinoise.focus` in Apple Dev portal (2026-05-18).
+- [x] **Push Notifications** capability enabled on App ID `com.antinoise.focus`.
+- [x] **App Group** `group.com.antinoise.shared` registered + assigned to both `com.antinoise.focus` and `com.antinoise.focus.ShareExtension`.
 
 ## App Store Connect
 
-- [ ] **Bundle ID** `com.antinoise.shared` (or whichever production ID) registered.
+- [x] **Bundle IDs registered** on Apple Dev portal (2026-05-18): `com.antinoise.focus` (main app) + `com.antinoise.focus.ShareExtension` (share extension).
+- [ ] **Paid Apps Agreement + Tax (W-8BEN) + Bank info** submitted on ASC 2026-05-18 — awaiting Apple verification (1-7 business days).
 - [ ] **Pro monthly + annual SKUs** created with **7-day intro offer attached to monthly**. SKU IDs must match what `Offering` returns from RevenueCat.
 - [ ] **App Store metadata**:
   - Primary category: **Productivity**
