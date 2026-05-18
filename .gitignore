@@ -67,3 +67,6 @@ GoogleService-Info.plist
 
 # Archive of original assets (one-time import)
 Product UI-20260516T073324Z-3-001.zip
+
+# Tailwind mockup index — regenerated, not source of truth
+Product UI/index.html
