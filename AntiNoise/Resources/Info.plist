@@ -40,7 +40,7 @@
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Anti Noise reads images from your photo library to summarize them.</string>
 	<key>RCAppPublicKey</key>
-	<string>appl_TDhiRXcoLJLcbQcRKhdRbVJOwuV</string>
+	<string>appl_IBXtxoUvtmJQRCdnHXZVbHWzeIW</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
