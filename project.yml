@@ -13,7 +13,7 @@ settings:
     SWIFT_VERSION: "5.10"
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
     MARKETING_VERSION: "1.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    CURRENT_PROJECT_VERSION: "2"
     DEVELOPMENT_TEAM: "68MQXVWJZ4"
     CODE_SIGN_STYLE: Automatic
     ENABLE_USER_SCRIPT_SANDBOXING: NO
@@ -58,7 +58,7 @@ targets:
         NSPhotoLibraryUsageDescription: Anti Noise reads images from your photo library to summarize them.
         NSPhotoLibraryAddUsageDescription: Anti Noise saves captured screenshots back to your photo library on request.
         ITSAppUsesNonExemptEncryption: false
-        RCAppPublicKey: appl_TDhiRXcoLJLcbQcRKhdRbVJOwuV
+        RCAppPublicKey: appl_IBXtxoUvtmJQRCdnHXZVbHWzeIW
         CFBundleURLTypes:
           - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:
