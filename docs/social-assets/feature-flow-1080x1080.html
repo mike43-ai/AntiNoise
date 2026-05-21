@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — Feature flow 1080x1080</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1080px; height: 1080px;
+    background: #F4F1EE;
+    color: #1D1B18;
+    padding: 80px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -250px; right: -250px;
+    width: 600px; height: 600px;
+    background: #FF4F00;
+    border-radius: 50%;
+    opacity: 0.08;
+  }
+  .top { z-index: 2; }
+  .wordmark {
+    font-weight: 900;
+    font-size: 38px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #1D1B18; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .title-block { z-index: 2; }
+  .pretitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: #FF4F00;
+    margin-bottom: 18px;
+  }
+  .title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 68px;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .title .em { color: #FF4F00; font-style: italic; }
+  .flow {
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 24px 26px;
+    background: rgba(29, 27, 24, 0.04);
+    border-left: 4px solid #FF4F00;
+  }
+  .step-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 60px;
+    line-height: 0.8;
+    color: #FF4F00;
+    font-weight: 400;
+    min-width: 60px;
+  }
+  .step-body { flex: 1; }
+  .step-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 32px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 4px;
+  }
+  .step-desc {
+    font-size: 17px;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+  .bottom {
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .tag { font-size: 18px; opacity: 0.5; }
+  .url {
+    font-size: 20px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="wordmark">
+        <div class="anti">ANT<span class="lower">i</span></div>
+        <div class="noise">NOISE</div>
+      </div>
+    </div>
+    <div class="title-block">
+      <div class="pretitle">The whole product</div>
+      <div class="title">Capture →<br>Summarize →<br><span class="em">Remember.</span></div>
+    </div>
+    <div class="flow">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Save anything</div>
+          <div class="step-desc">URL, note, or screenshot — via Share Extension from any app.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">5-part Feynman summary</div>
+          <div class="step-desc">GPT-4o writes a simple explanation, analogy, knowledge gaps, real example, and a deeper question.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Auto-flashcards on schedule</div>
+          <div class="step-desc">3-15 SM-2 cards per summary. Open the app — you only see what you're about to forget.</div>
+        </div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="tag">iOS · AI included · No API key</div>
+      <div class="url">antinoise.pages.dev</div>
+    </div>
+  </div>
+</body>
+</html>

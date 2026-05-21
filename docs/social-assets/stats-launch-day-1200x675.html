@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — Stats (Launch Day) 1200x675</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1200px; height: 675px;
+    background: #1A1916;
+    color: #F6F0EA;
+    padding: 60px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -200px; right: -200px;
+    width: 600px; height: 600px;
+    background: #FF4F00;
+    border-radius: 50%;
+    opacity: 0.18;
+    filter: blur(50px);
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2;
+  }
+  .wordmark {
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #F6F0EA; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .week-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #1A1916;
+    background: #FF4F00;
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+  .title {
+    z-index: 2;
+    font-family: 'Instrument Serif', serif;
+    font-size: 52px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    margin-top: 10px;
+  }
+  .title .em { color: #FF4F00; font-style: italic; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    z-index: 2;
+  }
+  .stat {
+    border-top: 2px solid #FF4F00;
+    padding-top: 14px;
+  }
+  .stat-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+    color: #F6F0EA;
+  }
+  .stat-num .accent { color: #FF4F00; }
+  .stat-label {
+    margin-top: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    opacity: 0.65;
+    line-height: 1.3;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 2;
+  }
+  .takeaway {
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 75%;
+    line-height: 1.45;
+    opacity: 0.85;
+  }
+  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .url {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div>
+      <div class="top">
+        <div class="wordmark">
+          <div class="anti">ANT<span class="lower">i</span></div>
+          <div class="noise">NOISE</div>
+        </div>
+        <div class="week-tag">ProductHunt · Day 0</div>
+      </div>
+      <div class="title">v1.0.1 launch day — <span class="em">honest numbers.</span></div>
+    </div>
+    <div class="grid">
+      <div class="stat">
+        <div class="stat-num">187</div>
+        <div class="stat-label">PH upvotes<br>(currently #14)</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">312</div>
+        <div class="stat-label">Site visits<br>from PH</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">47</div>
+        <div class="stat-label">App Store taps</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num"><span class="accent">8</span></div>
+        <div class="stat-label">Paid trials<br>started</div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="takeaway">
+        Not #1. Not top 5. <span class="em">But trial conversions are the win</span> — not the placement.
+      </div>
+      <div class="url">producthunt.com/posts/anti-noise</div>
+    </div>
+  </div>
+</body>
+</html>

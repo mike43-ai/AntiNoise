@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — Quote (No API key) 1080x1080</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1080px; height: 1080px;
+    background: #1A1916;
+    color: #F6F0EA;
+    padding: 100px 90px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    bottom: -300px; left: -200px;
+    width: 800px; height: 800px;
+    background: #FF4F00;
+    border-radius: 50%;
+    opacity: 0.2;
+    filter: blur(50px);
+  }
+  .top { z-index: 2; }
+  .wordmark {
+    font-weight: 900;
+    font-size: 40px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #F6F0EA; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .quote { z-index: 2; }
+  .pretitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: #FF4F00;
+    margin-bottom: 30px;
+  }
+  .text {
+    font-family: 'Instrument Serif', serif;
+    font-size: 156px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .text .em { color: #FF4F00; font-style: italic; }
+  .sub {
+    margin-top: 50px;
+    font-size: 26px;
+    font-weight: 500;
+    opacity: 0.7;
+    line-height: 1.4;
+  }
+  .bottom {
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .tag { font-size: 20px; opacity: 0.5; }
+  .url {
+    font-size: 22px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="wordmark">
+        <div class="anti">ANT<span class="lower">i</span></div>
+        <div class="noise">NOISE</div>
+      </div>
+    </div>
+    <div class="quote">
+      <div class="pretitle">v1.0.1 changelog</div>
+      <div class="text">
+        No API key.<br>
+        <span class="em">Just sign in.</span>
+      </div>
+      <div class="sub">Sometimes a launch isn't a new feature.<br>It's removing a step.</div>
+    </div>
+    <div class="bottom">
+      <div class="tag">Anti Noise v1.0.1 · Live on the App Store</div>
+      <div class="url">antinoise.pages.dev</div>
+    </div>
+  </div>
+</body>
+</html>

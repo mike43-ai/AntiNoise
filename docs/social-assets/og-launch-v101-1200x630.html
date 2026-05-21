@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — v1.0.1 Launch OG 1200x630</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1200px; height: 630px;
+    background: #1A1916;
+    color: #F6F0EA;
+    padding: 70px 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    bottom: -300px; right: -200px;
+    width: 800px; height: 800px;
+    background: #FF4F00;
+    border-radius: 50%;
+    opacity: 0.18;
+    filter: blur(60px);
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    z-index: 2;
+  }
+  .wordmark {
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #F6F0EA; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #1A1916;
+    background: #FF4F00;
+    padding: 10px 18px;
+    border-radius: 100px;
+  }
+  .hero { z-index: 2; }
+  .pretitle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+    color: #FF4F00;
+    margin-bottom: 14px;
+  }
+  .title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 112px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    font-weight: 400;
+  }
+  .title .em { color: #FF4F00; font-style: italic; }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    z-index: 2;
+  }
+  .tag {
+    font-size: 20px;
+    font-weight: 500;
+    opacity: 0.7;
+    max-width: 560px;
+    line-height: 1.4;
+  }
+  .url {
+    font-size: 18px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top">
+      <div class="wordmark">
+        <div class="anti">ANT<span class="lower">i</span></div>
+        <div class="noise">NOISE</div>
+      </div>
+      <div class="badge">v1.0.1 · Live today</div>
+    </div>
+    <div class="hero">
+      <div class="pretitle">The real launch</div>
+      <div class="title">No API key.<br><span class="em">Just sign in.</span></div>
+    </div>
+    <div class="bottom">
+      <div class="tag">The same Anti Noise — minus the friction. AI included, sign in with Apple.</div>
+      <div class="url">producthunt.com/posts/anti-noise</div>
+    </div>
+  </div>
+</body>
+</html>

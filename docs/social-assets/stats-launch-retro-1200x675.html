@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — Stats (Launch Retro) 1200x675</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1200px; height: 675px;
+    background: #F4F1EE;
+    color: #1D1B18;
+    padding: 60px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wordmark {
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #1D1B18; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .week-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #FF4F00;
+    background: rgba(255, 79, 0, 0.12);
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+  .title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 50px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    margin-top: 10px;
+  }
+  .title .em { color: #FF4F00; font-style: italic; }
+  .funnel {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .step {
+    flex: 1;
+    background: rgba(29, 27, 24, 0.05);
+    padding: 18px 16px;
+    border-left: 3px solid #FF4F00;
+  }
+  .step-num {
+    font-family: 'Instrument Serif', serif;
+    font-size: 40px;
+    line-height: 1;
+    font-weight: 400;
+    color: #1D1B18;
+    letter-spacing: -0.02em;
+  }
+  .step-label {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0.7;
+  }
+  .step-rate {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: #FF4F00;
+    margin-top: 4px;
+  }
+  .arrow {
+    font-size: 24px;
+    color: #FF4F00;
+    font-weight: 900;
+    opacity: 0.5;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .takeaway {
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 75%;
+    line-height: 1.45;
+  }
+  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .url {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div>
+      <div class="top">
+        <div class="wordmark">
+          <div class="anti">ANT<span class="lower">i</span></div>
+          <div class="noise">NOISE</div>
+        </div>
+        <div class="week-tag">48-hour launch funnel</div>
+      </div>
+      <div class="title">PH + HN launch — <span class="em">conversion funnel.</span></div>
+    </div>
+    <div class="funnel">
+      <div class="step">
+        <div class="step-num">580</div>
+        <div class="step-label">Store visits</div>
+        <div class="step-rate">100%</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-num">142</div>
+        <div class="step-label">Installs</div>
+        <div class="step-rate">24%</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-num">89</div>
+        <div class="step-label">Signups</div>
+        <div class="step-rate">63%</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-num">67</div>
+        <div class="step-label">First AI<br>summary</div>
+        <div class="step-rate">75%</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="step">
+        <div class="step-num">40</div>
+        <div class="step-label">Paid<br>trials</div>
+        <div class="step-rate">60%</div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="takeaway">
+        Activation feels solid. <span class="em">v1.0.1 server proxy was worth the delay.</span><br>v1.0 BYOK would have killed this.
+      </div>
+      <div class="url">antinoise.pages.dev</div>
+    </div>
+  </div>
+</body>
+</html>

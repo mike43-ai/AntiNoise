@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Anti Noise — Comparison (TL;DR vs Feynman) 1200x675</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  .card {
+    width: 1200px; height: 675px;
+    background: #F4F1EE;
+    color: #1D1B18;
+    padding: 60px 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Inter', sans-serif;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .wordmark {
+    font-weight: 900;
+    font-size: 26px;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+  .wordmark .anti { color: #1D1B18; }
+  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti .lower { text-transform: none; }
+  .week-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #FF4F00;
+    background: rgba(255, 79, 0, 0.12);
+    padding: 8px 16px;
+    border-radius: 100px;
+  }
+  .title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 48px;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    font-weight: 400;
+    margin-top: 10px;
+  }
+  .title .em { color: #FF4F00; font-style: italic; }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  .col {
+    padding: 22px 24px;
+    background: rgba(29, 27, 24, 0.04);
+    border-top: 3px solid;
+  }
+  .col-a { border-top-color: #999; }
+  .col-b { border-top-color: #FF4F00; background: rgba(255, 79, 0, 0.06); }
+  .col-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+    margin-bottom: 8px;
+  }
+  .col-b .col-tag { color: #FF4F00; opacity: 1; }
+  .col-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 30px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 14px;
+  }
+  .col-b .col-title { color: #FF4F00; }
+  .item {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 6px;
+    opacity: 0.85;
+  }
+  .item::before {
+    content: '·';
+    color: #FF4F00;
+    font-weight: 900;
+    margin-right: 8px;
+  }
+  .bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .takeaway {
+    font-size: 17px;
+    font-weight: 500;
+    max-width: 75%;
+    line-height: 1.45;
+  }
+  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .url {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FF4F00;
+    font-family: 'JetBrains Mono', monospace;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div>
+      <div class="top">
+        <div class="wordmark">
+          <div class="anti">ANT<span class="lower">i</span></div>
+          <div class="noise">NOISE</div>
+        </div>
+        <div class="week-tag">Why Feynman, not TL;DR</div>
+      </div>
+      <div class="title">Two opposite ways to <span class="em">summarize with AI.</span></div>
+    </div>
+    <div class="compare">
+      <div class="col col-a">
+        <div class="col-tag">Most AI summary apps</div>
+        <div class="col-title">TL;DR</div>
+        <div class="item">You skim</div>
+        <div class="item">You move on</div>
+        <div class="item">You remember nothing</div>
+        <div class="item">You re-bookmark in 6 months</div>
+      </div>
+      <div class="col col-b">
+        <div class="col-tag">Anti Noise</div>
+        <div class="col-title">Feynman</div>
+        <div class="item">You explained it to yourself</div>
+        <div class="item">Knowledge gap was named</div>
+        <div class="item">Real example anchored it</div>
+        <div class="item">A flashcard tests you later</div>
+      </div>
+    </div>
+    <div class="bottom">
+      <div class="takeaway">
+        TL;DR optimizes for <em>"didn't have to read it."</em><br>
+        <span class="em">Feynman optimizes for "understood it well enough to teach it."</span>
+      </div>
+      <div class="url">antinoise.pages.dev</div>
+    </div>
+  </div>
+</body>
+</html>
