@@ -4,93 +4,154 @@
 <meta charset="UTF-8">
 <title>Anti Noise — v1.0.1 Launch OG 1200x630</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 630px;
-    background: #1A1916;
-    color: #F6F0EA;
-    padding: 70px 80px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 60px 72px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .card::before {
     content: '';
     position: absolute;
-    bottom: -300px; right: -200px;
-    width: 800px; height: 800px;
-    background: #FF4F00;
+    bottom: -160px; right: -100px;
+    width: 420px; height: 420px;
+    background: var(--accent);
     border-radius: 50%;
-    opacity: 0.18;
-    filter: blur(60px);
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: 0;
+  }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -100px; left: -100px;
+    width: 280px; height: 280px;
+    background: var(--violet);
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: 0.35;
+    z-index: 0;
   }
   .top {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     z-index: 2;
+    position: relative;
   }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: 28px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-size: 30px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #F6F0EA; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--paper); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #1A1916;
-    background: #FF4F00;
-    padding: 10px 18px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--paper);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--accent);
   }
-  .hero { z-index: 2; }
+  .hero { z-index: 2; position: relative; }
   .pretitle {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     font-weight: 700;
-    color: #FF4F00;
-    margin-bottom: 14px;
+    color: var(--lime);
+    margin-bottom: 16px;
   }
   .title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 112px;
-    line-height: 0.95;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 104px;
+    line-height: 0.9;
     letter-spacing: -0.03em;
-    font-weight: 400;
+    text-transform: uppercase;
   }
-  .title .em { color: #FF4F00; font-style: italic; }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--paper);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -6px; right: -6px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .bottom {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     z-index: 2;
+    position: relative;
   }
   .tag {
-    font-size: 20px;
+    font-family: 'Archivo', sans-serif;
     font-weight: 500;
-    opacity: 0.7;
+    font-size: 18px;
+    color: rgba(244, 241, 234, 0.7);
     max-width: 560px;
     line-height: 1.4;
   }
   .url {
-    font-size: 18px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 8px 14px;
+    border: 2px solid var(--paper);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--accent);
+  }
+  .sticker {
+    position: absolute;
+    top: 220px; right: 70px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--violet);
+    color: var(--paper);
+    padding: 10px 16px;
+    border: 2px solid var(--paper);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--accent);
+    transform: rotate(8deg);
+    z-index: 3;
   }
 </style>
 </head>
@@ -105,8 +166,9 @@
     </div>
     <div class="hero">
       <div class="pretitle">The real launch</div>
-      <div class="title">No API key.<br><span class="em">Just sign in.</span></div>
+      <div class="title">No API key.<br><span class="hl">Just sign in.</span></div>
     </div>
+    <div class="sticker">launch day</div>
     <div class="bottom">
       <div class="tag">The same Anti Noise — minus the friction. AI included, sign in with Apple.</div>
       <div class="url">producthunt.com/posts/anti-noise</div>

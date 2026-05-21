@@ -4,112 +4,162 @@
 <meta charset="UTF-8">
 <title>Anti Noise — Stats (Launch Day) 1200x675</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 675px;
-    background: #1A1916;
-    color: #F6F0EA;
-    padding: 60px 70px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 56px 64px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .card::before {
     content: '';
     position: absolute;
-    top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: #FF4F00;
+    top: -120px; right: -120px;
+    width: 360px; height: 360px;
+    background: var(--accent);
     border-radius: 50%;
-    opacity: 0.18;
-    filter: blur(50px);
+    filter: blur(80px);
+    opacity: 0.4;
+    z-index: 0;
   }
   .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 2;
+    position: relative;
   }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
     font-size: 26px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #F6F0EA; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--paper); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .week-tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #1A1916;
-    background: #FF4F00;
-    padding: 8px 16px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--paper);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--accent);
   }
   .title {
-    z-index: 2;
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
     font-size: 52px;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 400;
-    margin-top: 10px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-top: 14px;
+    z-index: 2;
+    position: relative;
   }
-  .title .em { color: #FF4F00; font-style: italic; }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--paper);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
+    gap: 18px;
     z-index: 2;
+    position: relative;
   }
   .stat {
-    border-top: 2px solid #FF4F00;
-    padding-top: 14px;
+    border: 3px solid var(--paper);
+    border-radius: 14px;
+    background: var(--ink);
+    padding: 22px 20px;
+    box-shadow: 5px 5px 0 var(--paper);
   }
+  .stat:nth-child(2) { background: var(--accent); border-color: var(--paper); box-shadow: 5px 5px 0 var(--paper); }
+  .stat:nth-child(3) { background: var(--violet); border-color: var(--paper); box-shadow: 5px 5px 0 var(--paper); }
+  .stat:nth-child(4) { background: var(--lime); border-color: var(--paper); box-shadow: 5px 5px 0 var(--paper); }
   .stat-num {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
     font-size: 60px;
     line-height: 1;
-    letter-spacing: -0.03em;
-    font-weight: 400;
-    color: #F6F0EA;
+    letter-spacing: -0.04em;
   }
-  .stat-num .accent { color: #FF4F00; }
+  .stat:nth-child(1) .stat-num { color: var(--paper); }
+  .stat:nth-child(2) .stat-num { color: var(--paper); }
+  .stat:nth-child(3) .stat-num { color: var(--paper); }
+  .stat:nth-child(4) .stat-num { color: var(--ink); }
+  .stat-num .accent { color: var(--ink); }
   .stat-label {
     margin-top: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    opacity: 0.65;
-    line-height: 1.3;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.35;
   }
+  .stat:nth-child(1) .stat-label { color: rgba(244, 241, 234, 0.7); }
+  .stat:nth-child(2) .stat-label { color: rgba(244, 241, 234, 0.85); }
+  .stat:nth-child(3) .stat-label { color: rgba(244, 241, 234, 0.85); }
+  .stat:nth-child(4) .stat-label { color: var(--ink); }
   .bottom {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     z-index: 2;
+    position: relative;
   }
   .takeaway {
+    font-family: 'Archivo', sans-serif;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
+    color: rgba(244, 241, 234, 0.9);
     max-width: 75%;
     line-height: 1.45;
-    opacity: 0.85;
   }
-  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .takeaway .em { color: var(--lime); font-weight: 800; text-transform: uppercase; }
   .url {
-    font-size: 16px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 8px 14px;
+    border: 2px solid var(--paper);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--accent);
   }
 </style>
 </head>
@@ -123,7 +173,7 @@
         </div>
         <div class="week-tag">ProductHunt · Day 0</div>
       </div>
-      <div class="title">v1.0.1 launch day — <span class="em">honest numbers.</span></div>
+      <div class="title">v1.0.1 launch day — <span class="hl">honest numbers.</span></div>
     </div>
     <div class="grid">
       <div class="stat">

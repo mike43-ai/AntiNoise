@@ -4,55 +4,94 @@
 <meta charset="UTF-8">
 <title>Anti Noise — OG image 1200x630</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 630px;
-    background: #F4F1EE;
-    color: #1D1B18;
-    padding: 80px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 64px 72px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
+  /* lime decorative blob — small + brighter */
   .card::before {
     content: '';
     position: absolute;
-    top: -200px; right: -200px;
-    width: 600px; height: 600px;
-    background: #FF4F00;
+    top: -120px; right: -120px;
+    width: 380px; height: 380px;
+    background: var(--lime);
     border-radius: 50%;
-    opacity: 0.08;
+    filter: blur(70px);
+    opacity: 0.45;
+    z-index: 0;
   }
   .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     z-index: 2;
   }
   .wordmark {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: 32px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-size: 34px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #1D1B18; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--ink); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
-  .hero {
-    z-index: 2;
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
+  .hero { z-index: 2; }
   .hook {
-    font-family: 'Instrument Serif', serif;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
     font-size: 78px;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
     max-width: 1000px;
   }
-  .hook .accent { color: #FF4F00; font-style: italic; }
+  /* highlight block under one keyword */
+  .hook .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--ink);
+  }
+  .hook .hl::after {
+    content: "";
+    position: absolute;
+    left: -6px; right: -6px;
+    bottom: 8%;
+    height: 38%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .bottom {
     display: flex;
     justify-content: space-between;
@@ -60,16 +99,41 @@
     z-index: 2;
   }
   .tag {
-    font-size: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
     font-weight: 500;
-    color: #1D1B18;
-    opacity: 0.7;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
   }
   .url {
-    font-size: 18px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--accent);
+    padding: 8px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  /* tilted sticker bottom-left */
+  .sticker {
+    position: absolute;
+    bottom: 130px; right: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--violet);
+    color: var(--paper);
+    padding: 9px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--ink);
+    transform: rotate(7deg);
+    z-index: 2;
   }
 </style>
 </head>
@@ -80,13 +144,15 @@
         <div class="anti">ANT<span class="lower">i</span></div>
         <div class="noise">NOISE</div>
       </div>
+      <div class="badge">iOS · AI Feynman + Flashcards</div>
     </div>
     <div class="hero">
       <div class="hook">
         Turn the articles you save<br>
-        into <span class="accent">knowledge you'll<br>actually remember.</span>
+        into <span class="hl">knowledge you'll<br>actually remember.</span>
       </div>
     </div>
+    <div class="sticker">save → remember</div>
     <div class="bottom">
       <div class="tag">AI Feynman summaries + auto flashcards · iOS</div>
       <div class="url">antinoise.pages.dev</div>

@@ -4,106 +4,143 @@
 <meta charset="UTF-8">
 <title>Anti Noise — Stats card 1200x675</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 675px;
-    background: #F4F1EE;
-    color: #1D1B18;
-    padding: 70px 80px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 56px 64px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .brand-row {
-    display: flex;
-    align-items: center;
-  }
   .wordmark {
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
     font-size: 28px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #1D1B18; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--ink); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .week-tag {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: #FF4F00;
-    background: rgba(255, 79, 0, 0.1);
-    padding: 8px 14px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
   .title-row {
-    margin-top: 30px;
+    margin-top: 28px;
   }
   .title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 56px;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 400;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 54px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--ink);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
   }
   .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 24px;
-    margin-top: 10px;
+    gap: 18px;
   }
   .stat {
-    border-top: 2px solid #1D1B18;
-    padding-top: 16px;
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    background: var(--paper);
+    padding: 22px 20px;
+    box-shadow: 5px 5px 0 var(--ink);
   }
+  .stat:nth-child(2) { background: var(--paper-2); }
+  .stat:nth-child(3) { background: var(--lime); box-shadow: 5px 5px 0 var(--ink); }
+  .stat:nth-child(4) { background: var(--ink); color: var(--paper); box-shadow: 5px 5px 0 var(--accent); }
   .stat-num {
-    font-family: 'Instrument Serif', serif;
-    font-size: 64px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 68px;
     line-height: 1;
-    letter-spacing: -0.03em;
-    font-weight: 400;
-    color: #1D1B18;
+    letter-spacing: -0.04em;
   }
-  .stat-num .accent { color: #FF4F00; }
+  .stat:nth-child(1) .stat-num { color: var(--ink); }
+  .stat:nth-child(2) .stat-num { color: var(--accent); }
+  .stat:nth-child(3) .stat-num { color: var(--ink); }
+  .stat:nth-child(4) .stat-num { color: var(--lime); }
+  .stat-num .accent { color: var(--accent); }
   .stat-label {
     margin-top: 10px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #1D1B18;
-    opacity: 0.7;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
     line-height: 1.3;
   }
+  .stat:nth-child(4) .stat-label { color: rgba(244, 241, 234, 0.7); }
   .bottom {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }
   .takeaway {
+    font-family: 'Archivo', sans-serif;
     font-size: 18px;
-    font-weight: 500;
-    color: #1D1B18;
-    max-width: 70%;
-    line-height: 1.4;
-  }
-  .takeaway .em { color: #FF4F00; font-weight: 600; }
-  .url {
-    font-size: 16px;
     font-weight: 600;
-    color: #FF4F00;
+    color: var(--ink);
+    max-width: 70%;
+    line-height: 1.45;
+  }
+  .takeaway .em { color: var(--accent); font-weight: 800; text-transform: uppercase; }
+  .url {
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--accent);
+    padding: 8px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
 </style>
 </head>
@@ -111,16 +148,14 @@
   <div class="card">
     <div>
       <div class="top">
-        <div class="brand-row">
-          <div class="wordmark">
-            <div class="anti">ANT<span class="lower">i</span></div>
-            <div class="noise">NOISE</div>
-          </div>
+        <div class="wordmark">
+          <div class="anti">ANT<span class="lower">i</span></div>
+          <div class="noise">NOISE</div>
         </div>
         <div class="week-tag">Week 1 · Building in public</div>
       </div>
       <div class="title-row">
-        <div class="title">First 7 days of Anti Noise live.</div>
+        <div class="title">First 7 days of <span class="hl">Anti Noise</span> live.</div>
       </div>
     </div>
     <div class="grid">

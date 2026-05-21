@@ -1,6 +1,6 @@
 # Anti Noise — Social Assets
 
-13 ready-to-use social-card templates cho 6-week X/Twitter content + launch. Tất cả standalone HTML, brand-matched (cream + warm dark + orange #FF4F00), wordmark "ANTi/NOISE" thật.
+13 ready-to-use social-card templates cho 6-week X/Twitter content + launch. Tất cả standalone HTML, brand-matched neo-brutalist (paper #f4f1ea + ink #0a0a0a + signal orange #ff5e1a + lime #c6ff3a + violet #7b5cff), wordmark "ANTi/NOISE" Archivo 900.
 
 ## Quick start
 
@@ -41,29 +41,40 @@ Tất cả số liệu trong cards là **placeholder draft** — sửa text th�
 
 Mở file HTML trong text editor, search số → replace. Re-export.
 
-## Brand tokens (consistent across all)
+## Brand tokens (consistent across all — matches `landing/index.html`)
 
 | Token | Value | Use |
 |---|---|---|
-| Bg primary (light) | `#F4F1EE` | OG, light quote, light stats |
-| Bg primary (dark) | `#1A1916` | Dark quote, v1.0.1 launch OG, dark stats |
-| Text primary (light bg) | `#1D1B18` | |
-| Text primary (dark bg) | `#F6F0EA` | |
-| Accent orange | `#FF4F00` | All emphasis, wordmark "NOISE", buttons, badges |
-| Wordmark font | Inter 900 -0.04em | "ANTi" / "NOISE" 2-line |
-| Display serif | Instrument Serif | Headlines, quotes, stats numbers |
-| Body sans | Inter 500-700 | Labels, tags |
-| Mono | JetBrains Mono | Badges, URLs, dates, code |
+| `--paper` (light bg) | `#f4f1ea` | OG, light quote, light stats — default majority |
+| `--paper-2` (light bg alt) | `#ebe7dd` | Stat box alt fill |
+| `--ink` (dark bg, all borders, text) | `#0a0a0a` | Dark quote (graveyard, no-api-key), v1.0.1 launch OG, all 3px borders |
+| `--accent` (signal orange) | `#ff5e1a` | Wordmark "NOISE", highlight blocks, accent shadows, badges |
+| `--lime` (genz pop) | `#c6ff3a` | Badges, accent stat boxes, lime-tinted comparison column |
+| `--violet` (genz pop) | `#7b5cff` | Stickers, occasional stat box, secondary highlight |
+| `--muted` (light bg text) | `#5a5650` | Captions, mono labels on paper |
+| Display / titles / wordmark | Archivo 900 -0.03em uppercase | "ANTi"/"NOISE", h1/h2 titles, stat numbers |
+| Body | Archivo 500-700 | Body copy, takeaways |
+| Mono | JetBrains Mono 500-700 | Eyebrows, dates, URLs, badges |
+| Logo accent (optional) | Space Grotesk 700 | Step numbers in feature-flow |
+
+### Neo-brutalist signatures
+- 3px solid `--ink` borders on stat boxes, comparison columns, panels
+- Hard offset shadows no blur: `5px 5px 0 var(--ink)` or `5px 5px 0 var(--accent)` for emphasis
+- Bordered pill badges: `border:2px solid var(--ink); background:var(--lime|--accent|--violet); box-shadow:3px 3px 0 var(--ink)`
+- Headline highlight `.hl::after` — rotated -1.5deg accent block behind one keyword
+- Tilted stickers (rotate 6-8deg) in corners
+- Decorative blur blobs sparingly (smaller, brighter, opacity 0.3-0.5) for soft depth on dark bg
 
 ## Adding new templates
 
 Pattern theo các file hiện có:
-1. Standalone HTML — không external CSS
+1. Standalone HTML — không external CSS, chỉ Google Fonts qua `@import`
 2. Body có dark `#2a2a2a` wrapper để preview
-3. `.card` có size exact = filename
-4. Wordmark dùng inline structure `<div class="anti">ANT<span class="lower">i</span></div><div class="noise">NOISE</div>`
-5. Decorative circle accent: `position: absolute; opacity: 0.08-0.18; background: #FF4F00; border-radius: 50%`
-6. Save as `{type}-{topic}-{WxH}.html` kebab-case
+3. `.card` có size exact = filename (1200×630, 1200×675, hoặc 1080×1080)
+4. Define `:root` với 7 CSS variables (--ink/--paper/--paper-2/--accent/--lime/--violet/--muted)
+5. Wordmark dùng inline structure `<div class="anti">ANT<span class="lower">i</span></div><div class="noise">NOISE</div>` với Archivo 900 -0.03em uppercase
+6. Highlight pattern: `<span class="hl">word</span>` + `.hl::after` rotated block
+7. Save as `{type}-{topic}-{WxH}.html` kebab-case
 
 ## Capacity reality
 

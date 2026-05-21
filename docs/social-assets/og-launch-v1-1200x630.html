@@ -4,29 +4,36 @@
 <meta charset="UTF-8">
 <title>Anti Noise — v1.0 Launch OG 1200x630</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 630px;
-    background: #F4F1EE;
-    color: #1D1B18;
-    padding: 70px 80px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 60px 72px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .card::before {
     content: '';
     position: absolute;
-    top: -250px; right: -150px;
-    width: 700px; height: 700px;
-    background: #FF4F00;
+    bottom: -120px; right: -100px;
+    width: 340px; height: 340px;
+    background: var(--violet);
     border-radius: 50%;
-    opacity: 0.08;
+    filter: blur(80px);
+    opacity: 0.35;
+    z-index: 0;
   }
   .top {
     display: flex;
@@ -35,43 +42,62 @@
     z-index: 2;
   }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: 28px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-size: 30px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #1D1B18; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--ink); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .badge {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #FF4F00;
-    background: rgba(255, 79, 0, 0.12);
-    padding: 10px 18px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
   .hero { z-index: 2; }
   .pretitle {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     font-weight: 700;
-    color: #FF4F00;
-    margin-bottom: 14px;
+    color: var(--accent);
+    margin-bottom: 16px;
   }
   .title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 96px;
-    line-height: 1;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 88px;
+    line-height: 0.92;
     letter-spacing: -0.03em;
-    font-weight: 400;
+    text-transform: uppercase;
   }
-  .title .em { color: #FF4F00; font-style: italic; }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--ink);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -6px; right: -6px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .bottom {
     display: flex;
     justify-content: space-between;
@@ -79,17 +105,40 @@
     z-index: 2;
   }
   .tag {
-    font-size: 20px;
+    font-family: 'Archivo', sans-serif;
     font-weight: 500;
-    opacity: 0.7;
+    font-size: 18px;
+    color: var(--muted);
     max-width: 560px;
     line-height: 1.4;
   }
   .url {
-    font-size: 18px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--accent);
+    padding: 8px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
+  }
+  .sticker {
+    position: absolute;
+    top: 220px; right: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 9px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--accent);
+    transform: rotate(8deg);
+    z-index: 2;
   }
 </style>
 </head>
@@ -104,8 +153,9 @@
     </div>
     <div class="hero">
       <div class="pretitle">12 weeks · solo · built in public</div>
-      <div class="title">Save anything.<br><span class="em">Remember everything.</span></div>
+      <div class="title">Save anything.<br><span class="hl">Remember everything.</span></div>
     </div>
+    <div class="sticker">shipped</div>
     <div class="bottom">
       <div class="tag">AI Feynman summaries + auto flashcards for iOS knowledge workers.</div>
       <div class="url">antinoise.pages.dev</div>

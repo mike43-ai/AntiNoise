@@ -4,78 +4,150 @@
 <meta charset="UTF-8">
 <title>Anti Noise — Quote (No API key) 1080x1080</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1080px; height: 1080px;
-    background: #1A1916;
-    color: #F6F0EA;
-    padding: 100px 90px;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 90px 80px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .card::before {
     content: '';
     position: absolute;
-    bottom: -300px; left: -200px;
-    width: 800px; height: 800px;
-    background: #FF4F00;
+    bottom: -240px; left: -140px;
+    width: 540px; height: 540px;
+    background: var(--accent);
     border-radius: 50%;
-    opacity: 0.2;
-    filter: blur(50px);
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: 0;
   }
-  .top { z-index: 2; }
+  .card::after {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 320px; height: 320px;
+    background: var(--lime);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    z-index: 0;
+  }
+  .top {
+    z-index: 2;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    font-size: 40px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    font-size: 42px;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #F6F0EA; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--paper); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
-  .quote { z-index: 2; }
+  .corner-sticker {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    background: var(--lime);
+    color: var(--ink);
+    padding: 9px 14px;
+    border: 2px solid var(--paper);
+    border-radius: 10px;
+    box-shadow: 4px 4px 0 var(--accent);
+    transform: rotate(8deg);
+  }
+  .quote {
+    z-index: 2;
+    position: relative;
+  }
   .pretitle {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 18px;
+    font-size: 16px;
     text-transform: uppercase;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.18em;
     font-weight: 700;
-    color: #FF4F00;
-    margin-bottom: 30px;
+    color: var(--lime);
+    margin-bottom: 28px;
   }
   .text {
-    font-family: 'Instrument Serif', serif;
-    font-size: 156px;
-    line-height: 0.95;
-    letter-spacing: -0.03em;
-    font-weight: 400;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 132px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    text-transform: uppercase;
   }
-  .text .em { color: #FF4F00; font-style: italic; }
+  .text .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--paper);
+  }
+  .text .hl::after {
+    content: "";
+    position: absolute;
+    left: -6px; right: -6px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .sub {
-    margin-top: 50px;
+    margin-top: 44px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
     font-size: 26px;
-    font-weight: 500;
-    opacity: 0.7;
+    color: rgba(244, 241, 234, 0.8);
     line-height: 1.4;
   }
+  .sub .em { color: var(--lime); font-weight: 800; text-transform: uppercase; }
   .bottom {
     z-index: 2;
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }
-  .tag { font-size: 20px; opacity: 0.5; }
-  .url {
-    font-size: 22px;
-    font-weight: 600;
-    color: #FF4F00;
+  .tag {
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 500;
+    color: rgba(244, 241, 234, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .url {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--paper);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--accent);
   }
 </style>
 </head>
@@ -86,14 +158,15 @@
         <div class="anti">ANT<span class="lower">i</span></div>
         <div class="noise">NOISE</div>
       </div>
+      <div class="corner-sticker">live today</div>
     </div>
     <div class="quote">
       <div class="pretitle">v1.0.1 changelog</div>
       <div class="text">
         No API key.<br>
-        <span class="em">Just sign in.</span>
+        <span class="hl">Just sign in.</span>
       </div>
-      <div class="sub">Sometimes a launch isn't a new feature.<br>It's removing a step.</div>
+      <div class="sub">Sometimes a launch isn't a new feature.<br><span class="em">It's removing a step.</span></div>
     </div>
     <div class="bottom">
       <div class="tag">Anti Noise v1.0.1 · Live on the App Store</div>

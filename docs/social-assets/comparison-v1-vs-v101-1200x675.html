@@ -4,139 +4,161 @@
 <meta charset="UTF-8">
 <title>Anti Noise — Comparison (v1.0 vs v1.0.1) 1200x675</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 675px;
-    background: #1A1916;
-    color: #F6F0EA;
-    padding: 60px 70px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 52px 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
-  }
-  .card::before {
-    content: '';
-    position: absolute;
-    bottom: -250px; right: -150px;
-    width: 600px; height: 600px;
-    background: #FF4F00;
-    border-radius: 50%;
-    opacity: 0.15;
-    filter: blur(60px);
+    font-family: 'Archivo', sans-serif;
   }
   .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 2;
   }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
     font-size: 26px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #F6F0EA; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--ink); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .week-tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #1A1916;
-    background: #FF4F00;
-    padding: 8px 16px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    background: var(--violet);
+    color: var(--paper);
+    padding: 9px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
   .title {
-    z-index: 2;
-    font-family: 'Instrument Serif', serif;
-    font-size: 48px;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 400;
-    margin-top: 10px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 46px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-top: 12px;
   }
-  .title .em { color: #FF4F00; font-style: italic; }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--ink);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .compare {
     display: grid;
-    grid-template-columns: 1fr 80px 1fr;
-    gap: 20px;
-    align-items: center;
-    z-index: 2;
+    grid-template-columns: 1fr 70px 1fr;
+    gap: 14px;
+    align-items: stretch;
   }
   .col {
-    padding: 24px 26px;
-    border-radius: 4px;
-  }
-  .col-a {
-    background: rgba(246, 240, 234, 0.05);
-    border-left: 3px solid #666;
+    padding: 22px 24px;
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    background: var(--paper-2);
+    box-shadow: 5px 5px 0 var(--ink);
   }
   .col-b {
-    background: rgba(255, 79, 0, 0.12);
-    border-left: 3px solid #FF4F00;
+    background: var(--lime);
+    box-shadow: 5px 5px 0 var(--accent);
   }
   .col-version {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.1em;
-    opacity: 0.65;
+    color: var(--muted);
     margin-bottom: 6px;
+    text-transform: uppercase;
   }
-  .col-b .col-version { color: #FF4F00; opacity: 1; }
+  .col-b .col-version { color: var(--ink); }
   .col-headline {
-    font-family: 'Instrument Serif', serif;
-    font-size: 28px;
-    line-height: 1.1;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 24px;
+    line-height: 1.05;
     letter-spacing: -0.02em;
+    text-transform: uppercase;
     margin-bottom: 14px;
+    color: var(--ink);
   }
-  .col-b .col-headline { color: #FF4F00; }
   .item {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
     font-size: 14px;
     line-height: 1.6;
-    opacity: 0.85;
+    color: var(--ink);
     display: flex;
     gap: 8px;
+    align-items: flex-start;
   }
-  .item-a::before { content: '✗'; color: #888; font-weight: 700; }
-  .item-b::before { content: '✓'; color: #FF4F00; font-weight: 700; }
+  .item-a::before { content: '✗'; color: var(--muted); font-weight: 900; flex-shrink: 0; }
+  .item-b::before { content: '✓'; color: var(--accent); font-weight: 900; flex-shrink: 0; }
   .arrow-col {
-    font-family: 'Instrument Serif', serif;
-    font-size: 60px;
-    color: #FF4F00;
+    align-self: center;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--accent);
     text-align: center;
     line-height: 1;
-    font-style: italic;
   }
   .bottom {
-    z-index: 2;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }
   .takeaway {
+    font-family: 'Archivo', sans-serif;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
     max-width: 75%;
     line-height: 1.45;
-    opacity: 0.85;
+    color: var(--ink);
   }
-  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .takeaway .em { color: var(--accent); font-weight: 800; text-transform: uppercase; }
   .url {
-    font-size: 16px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--accent);
+    padding: 8px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
 </style>
 </head>
@@ -150,7 +172,7 @@
         </div>
         <div class="week-tag">What changed in v1.0.1</div>
       </div>
-      <div class="title">Sometimes a launch is <span class="em">removing a step.</span></div>
+      <div class="title">Sometimes a launch is <span class="hl">removing a step.</span></div>
     </div>
     <div class="compare">
       <div class="col col-a">

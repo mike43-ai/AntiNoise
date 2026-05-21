@@ -4,20 +4,25 @@
 <meta charset="UTF-8">
 <title>Anti Noise — Comparison (TL;DR vs Feynman) 1200x675</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@400;500;600;700;900&family=JetBrains+Mono:wght@500;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap');
+  :root{
+    --ink:#0a0a0a; --paper:#f4f1ea; --paper-2:#ebe7dd;
+    --accent:#ff5e1a; --lime:#c6ff3a; --violet:#7b5cff;
+    --muted:#5a5650;
+  }
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+  body { background: #2a2a2a; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; font-family: 'Archivo', sans-serif; }
   .card {
     width: 1200px; height: 675px;
-    background: #F4F1EE;
-    color: #1D1B18;
-    padding: 60px 70px;
+    background: var(--paper);
+    color: var(--ink);
+    padding: 52px 60px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     position: relative;
     overflow: hidden;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Archivo', sans-serif;
   }
   .top {
     display: flex;
@@ -25,75 +30,112 @@
     align-items: center;
   }
   .wordmark {
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
     font-size: 26px;
-    line-height: 0.95;
-    letter-spacing: -0.04em;
+    line-height: 0.92;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
   }
-  .wordmark .anti { color: #1D1B18; }
-  .wordmark .noise { color: #FF4F00; }
+  .wordmark .anti { color: var(--ink); }
+  .wordmark .noise { color: var(--accent); }
   .wordmark .anti .lower { text-transform: none; }
   .week-tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: #FF4F00;
-    background: rgba(255, 79, 0, 0.12);
-    padding: 8px 16px;
-    border-radius: 100px;
+    letter-spacing: 0.12em;
+    color: var(--ink);
+    background: var(--lime);
+    padding: 9px 16px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
   .title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 48px;
-    line-height: 1.05;
-    letter-spacing: -0.025em;
-    font-weight: 400;
-    margin-top: 10px;
+    font-family: 'Archivo', sans-serif;
+    font-weight: 900;
+    font-size: 46px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-top: 12px;
   }
-  .title .em { color: #FF4F00; font-style: italic; }
+  .title .hl {
+    position: relative;
+    display: inline-block;
+    color: var(--ink);
+  }
+  .title .hl::after {
+    content: "";
+    position: absolute;
+    left: -4px; right: -4px;
+    bottom: 8%;
+    height: 36%;
+    background: var(--accent);
+    z-index: -1;
+    transform: rotate(-1.5deg);
+  }
   .compare {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 30px;
+    gap: 22px;
   }
   .col {
     padding: 22px 24px;
-    background: rgba(29, 27, 24, 0.04);
-    border-top: 3px solid;
+    border: 3px solid var(--ink);
+    border-radius: 14px;
+    background: var(--paper-2);
+    box-shadow: 5px 5px 0 var(--ink);
   }
-  .col-a { border-top-color: #999; }
-  .col-b { border-top-color: #FF4F00; background: rgba(255, 79, 0, 0.06); }
+  .col-b {
+    background: var(--lime);
+    box-shadow: 5px 5px 0 var(--accent);
+  }
   .col-tag {
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    opacity: 0.6;
+    letter-spacing: 0.12em;
+    color: var(--muted);
     margin-bottom: 8px;
   }
-  .col-b .col-tag { color: #FF4F00; opacity: 1; }
+  .col-b .col-tag { color: var(--ink); }
   .col-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 30px;
-    line-height: 1;
-    letter-spacing: -0.02em;
-    margin-bottom: 14px;
-  }
-  .col-b .col-title { color: #FF4F00; }
-  .item {
-    font-size: 15px;
-    line-height: 1.5;
-    margin-bottom: 6px;
-    opacity: 0.85;
-  }
-  .item::before {
-    content: '·';
-    color: #FF4F00;
+    font-family: 'Archivo', sans-serif;
     font-weight: 900;
-    margin-right: 8px;
+    font-size: 36px;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    color: var(--ink);
+  }
+  .col-b .col-title { color: var(--ink); }
+  .item {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1.55;
+    margin-bottom: 6px;
+    color: var(--ink);
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .col-a .item::before {
+    content: '✗';
+    color: var(--muted);
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .col-b .item::before {
+    content: '✓';
+    color: var(--accent);
+    font-weight: 900;
+    flex-shrink: 0;
   }
   .bottom {
     display: flex;
@@ -101,17 +143,24 @@
     align-items: flex-end;
   }
   .takeaway {
+    font-family: 'Archivo', sans-serif;
     font-size: 17px;
-    font-weight: 500;
+    font-weight: 600;
     max-width: 75%;
     line-height: 1.45;
+    color: var(--ink);
   }
-  .takeaway .em { color: #FF4F00; font-weight: 600; }
+  .takeaway .em { color: var(--accent); font-weight: 800; text-transform: uppercase; }
   .url {
-    font-size: 16px;
-    font-weight: 600;
-    color: #FF4F00;
     font-family: 'JetBrains Mono', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    background: var(--accent);
+    padding: 8px 14px;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    box-shadow: 3px 3px 0 var(--ink);
   }
 </style>
 </head>
@@ -125,7 +174,7 @@
         </div>
         <div class="week-tag">Why Feynman, not TL;DR</div>
       </div>
-      <div class="title">Two opposite ways to <span class="em">summarize with AI.</span></div>
+      <div class="title">Two opposite ways to <span class="hl">summarize with AI.</span></div>
     </div>
     <div class="compare">
       <div class="col col-a">
