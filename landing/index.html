@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anti Noise — Turn the articles you save into knowledge you'll actually remember.</title>
+<meta name="description" content="AI Feynman summaries + auto flashcards for iOS. Save anything → summarize → remember. Built for knowledge workers who save more than they read.">
+
+<meta property="og:title" content="Anti Noise — Knowledge that sticks.">
+<meta property="og:description" content="Turn the articles you save into knowledge you'll actually remember. AI Feynman summaries + auto flashcards for iOS.">
+<meta property="og:image" content="https://antinoise.pages.dev/assets/og-image.png">
+<meta property="og:url" content="https://antinoise.pages.dev">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://antinoise.pages.dev/assets/og-image.png">
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23f4f1ea'/%3E%3Ctext x='50' y='42' font-family='Archivo,sans-serif' font-weight='900' font-size='26' text-anchor='middle' fill='%230a0a0a'%3EANTi%3C/text%3E%3Ctext x='50' y='75' font-family='Archivo,sans-serif' font-weight='900' font-size='26' text-anchor='middle' fill='%23ff5e1a'%3ENOISE%3C/text%3E%3C/svg%3E">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0a0a0a;
+    --paper:#f4f1ea;
+    --paper-2:#ebe7dd;
+    --accent:#ff5e1a;      /* signal orange — kept from origin */
+    --lime:#c6ff3a;        /* genz pop */
+    --violet:#7b5cff;      /* genz pop */
+    --line:#0a0a0a;
+    --muted:#5a5650;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Archivo',sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* grain overlay */
+  body::after{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:9999;
+    opacity:.04;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  ::selection{background:var(--lime);color:var(--ink)}
+  a{color:inherit;text-decoration:none}
+  .mono{font-family:'JetBrains Mono',monospace}
+
+  /* ---------- marquee ticker ---------- */
+  .ticker{
+    background:var(--ink);color:var(--paper);
+    overflow:hidden;white-space:nowrap;border-bottom:3px solid var(--ink);
+  }
+  .ticker-track{display:inline-block;animation:scroll 22s linear infinite;font-family:'JetBrains Mono',monospace;font-size:.78rem;padding:9px 0;letter-spacing:.04em}
+  .ticker-track span{margin:0 1.4rem}
+  .ticker-track .dot{color:var(--accent)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;background:var(--paper);
+    border-bottom:3px solid var(--ink);
+  }
+  .logo{font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+  .logo .blip{width:11px;height:11px;background:var(--accent);border-radius:50%;display:inline-block;animation:pulse 1.6s ease-in-out infinite}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.6);opacity:.5}}
+  .nav-cta{
+    font-family:'JetBrains Mono',monospace;font-size:.8rem;font-weight:700;
+    background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:999px;
+    border:2px solid var(--ink);transition:.15s;
+  }
+  .nav-cta:hover{background:var(--accent);border-color:var(--accent);transform:translate(-2px,-2px)}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+
+  /* ---------- hero ---------- */
+  .hero{padding:64px 0 40px;position:relative}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;
+    text-transform:uppercase;letter-spacing:.1em;
+    background:var(--lime);border:2px solid var(--ink);padding:6px 13px;border-radius:999px;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  h1.hero-title{
+    font-family:'Archivo';font-weight:900;line-height:.94;letter-spacing:-.03em;
+    font-size:clamp(2.6rem,8vw,6rem);margin:26px 0 0;max-width:14ch;
+    text-transform:uppercase;
+  }
+  h1.hero-title .hl{
+    position:relative;display:inline-block;color:var(--ink);
+  }
+  h1.hero-title .hl::after{
+    content:"";position:absolute;left:-4px;right:-4px;bottom:6%;height:38%;
+    background:var(--accent);z-index:-1;transform:rotate(-1.5deg);
+  }
+  .hero-sub{font-size:1.12rem;max-width:46ch;margin-top:24px;color:var(--muted);line-height:1.5;font-weight:500}
+  .hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px;align-items:center}
+  .btn-primary{
+    font-family:'Archivo';font-weight:800;font-size:1rem;text-transform:uppercase;letter-spacing:.02em;
+    background:var(--ink);color:var(--paper);padding:16px 28px;border:2px solid var(--ink);border-radius:14px;
+    box-shadow:5px 5px 0 var(--accent);transition:.15s;cursor:pointer;
+  }
+  .btn-primary:hover{transform:translate(-3px,-3px);box-shadow:8px 8px 0 var(--accent)}
+  .btn-primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--accent)}
+  .meta-row{display:flex;gap:18px;font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted);font-weight:500}
+  .meta-row span{display:flex;align-items:center;gap:6px}
+  .meta-row .d{width:6px;height:6px;background:var(--ink);border-radius:50%}
+
+  /* floating sticker */
+  .sticker{
+    position:absolute;font-family:'JetBrains Mono';font-weight:700;font-size:.78rem;
+    background:var(--violet);color:var(--paper);padding:8px 13px;border:2px solid var(--ink);
+    border-radius:10px;box-shadow:3px 3px 0 var(--ink);transform:rotate(8deg);
+  }
+  .sticker.s1{top:60px;right:30px;animation:bob 4s ease-in-out infinite}
+  .sticker.s2{bottom:40px;right:130px;background:var(--lime);color:var(--ink);transform:rotate(-6deg);animation:bob 5s ease-in-out infinite .5s}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(8deg)}50%{transform:translateY(-10px) rotate(8deg)}}
+  @media(max-width:760px){.sticker{display:none}}
+
+  /* ---------- stat strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);border:3px solid var(--ink);border-radius:18px;overflow:hidden;margin:30px 0 0;background:var(--paper-2)}
+  .stat{padding:26px 22px;border-right:3px solid var(--ink)}
+  .stat:last-child{border-right:none}
+  .stat .num{font-family:'Archivo';font-weight:900;font-size:2.6rem;line-height:1;letter-spacing:-.03em}
+  .stat:nth-child(1) .num{color:var(--ink)}
+  .stat:nth-child(2) .num{color:var(--accent)}
+  .stat:nth-child(3) .num{color:var(--violet)}
+  .stat .lbl{font-size:.86rem;color:var(--muted);margin-top:9px;font-weight:500;line-height:1.35}
+  @media(max-width:680px){.stats{grid-template-columns:1fr}.stat{border-right:none;border-bottom:3px solid var(--ink)}.stat:last-child{border-bottom:none}}
+
+  /* ---------- section heading ---------- */
+  section{padding:74px 0}
+  .eyebrow{font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--accent);margin-bottom:12px}
+  h2{font-family:'Archivo';font-weight:900;font-size:clamp(1.9rem,5vw,3.3rem);line-height:1;letter-spacing:-.03em;text-transform:uppercase}
+  .lead{font-size:1.05rem;color:var(--muted);max-width:52ch;margin-top:16px;font-weight:500;line-height:1.5}
+
+  /* ---------- how it works ---------- */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:44px}
+  .step{
+    border:3px solid var(--ink);border-radius:18px;padding:26px 22px;background:var(--paper);
+    position:relative;transition:.18s;
+  }
+  .step:hover{transform:translateY(-6px);box-shadow:6px 8px 0 var(--ink)}
+  .step .n{
+    font-family:'Space Grotesk';font-weight:700;font-size:1.05rem;width:38px;height:38px;
+    display:grid;place-items:center;border:2px solid var(--ink);border-radius:50%;
+    background:var(--lime);margin-bottom:18px;
+  }
+  .step:nth-child(2) .n{background:var(--accent);color:var(--paper)}
+  .step:nth-child(3) .n{background:var(--violet);color:var(--paper)}
+  .step h3{font-family:'Archivo';font-weight:800;font-size:1.2rem;margin-bottom:9px}
+  .step p{font-size:.92rem;color:var(--muted);line-height:1.5;font-weight:500}
+  .auto-tag{position:absolute;top:18px;right:18px;font-family:'JetBrains Mono';font-size:.62rem;font-weight:700;background:var(--ink);color:var(--paper);padding:4px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+
+  /* ---------- features bento ---------- */
+  .bento{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;margin-top:44px}
+  .card{border:3px solid var(--ink);border-radius:18px;padding:26px;background:var(--paper)}
+  .card .icn{font-size:1.5rem;margin-bottom:14px;display:inline-block}
+  .card h3{font-family:'Archivo';font-weight:800;font-size:1.18rem;margin-bottom:8px;letter-spacing:-.01em}
+  .card p{font-size:.92rem;color:var(--muted);line-height:1.5;font-weight:500}
+  .c-feyn{grid-column:span 4;background:var(--accent);color:var(--paper)}
+  .c-feyn p{color:rgba(255,255,255,.85)}
+  .c-feyn h3{font-size:1.5rem}
+  .c-sm2{grid-column:span 2;background:var(--ink);color:var(--paper)}
+  .c-sm2 p{color:rgba(244,241,234,.7)}
+  .c-timer{grid-column:span 2}
+  .c-local{grid-column:span 2}
+  .c-nokey{grid-column:span 2;background:var(--lime)}
+  .c-lang{grid-column:span 6;background:var(--violet);color:var(--paper);display:flex;align-items:center;justify-content:space-between;gap:20px}
+  .c-lang p{color:rgba(255,255,255,.85)}
+  .c-lang .flags{font-family:'Archivo';font-weight:900;font-size:2rem;white-space:nowrap}
+  @media(max-width:760px){.bento{grid-template-columns:1fr}.card,.c-feyn,.c-sm2,.c-timer,.c-local,.c-nokey,.c-lang{grid-column:span 1}.c-lang{flex-direction:column;align-items:flex-start}}
+
+  /* ---------- pricing ---------- */
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:44px}
+  .plan{border:3px solid var(--ink);border-radius:20px;padding:32px;background:var(--paper);position:relative}
+  .plan.pro{background:var(--ink);color:var(--paper);box-shadow:7px 7px 0 var(--accent)}
+  .plan .tier{font-family:'JetBrains Mono';font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:.78rem}
+  .plan .amt{font-family:'Archivo';font-weight:900;font-size:3.2rem;letter-spacing:-.04em;margin:12px 0 2px;line-height:1}
+  .plan .per{font-size:.85rem;color:var(--muted);font-weight:500}
+  .plan.pro .per{color:rgba(244,241,234,.6)}
+  .plan ul{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:11px}
+  .plan li{font-size:.92rem;font-weight:500;display:flex;gap:9px;align-items:flex-start}
+  .plan li::before{content:"→";color:var(--accent);font-weight:700}
+  .plan.pro li::before{color:var(--lime)}
+  .pro-badge{position:absolute;top:-14px;right:24px;background:var(--accent);color:var(--paper);font-family:'JetBrains Mono';font-weight:700;font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;padding:6px 13px;border-radius:999px;border:2px solid var(--ink)}
+  @media(max-width:680px){.price-grid{grid-template-columns:1fr}}
+
+  /* ---------- faq ---------- */
+  .faq-list{margin-top:44px;display:flex;flex-direction:column;gap:14px}
+  .faq-list details{
+    border:3px solid var(--ink);border-radius:14px;
+    background:var(--paper);overflow:hidden;transition:.18s;
+  }
+  .faq-list details[open]{box-shadow:5px 5px 0 var(--ink)}
+  .faq-list summary{
+    list-style:none;cursor:pointer;
+    font-family:'Archivo';font-weight:800;font-size:1.05rem;letter-spacing:-.01em;
+    padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;
+  }
+  .faq-list summary::-webkit-details-marker{display:none}
+  .faq-list .ico{
+    font-family:'JetBrains Mono';color:var(--accent);font-size:1.6rem;
+    font-weight:700;line-height:1;transition:transform .2s;flex-shrink:0;
+  }
+  .faq-list details[open] .ico{transform:rotate(45deg)}
+  .faq-list details p{
+    padding:0 24px 22px;font-size:.95rem;color:var(--muted);
+    line-height:1.55;font-weight:500;max-width:62ch;
+  }
+
+  /* ---------- waitlist ---------- */
+  .waitlist-section{padding:40px 0 50px}
+  .waitlist{background:var(--ink);color:var(--paper);border-radius:22px;padding:44px 32px;text-align:center;position:relative;overflow:hidden}
+  .waitlist h2{color:var(--paper);font-size:clamp(1.7rem,4vw,2.6rem)}
+  .waitlist .lead{color:rgba(244,241,234,.65);margin:12px auto 0;font-size:.98rem}
+  .form-wrap{position:relative;z-index:1}
+  .form{display:flex;gap:12px;max-width:460px;margin:24px auto 0;flex-wrap:wrap;justify-content:center}
+  .form input{
+    flex:1;min-width:220px;font-family:'JetBrains Mono';font-size:.92rem;
+    padding:13px 16px;border:2px solid var(--paper);border-radius:12px;background:transparent;color:var(--paper);
+    outline:none;
+  }
+  .form input::placeholder{color:rgba(244,241,234,.4)}
+  .form input:focus{border-color:var(--accent)}
+  .form button{
+    font-family:'Archivo';font-weight:800;text-transform:uppercase;font-size:.92rem;
+    background:var(--accent);color:var(--paper);border:2px solid var(--accent);padding:13px 24px;border-radius:12px;cursor:pointer;transition:.15s;
+  }
+  .form button:hover{background:var(--lime);border-color:var(--lime);color:var(--ink)}
+  .nospam{font-family:'JetBrains Mono';font-size:.72rem;color:rgba(244,241,234,.5);margin-top:14px}
+  .form-success{
+    display:none;font-family:'JetBrains Mono';font-weight:700;font-size:.92rem;
+    background:var(--lime);color:var(--ink);
+    padding:14px 20px;border-radius:12px;border:2px solid var(--lime);
+    max-width:460px;margin:24px auto 0;
+  }
+  .form-success.show{display:block}
+  .blob{position:absolute;width:240px;height:240px;border-radius:50%;filter:blur(70px);opacity:.35;z-index:0}
+  .blob.b1{background:var(--accent);top:-80px;left:-50px}
+  .blob.b2{background:var(--violet);bottom:-90px;right:-50px}
+  .waitlist > *{position:relative;z-index:1}
+  .waitlist .blob{position:absolute;z-index:0}
+
+  /* ---------- footer ---------- */
+  footer{border-top:3px solid var(--ink);padding:40px 0;margin-top:20px}
+  .foot-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px}
+  .foot-links{display:flex;gap:20px;font-family:'JetBrains Mono';font-size:.82rem;font-weight:500}
+  .foot-links a:hover{color:var(--accent)}
+  .copy{font-family:'JetBrains Mono';font-size:.76rem;color:var(--muted)}
+
+  /* reveal on scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .ticker-track,.sticker.s1,.sticker.s2,.logo .blip{animation:none}
+    .reveal{opacity:1;transform:none;transition:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>SAVE FOR LATER IS A GRAVEYARD <span class="dot">●</span></span>
+    <span>20+ ARTICLES SAVED / WEEK <span class="dot">●</span></span>
+    <span>~1 REMEMBERED A MONTH LATER <span class="dot">●</span></span>
+    <span>FEYNMAN > TL;DR <span class="dot">●</span></span>
+    <span>SAVE FOR LATER IS A GRAVEYARD <span class="dot">●</span></span>
+    <span>20+ ARTICLES SAVED / WEEK <span class="dot">●</span></span>
+    <span>~1 REMEMBERED A MONTH LATER <span class="dot">●</span></span>
+    <span>FEYNMAN > TL;DR <span class="dot">●</span></span>
+  </div>
+</div>
+
+<nav>
+  <a href="/" class="logo"><span class="blip"></span>ANTi NOISE</a>
+  <a href="#waitlist" class="nav-cta">GET NOTIFIED</a>
+</nav>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="sticker s1">no API key 🔑</span>
+    <span class="sticker s2">EN + VI 🌐</span>
+    <span class="badge">● coming soon · iOS</span>
+    <h1 class="hero-title">stuff you save<br>you actually <span class="hl">remember</span></h1>
+    <p class="hero-sub">AI Feynman summaries + auto flashcards. Built for the chronically-saving, never-reading brain. Save anything, we do the remembering.</p>
+    <div class="hero-actions">
+      <a href="#waitlist" class="btn-primary">Notify me →</a>
+      <div class="meta-row">
+        <span><span class="d"></span>Solo founder</span>
+        <span><span class="d"></span>Building in public</span>
+        <span><span class="d"></span>Launching soon</span>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section style="padding-top:0" class="reveal">
+    <div class="eyebrow">the problem</div>
+    <h2>"save for later"<br>is where ideas go to die.</h2>
+    <p class="lead">You save articles. You don't read them. The ones you read, you forget. Anti Noise does the work you'd never get around to.</p>
+    <div class="stats">
+      <div class="stat"><div class="num">20+</div><div class="lbl">Articles the average knowledge worker saves per week.</div></div>
+      <div class="stat"><div class="num">~3</div><div class="lbl">Articles actually read from that pile each week.</div></div>
+      <div class="stat"><div class="num">~1</div><div class="lbl">Articles whose ideas you still remember a month later.</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="reveal">
+    <div class="eyebrow">how it works</div>
+    <h2>capture → summarize<br>→ remember.</h2>
+    <p class="lead">Three steps. Two of them happen automatically while you do literally nothing.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Save anything</h3>
+        <p>URL, note, or screenshot via Share Extension — from Safari, Twitter, Photos, Notes. One tap and done.</p>
+      </div>
+      <div class="step">
+        <div class="auto-tag">auto</div>
+        <div class="n">2</div>
+        <h3>5-part Feynman summary</h3>
+        <p>GPT-4o writes a simple explanation, an analogy, knowledge gaps, a real example, and a deeper question. Always 5 parts.</p>
+      </div>
+      <div class="step">
+        <div class="auto-tag">auto</div>
+        <div class="n">3</div>
+        <h3>Auto-flashcards</h3>
+        <p>3–15 SM-2 spaced-repetition cards per summary. Open the app — you only see what you're about to forget.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="reveal">
+    <div class="eyebrow">what's inside</div>
+    <h2>built for how<br>memory actually works.</h2>
+    <div class="bento">
+      <div class="card c-feyn">
+        <span class="icn">🧠</span>
+        <h3>Feynman, not TL;DR</h3>
+        <p>TL;DR optimizes for "didn't have to read it." Feynman optimizes for "understood it well enough to teach it." Two opposite goals.</p>
+      </div>
+      <div class="card c-sm2">
+        <span class="icn">🔁</span>
+        <h3>Anki-classic SM-2</h3>
+        <p>The same algorithm that runs Anki — minus the chore of making cards. The AI picks them.</p>
+      </div>
+      <div class="card c-timer">
+        <span class="icn">⏱️</span>
+        <h3>Focus timer built in</h3>
+        <p>Pomodoro sessions, wall-clock accurate. Keeps running when your phone locks.</p>
+      </div>
+      <div class="card c-local">
+        <span class="icn">📦</span>
+        <h3>Local-first, optional sync</h3>
+        <p>Captures live on-device (SwiftData). Optional sync mirrors across devices. Your data stays yours.</p>
+      </div>
+      <div class="card c-nokey">
+        <span class="icn">⚡</span>
+        <h3>No API key</h3>
+        <p>v1.0.1 includes AI. Sign in with Apple or email — start capturing instantly. Zero setup.</p>
+      </div>
+      <div class="card c-lang">
+        <div>
+          <span class="icn">🌐</span>
+          <h3>EN + VI at launch</h3>
+          <p>Bilingual from day one. Capture in either language. Summaries respect your content language.</p>
+        </div>
+        <div class="flags">EN / VI</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="reveal">
+    <div class="eyebrow">pricing</div>
+    <h2>free to try.<br>pro to grow.</h2>
+    <p class="lead">Start free with 5 AI summaries/month. Upgrade when you want unlimited.</p>
+    <div class="price-grid">
+      <div class="plan">
+        <div class="tier">Free · forever</div>
+        <div class="amt">$0</div>
+        <div class="per">no card, no catch</div>
+        <ul>
+          <li>3 captures / day</li>
+          <li>5 AI summaries / month</li>
+          <li>Auto-flashcards from each summary</li>
+          <li>Focus timer + Share Extension</li>
+        </ul>
+      </div>
+      <div class="plan pro">
+        <div class="pro-badge">7-day trial</div>
+        <div class="tier">Pro</div>
+        <div class="amt">$9.99</div>
+        <div class="per">per month · or $59.99/year</div>
+        <ul>
+          <li>Unlimited captures</li>
+          <li>Unlimited AI summaries</li>
+          <li>Priority queue + cross-device sync</li>
+          <li>Future Pro features as they ship</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section class="reveal">
+    <div class="eyebrow">faq</div>
+    <h2>the honest<br>questions.</h2>
+    <div class="faq-list">
+      <details>
+        <summary>When is it launching?<span class="ico">+</span></summary>
+        <p>v1.0 is in App Review now. v1.0.1 (the "no API key" version) ships ~2–3 weeks after that. Subscribe below to get the App Store link the day it goes live.</p>
+      </details>
+      <details>
+        <summary>Why a waitlist instead of "Download v1.0 now"?<span class="ico">+</span></summary>
+        <p>v1.0 requires bringing your own OpenAI API key — friction I'm removing in v1.0.1. The waitlist is for the version where you just sign in and the app provides AI. Worth waiting two extra weeks for.</p>
+      </details>
+      <details>
+        <summary>Is there a Mac or web version?<span class="ico">+</span></summary>
+        <p>Not yet. iOS first. Mac Catalyst + browser extension are on the roadmap — but only after v1.0.1 has real users. Honest answer: subscribe and I'll tell you if the priority shifts.</p>
+      </details>
+      <details>
+        <summary>What happens to my data?<span class="ico">+</span></summary>
+        <p>Captures live on your device first (SwiftData). Optional Firebase sync mirrors across your iPhones/iPads. AI calls go through Anti Noise's backend — your captures aren't shared with anyone else, not used for training, never sold.</p>
+      </details>
+      <details>
+        <summary>Why Feynman instead of normal summaries?<span class="ico">+</span></summary>
+        <p>Normal "TL;DR" summaries optimize for skimming — you read less, remember less. The Feynman method (simple explanation, analogy, knowledge gap, example, open question) optimizes for understanding well enough to teach. Different goal, different outcome.</p>
+      </details>
+      <details>
+        <summary>Can I import from Pocket, Readwise, Instapaper?<span class="ico">+</span></summary>
+        <p>Not at launch. The Share Extension covers most capture use cases. If you have a large existing library and import would matter to you, reply to the launch email and I'll prioritize accordingly.</p>
+      </details>
+    </div>
+  </section>
+</div>
+
+<div class="wrap">
+  <section id="waitlist" class="reveal waitlist-section">
+    <div class="waitlist">
+      <div class="blob b1"></div>
+      <div class="blob b2"></div>
+      <div class="eyebrow" style="color:var(--lime)">building in public</div>
+      <h2>be first when<br>v1.0.1 ships.</h2>
+      <p class="lead">One email. The App Store link. No nonsense.</p>
+      <div class="form-wrap">
+        <!--
+        ====================================================================
+        BEEHIIV WAITLIST FORM — Sau khi sign up beehiiv.com:
+        1. Tạo publication "Anti Noise"
+        2. Settings → Subscribe Forms → Copy embed code
+        3. Option A (đơn giản): Replace <form>...</form> bằng <iframe src="https://embeds.beehiiv.com/..."></iframe>
+        4. Option B (giữ brand): Đổi <form action> sang Beehiiv POST URL + JS submit (Subscriptions API)
+        ====================================================================
+        -->
+        <form class="form" id="waitlist-form" onsubmit="handleSubmit(event)">
+          <input type="email" name="email" placeholder="you@email.com" required aria-label="email">
+          <button type="submit">Notify me</button>
+        </form>
+        <div class="form-success" id="waitlist-success">✓ You're on the list. See you at launch.</div>
+        <p class="nospam">No spam. One email when v1.0.1 launches. Unsubscribe anytime.</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="wrap foot-row">
+    <a href="/" class="logo"><span class="blip"></span>ANTi NOISE</a>
+    <div class="foot-links">
+      <a href="https://mike43-ai.github.io/anti-noise-legal/privacy/" target="_blank" rel="noopener">Privacy</a>
+      <a href="https://mike43-ai.github.io/anti-noise-legal/" target="_blank" rel="noopener">Terms</a>
+      <a href="https://x.com/antinoise_app" target="_blank" rel="noopener">X / Twitter</a>
+      <a href="mailto:hello@antinoise.app">Email</a>
+    </div>
+    <div class="copy">© 2026 Anti Noise · Built solo · Made with care</div>
+  </div>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const io = new IntersectionObserver((es) => {
+    es.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Placeholder waitlist submit. Replace với Beehiiv embed/POST khi có account.
+  function handleSubmit(e) {
+    e.preventDefault();
+    const form = e.target;
+    const wrap = form.closest('.form-wrap');
+    const success = wrap.querySelector('.form-success');
+    const nospam = wrap.querySelector('.nospam');
+    form.style.display = 'none';
+    if (success) success.classList.add('show');
+    if (nospam) nospam.style.display = 'none';
+    console.log('Waitlist email captured (placeholder):', form.email.value);
+  }
+</script>
+
+</body>
+</html>
