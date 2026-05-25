@@ -11,7 +11,9 @@ struct MainTabView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color.bgPrimary.ignoresSafeArea())
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                BottomTabBar(selection: tabSelectionBinding)
+                if !router.hideTabBar {
+                    BottomTabBar(selection: tabSelectionBinding)
+                }
             }
             .environment(router)
             .sheet(isPresented: $bindableRouter.isCaptureSheetPresented) {

@@ -4,6 +4,7 @@ import SwiftUI
 @MainActor
 struct FocusRootView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppRouter.self) private var router
     @State private var engine: FocusSessionEngine?
     @State private var navigateToDeckID: UUID?
     @State private var lastPlannedSeconds: Int = 0
@@ -30,6 +31,12 @@ struct FocusRootView: View {
                     engine = FocusSessionEngine(modelContainer: modelContext.container)
                 }
                 await engine?.requestNotificationPermissionIfNeeded()
+            }
+            .onChange(of: engine?.state) { _, newState in
+                // Hide the tab bar whenever a session is active (running, paused,
+                // or result) so the full-screen controls aren't covered by the
+                // bar and switching tabs can't tear down a live session.
+                router.hideTabBar = (newState ?? .idle) != .idle
             }
         }
     }
