@@ -45,6 +45,9 @@ struct BottomTabBar: View {
         .background(
             Color.surface
                 .overlay(Color.appBorder.frame(height: 1), alignment: .top)
+                // Extend the bar fill through the bottom safe area (home indicator
+                // strip) so scroll content never shows through beneath the buttons.
+                .ignoresSafeArea(edges: .bottom)
         )
     }
 }
