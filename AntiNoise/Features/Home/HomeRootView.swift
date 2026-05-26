@@ -48,6 +48,7 @@ struct HomeRootView: View {
             .padding(.horizontal, AppSpacing.xl)
             .padding(.vertical, AppSpacing.lg)
         }
+        .contentMargins(.bottom, BottomTabBar.contentHeight, for: .scrollContent)
         .refreshable { model.refresh() }
     }
 

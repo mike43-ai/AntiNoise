@@ -43,6 +43,7 @@ struct ProfileRootView: View {
                 }
                 .padding(AppSpacing.xl)
             }
+            .contentMargins(.bottom, BottomTabBar.contentHeight, for: .scrollContent)
             .background(Color.bgPrimary)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)

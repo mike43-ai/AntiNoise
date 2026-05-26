@@ -29,6 +29,13 @@ enum AppTab: Hashable, CaseIterable {
 struct BottomTabBar: View {
     @Binding var selection: AppTab
 
+    // Height of the bar's tappable content, excluding the home-indicator safe
+    // area (scroll views already inset for that). Scrollable tab roots add this
+    // as bottom content margin so their last rows stay reachable above the bar —
+    // a `safeAreaInset` on MainTabView does not cross into each tab's own
+    // NavigationStack, so the inset must be applied inside the scroll content.
+    static let contentHeight: CGFloat = 44 + AppSpacing.xs * 2
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(AppTab.allCases, id: \.self) { tab in

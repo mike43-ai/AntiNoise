@@ -90,6 +90,7 @@ struct LearnHubView: View {
             }
             .padding(.vertical, AppSpacing.lg)
         }
+        .contentMargins(.bottom, BottomTabBar.contentHeight, for: .scrollContent)
         .refreshable { bound.refresh() }
     }
 
