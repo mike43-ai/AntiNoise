@@ -1,0 +1,227 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#f4f1ea;
+    --ink:#0a0a0a;
+    --orange:#ff5e1a;
+    --violet:#7b5cff;
+    --lime:#c6ff3a;
+    --red:#e02e1f;
+    --muted:#9b958a;
+  }
+  html, body { margin:0; padding:0; background:var(--paper); width:1600px; height:900px; overflow:hidden;
+    font-family:'Space Grotesk', sans-serif; }
+  .wrap {
+    width:1600px; height:900px; padding:60px; box-sizing:border-box;
+    display:flex; gap:60px;
+    background-image:
+      linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .panel { flex:1; display:flex; flex-direction:column; gap:20px; }
+  .stamp {
+    font-family:'JetBrains Mono', monospace;
+    padding:8px 16px;
+    align-self:flex-start;
+    letter-spacing:.12em; text-transform:uppercase;
+    font-size:14px;
+    border:3px solid var(--ink);
+  }
+  .stamp.bad { background:var(--red); color:var(--paper); }
+  .stamp.good { background:var(--lime); color:var(--ink); }
+  .phone {
+    height:420px;
+    border:4px solid var(--ink);
+    border-radius:32px;
+    padding:10px;
+    background:var(--ink);
+    position:relative;
+  }
+  .panel.bad .phone { box-shadow:8px 8px 0 var(--red); }
+  .panel.good .phone { box-shadow:8px 8px 0 var(--lime); }
+  .screen {
+    background:var(--paper);
+    height:100%;
+    border-radius:24px;
+    display:flex; flex-direction:column;
+    padding:14px 18px 0 18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .nav {
+    font-family:'Archivo Black', sans-serif;
+    font-size:22px;
+    margin-bottom:14px;
+  }
+  .row {
+    font-family:'Space Grotesk', sans-serif;
+    background:#ffffff;
+    border:2px solid var(--ink);
+    padding:12px 14px;
+    margin-bottom:10px;
+    display:flex; justify-content:space-between;
+    font-size:14px;
+  }
+  .row .dot { font-family:'JetBrains Mono',monospace; color:var(--muted); }
+  .row.last { background:var(--paper); color:var(--ink); border-color:var(--ink); }
+  .row.danger { color:var(--red); border-color:var(--red); }
+  .tabbar {
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:64px;
+    background:var(--ink);
+    color:var(--paper);
+    display:flex;
+    justify-content:space-around; align-items:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    border-top:2px solid var(--ink);
+  }
+  .tabbar div { opacity:.6; }
+  .tabbar div.active { opacity:1; color:var(--orange); }
+  .panel.bad .row.danger {
+    position:relative;
+    z-index:0;
+    margin-bottom:0;
+  }
+  .panel.bad .tabbar { z-index:5; margin-top:-32px; }
+  .arrow-label {
+    position:absolute;
+    right:-200px; bottom:36px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--red);
+    background:var(--paper);
+    border:2px solid var(--red);
+    padding:6px 10px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    z-index:5;
+    white-space:nowrap;
+  }
+  .arrow-label.good { color:var(--ink); border-color:var(--ink); background:var(--lime); }
+  .arrow-label::before {
+    content:'';
+    position:absolute;
+    left:-40px; top:50%;
+    width:36px; height:2px;
+    background:var(--red);
+    display:none;
+  }
+  .arrow-label.good::before { background:var(--ink); display:none; }
+  .code {
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    padding:18px 20px;
+    border:3px solid var(--ink);
+    line-height:1.5;
+    margin-top:auto;
+  }
+  .panel.good .code { box-shadow:6px 6px 0 var(--lime); }
+  .panel.bad .code { box-shadow:6px 6px 0 var(--red); }
+  .code .k { color:var(--violet); }
+  .code .s { color:var(--lime); }
+  .code .c { color:var(--muted); }
+  .code .add { color:var(--lime); }
+  .code .del { color:var(--red); text-decoration:line-through; }
+  .header {
+    position:absolute;
+    top:30px; left:50%; transform:translateX(-50%);
+    font-family:'Archivo Black', sans-serif;
+    font-size:32px;
+    background:var(--paper);
+    padding:8px 20px;
+    border:3px solid var(--ink);
+    box-shadow:5px 5px 0 var(--orange);
+    z-index:10;
+  }
+  .header span { color:var(--orange); }
+  .panel-title {
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.1em;
+  }
+  /* tighter inner spacing since we removed phone fixed-height stretch */
+  .panel { padding-top:80px; }
+  /* tab bar position relative to phone screen */
+  .phone .screen .tabbar { /* sits inside screen */ }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">Round 3 fix <span>wasn't enough.</span></div>
+
+  <div class="panel bad">
+    <div class="stamp bad">before · reject #4</div>
+    <div class="panel-title">profile · iphone 17 pro max · ios 26.4</div>
+    <div class="phone">
+      <div class="screen">
+        <div class="nav">Profile</div>
+        <div class="row"><span>Account</span><span class="dot">›</span></div>
+        <div class="row"><span>Subscription</span><span class="dot">›</span></div>
+        <div class="row"><span>Notifications</span><span class="dot">›</span></div>
+        <div class="row"><span>Privacy</span><span class="dot">›</span></div>
+        <div class="row"><span>Help</span><span class="dot">›</span></div>
+        <div class="row danger"><span>Delete account</span><span class="dot">›</span></div>
+        <div class="tabbar">
+          <div>Home</div><div>Learn</div><div class="active">Profile</div><div>Focus</div>
+        </div>
+        <div class="arrow-label" style="right:auto;left:50%;transform:translateX(-50%);bottom:30px;">↑ Delete account hidden ↑</div>
+      </div>
+    </div>
+    <div class="code">
+<span class="c">// ProfileRootView.swift — before</span><br>
+ScrollView {<br>
+&nbsp;&nbsp;VStack(spacing: AppSpacing.lg) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// rows...</span><br>
+&nbsp;&nbsp;}<br>
+}<br>
+.background(Color.bgPrimary)
+    </div>
+  </div>
+
+  <div class="panel good">
+    <div class="stamp good">after · 3446a5b</div>
+    <div class="panel-title">profile · same device · same os</div>
+    <div class="phone">
+      <div class="screen">
+        <div class="nav">Profile</div>
+        <div class="row"><span>Account</span><span class="dot">›</span></div>
+        <div class="row"><span>Subscription</span><span class="dot">›</span></div>
+        <div class="row"><span>Notifications</span><span class="dot">›</span></div>
+        <div class="row"><span>Privacy</span><span class="dot">›</span></div>
+        <div class="row"><span>Help</span><span class="dot">›</span></div>
+        <div class="row last"><span>Delete account</span><span class="dot">›</span></div>
+        <div style="height:54px;position:relative;">
+          <div class="arrow-label good" style="right:auto;left:50%;transform:translateX(-50%);bottom:8px;">↑ clear of bar ↑</div>
+        </div>
+        <div class="tabbar">
+          <div>Home</div><div>Learn</div><div class="active">Profile</div><div>Focus</div>
+        </div>
+      </div>
+    </div>
+    <div class="code">
+<span class="c">// ProfileRootView.swift — after</span><br>
+ScrollView {<br>
+&nbsp;&nbsp;VStack(spacing: AppSpacing.lg) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="c">// rows...</span><br>
+&nbsp;&nbsp;}<br>
+}<br>
+<span class="add">.contentMargins(.bottom, BottomTabBar.contentHeight,</span><br>
+<span class="add">&nbsp;&nbsp;for: .scrollContent)</span><br>
+.background(Color.bgPrimary)
+    </div>
+  </div>
+</div>
+</body>
+</html>

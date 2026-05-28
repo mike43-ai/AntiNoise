@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#f4f1ea;
+    --ink:#0a0a0a;
+    --orange:#ff5e1a;
+    --violet:#7b5cff;
+    --lime:#c6ff3a;
+  }
+  html, body { margin:0; padding:0; background:var(--paper); width:1200px; height:630px; overflow:hidden; }
+  .wrap {
+    width:1200px; height:630px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(123,92,255,.08) 0, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(255,94,26,.08) 0, transparent 40%),
+      var(--paper);
+  }
+  /* faint grid lines */
+  .grid {
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .icon-stack { position:relative; }
+  .icon-shadow {
+    position:absolute; top:14px; left:14px;
+    width:380px; height:380px;
+    background:var(--violet);
+    border:3px solid var(--ink);
+    border-radius:88px;
+    z-index:1;
+  }
+  .icon-shadow-2 {
+    position:absolute; top:28px; left:28px;
+    width:380px; height:380px;
+    background:var(--orange);
+    border:3px solid var(--ink);
+    border-radius:88px;
+    z-index:0;
+  }
+  .icon {
+    position:relative; z-index:2;
+    width:380px; height:380px;
+    border:3px solid var(--ink);
+    border-radius:88px;
+    display:block;
+  }
+  .tag {
+    position:absolute;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:500;
+    color:var(--ink);
+    background:var(--lime);
+    border:3px solid var(--ink);
+    padding:8px 14px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    font-size:14px;
+  }
+  .tag.tl { top:60px; left:60px; transform:rotate(-3deg); }
+  .tag.br { bottom:60px; right:60px; transform:rotate(2deg); background:var(--orange); color:var(--paper); }
+  .title {
+    position:absolute;
+    bottom:60px; left:60px;
+    font-family:'Archivo Black', sans-serif;
+    color:var(--ink);
+    font-size:38px;
+    line-height:1;
+    max-width:380px;
+  }
+  .title span { color:var(--orange); }
+  .meta {
+    position:absolute;
+    top:60px; right:60px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--ink);
+    text-align:right;
+    line-height:1.6;
+  }
+  .meta b { background:var(--ink); color:var(--paper); padding:2px 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid"></div>
+  <div class="tag tl">11 days · 1 person</div>
+  <div class="tag br">9,109 lines of swift</div>
+  <div class="meta">
+    47 commits<br>
+    123 files<br>
+    <b>4 Apple rejections</b>
+  </div>
+  <div class="title">A non-dev<br>shipped an<br>iOS app in<br><span>11 days.</span></div>
+  <div class="icon-stack">
+    <div class="icon-shadow-2"></div>
+    <div class="icon-shadow"></div>
+    <img class="icon" src="../AntiNoise/Resources/Assets.xcassets/AppIcon.appiconset/Icon-1024.png" alt="">
+  </div>
+</div>
+</body>
+</html>

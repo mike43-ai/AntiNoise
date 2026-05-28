@@ -1,0 +1,161 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#f4f1ea;
+    --ink:#0a0a0a;
+    --orange:#ff5e1a;
+    --violet:#7b5cff;
+    --lime:#c6ff3a;
+    --red:#e02e1f;
+  }
+  html, body { margin:0; padding:0; background:var(--paper); width:1200px; height:1500px; overflow:hidden;
+    font-family:'Space Grotesk', sans-serif; }
+  .wrap {
+    width:1200px; height:1500px; padding:60px; box-sizing:border-box;
+    background-image:
+      linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .header {
+    display:flex; justify-content:space-between; align-items:flex-end;
+    border-bottom:3px solid var(--ink);
+    padding-bottom:20px; margin-bottom:30px;
+  }
+  .h-title {
+    font-family:'Archivo Black', sans-serif;
+    font-size:64px; line-height:.9; color:var(--ink);
+  }
+  .h-title span { color:var(--red); }
+  .h-sub {
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px; color:#5a5650; text-align:right; line-height:1.6;
+  }
+  .grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:30px;
+  }
+  .card {
+    background:var(--paper);
+    border:3px solid var(--ink);
+    padding:28px;
+    position:relative;
+    box-shadow:12px 12px 0 var(--ink);
+    min-height:480px;
+    display:flex; flex-direction:column;
+  }
+  .card.v { box-shadow:12px 12px 0 var(--violet); }
+  .card.o { box-shadow:12px 12px 0 var(--orange); }
+  .card.l { box-shadow:12px 12px 0 var(--lime); }
+  .card.r { box-shadow:12px 12px 0 var(--red); }
+  .stamp {
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    background:var(--red); color:var(--paper);
+    padding:6px 12px; align-self:flex-start;
+    letter-spacing:.12em; text-transform:uppercase;
+  }
+  .num {
+    font-family:'Archivo Black', sans-serif;
+    font-size:120px; line-height:.9;
+    color:var(--red);
+    margin:14px 0 0 0;
+  }
+  .date {
+    font-family:'JetBrains Mono', monospace;
+    font-size:14px;
+    color:var(--ink);
+    background:var(--paper);
+    border:2px solid var(--ink);
+    padding:4px 10px;
+    align-self:flex-start;
+    margin:14px 0 18px 0;
+  }
+  .gline {
+    font-family:'Archivo Black', sans-serif;
+    font-size:22px;
+    color:var(--ink);
+    background:var(--lime);
+    padding:6px 10px;
+    align-self:flex-start;
+    margin-bottom:14px;
+  }
+  .body {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:16px;
+    line-height:1.45;
+    color:var(--ink);
+  }
+  .body b { background:var(--ink); color:var(--paper); padding:1px 6px; }
+  .footer-row {
+    margin-top:auto; padding-top:18px;
+    border-top:2px dashed var(--ink);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:#5a5650;
+    letter-spacing:.06em; text-transform:uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="header">
+    <div class="h-title">Four <span>rejections.</span><br>Five days.</div>
+    <div class="h-sub">apple app review<br>v1.0.0 · build 6 → 12<br>may 22 → may 26, 2026</div>
+  </div>
+
+  <div class="grid">
+    <div class="card v">
+      <div class="stamp">reject 01</div>
+      <div class="num">#1</div>
+      <div class="date">may 22, 2026</div>
+      <div class="gline">5.1.2(i) + 3.1.2(c)</div>
+      <div class="body">
+        ATT privacy label said 3 data types were "Used to Track You". The in-binary manifest said the opposite.<br><br>
+        Also: paywall was still RevenueCat's <b>sample template</b>. Missing 5 of 6 mandatory elements.
+      </div>
+      <div class="footer-row">fix · remote config · no rebuild</div>
+    </div>
+
+    <div class="card o">
+      <div class="stamp">reject 02</div>
+      <div class="num">#2</div>
+      <div class="date">may 23, 2026</div>
+      <div class="gline">3.1.2(c) — EULA</div>
+      <div class="body">
+        Added the "Terms of Use" button. Left the <b>URL field empty</b>.<br><br>
+        Reviewer tapped it. Nothing happened. Instant reject.
+      </div>
+      <div class="footer-row">fix · remote config · 2 url paste</div>
+    </div>
+
+    <div class="card l">
+      <div class="stamp">reject 03</div>
+      <div class="num">#3</div>
+      <div class="date">may 25, 2026</div>
+      <div class="gline">Guideline 4 — Design</div>
+      <div class="body">
+        iPad 11" M3 reviewer: Profile + Focus bottom <b>cut off</b> behind the tab bar.<br><br>
+        First rejection needing a NEW binary. Root cause: safeAreaInset not propagating through NavigationStack.
+      </div>
+      <div class="footer-row">fix · code · xcode cloud build 11</div>
+    </div>
+
+    <div class="card r">
+      <div class="stamp">reject 04</div>
+      <div class="num">#4</div>
+      <div class="date">may 26, 2026</div>
+      <div class="gline">Guideline 4 — Design</div>
+      <div class="body">
+        Same rejection. Different device — iPhone 17 Pro Max / iOS 26.4.<br><br>
+        The round-3 fix made the bar opaque but didn't push content up. Real fix: <b>.contentMargins(.bottom)</b> on every ScrollView in NavigationStack.
+      </div>
+      <div class="footer-row">round 5 · waiting to push</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

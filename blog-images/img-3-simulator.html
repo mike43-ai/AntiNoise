@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#f4f1ea;
+    --ink:#0a0a0a;
+    --orange:#ff5e1a;
+    --violet:#7b5cff;
+    --lime:#c6ff3a;
+  }
+  html, body { margin:0; padding:0; background:var(--paper); width:1600px; height:900px; overflow:hidden; }
+  .wrap {
+    width:1600px; height:900px;
+    display:flex; align-items:flex-end; justify-content:center; gap:80px;
+    padding-bottom:60px; box-sizing:border-box;
+    position:relative;
+    background-image:
+      linear-gradient(rgba(10,10,10,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(10,10,10,.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .phone {
+    width:340px; height:720px;
+    border:6px solid var(--ink);
+    border-radius:54px;
+    padding:14px;
+    background:var(--ink);
+    position:relative;
+    flex-shrink:0;
+  }
+  .phone.left { box-shadow:14px 14px 0 var(--violet); }
+  .phone.right { box-shadow:14px 14px 0 var(--orange); }
+  .phone::before {
+    content:'';
+    position:absolute;
+    top:18px; left:50%; transform:translateX(-50%);
+    width:100px; height:24px;
+    background:var(--ink);
+    border-radius:14px;
+    z-index:3;
+  }
+  .phone img {
+    width:100%; height:100%;
+    object-fit:contain;
+    object-position:top;
+    border-radius:40px;
+    display:block;
+    background:#f4f1ea;
+  }
+  .label {
+    position:absolute;
+    bottom:-44px; left:50%; transform:translateX(-50%);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    background:var(--ink); color:var(--paper);
+    padding:6px 14px;
+    border:3px solid var(--ink);
+    letter-spacing:.08em; text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .caption {
+    position:absolute;
+    top:60px; left:50%; transform:translateX(-50%);
+    z-index:5;
+    background:var(--paper);
+    padding:8px 20px;
+    border:3px solid var(--ink);
+    box-shadow:6px 6px 0 var(--lime);
+    font-family:'Archivo Black', sans-serif;
+    font-size:38px;
+    line-height:.95;
+    color:var(--ink);
+    text-align:center;
+    white-space:nowrap;
+  }
+  .caption span { color:var(--orange); }
+  .meta {
+    position:absolute;
+    bottom:60px; right:60px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    text-align:right;
+    color:#5a5650;
+    line-height:1.6;
+  }
+  .meta b { color:var(--ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="caption">9,000 lines of Swift · <span>one day.</span></div>
+  <div class="phone left">
+    <img src="../Product UI/refined_quick_capture_flow/screen.png" alt="">
+    <div class="label">capture flow</div>
+  </div>
+  <div class="phone right">
+    <img src="../Product UI/anti_noise_feynman_insight_distillation/screen.png" alt="">
+    <div class="label">feynman summary</div>
+  </div>
+  <div class="meta">
+    <b>day 2 · may 17, 2026</b><br>
+    11 phases shipped<br>
+    123 swift files
+  </div>
+</div>
+</body>
+</html>
