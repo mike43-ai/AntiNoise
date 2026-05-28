@@ -5,7 +5,9 @@ import { checkAndIncrement, type Tier, type RateLimitResult } from './rate-limit
 import {
   callGemini,
   FEYNMAN_SYSTEM_PROMPT,
+  FEYNMAN_RESPONSE_SCHEMA,
   FLASHCARDS_SYSTEM_PROMPT,
+  FLASHCARDS_RESPONSE_SCHEMA,
 } from './gemini-client';
 
 interface Env {
@@ -96,14 +98,17 @@ app.post('/v1/ai/summarize', async (c) => {
     `Content:\n${body.text}`;
 
   try {
-    const summary = await callGemini({
+    const raw = await callGemini({
       apiKey: c.env.GEMINI_API_KEY,
       model: c.env.GEMINI_MODEL,
       systemInstruction: FEYNMAN_SYSTEM_PROMPT,
       userPrompt,
-      responseMimeType: 'text/plain',
+      responseMimeType: 'application/json',
+      responseSchema: FEYNMAN_RESPONSE_SCHEMA,
+      temperature: 0.4,
     });
-    return c.json({ summary, model: c.env.GEMINI_MODEL });
+    const payload = JSON.parse(raw) as Record<string, unknown>;
+    return c.json({ payload, model: c.env.GEMINI_MODEL });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'gemini-failed';
     return c.json({ error: 'ai-unavailable', detail: msg }, 502);
@@ -111,9 +116,10 @@ app.post('/v1/ai/summarize', async (c) => {
 });
 
 interface Flashcard {
-  front: string;
-  back: string;
-  type: 'recognize' | 'recall' | 'apply';
+  question: string;
+  answer: string;
+  hint?: string | null;
+  difficulty: number;
 }
 
 app.post('/v1/ai/flashcards', async (c) => {
@@ -146,10 +152,12 @@ app.post('/v1/ai/flashcards', async (c) => {
       systemInstruction: FLASHCARDS_SYSTEM_PROMPT,
       userPrompt: body.text,
       responseMimeType: 'application/json',
+      responseSchema: FLASHCARDS_RESPONSE_SCHEMA,
       temperature: 0.5,
     });
 
-    const cards = JSON.parse(raw) as Flashcard[];
+    const parsed = JSON.parse(raw) as { cards?: Flashcard[] };
+    const cards = parsed.cards;
     if (!Array.isArray(cards) || cards.length === 0) {
       throw new Error('cards-empty');
     }
