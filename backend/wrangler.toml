@@ -25,7 +25,7 @@ PRO_DAILY_LIMIT = "200"
 # Then paste the id below:
 [[kv_namespaces]]
 binding = "RATE_LIMIT"
-id = "REPLACE_AFTER_KV_CREATE"
+id = "95db86315dac42bb8d5c7f2c22888ba3"
 
 [observability]
 enabled = true
