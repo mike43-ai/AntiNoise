@@ -1,0 +1,31 @@
+name = "anti-noise-api"
+main = "src/index.ts"
+compatibility_date = "2025-01-09"
+compatibility_flags = ["nodejs_compat"]
+
+# Public-facing route (set after `wrangler deploy` succeeds first time):
+# routes = [{ pattern = "api.antinoise.app/*", custom_domain = true }]
+
+[vars]
+# Public env (non-secret). Override per-environment below.
+GEMINI_MODEL = "gemini-2.0-flash"
+FIREBASE_PROJECT_ID = "antinoise-6601f"
+
+# Free tier: 5 AI summaries / month per user
+FREE_MONTHLY_LIMIT = "5"
+# Pro tier: 200 calls / day per user (anti-abuse cap)
+PRO_DAILY_LIMIT = "200"
+
+# Secrets (set via `wrangler secret put <NAME>`):
+#   GEMINI_API_KEY      — Google AI Studio key
+#   RC_WEBHOOK_SECRET   — optional, for RevenueCat tier sync later
+
+# KV namespace for per-UID rate-limit counters.
+# Create with: wrangler kv namespace create RATE_LIMIT
+# Then paste the id below:
+[[kv_namespaces]]
+binding = "RATE_LIMIT"
+id = "REPLACE_AFTER_KV_CREATE"
+
+[observability]
+enabled = true

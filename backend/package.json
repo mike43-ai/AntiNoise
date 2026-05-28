@@ -1,0 +1,22 @@
+{
+  "name": "anti-noise-api",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Anti Noise v1.0.1 server proxy — Firebase-auth'd Gemini 2.0 Flash on Cloudflare Workers",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "hono": "^4.6.14",
+    "jose": "^5.9.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250109.0",
+    "typescript": "^5.7.2",
+    "wrangler": "^4.91.0"
+  }
+}
