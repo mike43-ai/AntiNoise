@@ -2,7 +2,7 @@
   "name": "anti-noise-api",
   "version": "0.1.0",
   "private": true,
-  "description": "Anti Noise v1.0.1 server proxy — Firebase-auth'd Gemini 2.0 Flash on Cloudflare Workers",
+  "description": "Anti Noise v1.0.1 server proxy — Firebase-auth'd OpenRouter (Gemini/Claude/GPT swappable) on Cloudflare Workers",
   "main": "src/index.ts",
   "scripts": {
     "dev": "wrangler dev",

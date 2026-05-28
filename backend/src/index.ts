@@ -3,16 +3,15 @@ import { cors } from 'hono/cors';
 import { verifyFirebaseIdToken, type FirebaseUser } from './firebase-token-verifier';
 import { checkAndIncrement, type Tier, type RateLimitResult } from './rate-limiter';
 import {
-  callGemini,
+  callAI,
   FEYNMAN_SYSTEM_PROMPT,
-  FEYNMAN_RESPONSE_SCHEMA,
   FLASHCARDS_SYSTEM_PROMPT,
-  FLASHCARDS_RESPONSE_SCHEMA,
-} from './gemini-client';
+} from './openrouter-client';
 
 interface Env {
-  GEMINI_API_KEY: string;
-  GEMINI_MODEL: string;
+  OPENROUTER_API_KEY: string;
+  OPENROUTER_MODEL: string;
+  OPENROUTER_REFERER?: string;
   FIREBASE_PROJECT_ID: string;
   FREE_MONTHLY_LIMIT: string;
   PRO_DAILY_LIMIT: string;
@@ -98,19 +97,20 @@ app.post('/v1/ai/summarize', async (c) => {
     `Content:\n${body.text}`;
 
   try {
-    const raw = await callGemini({
-      apiKey: c.env.GEMINI_API_KEY,
-      model: c.env.GEMINI_MODEL,
+    const { text, resolvedModel } = await callAI({
+      apiKey: c.env.OPENROUTER_API_KEY,
+      model: c.env.OPENROUTER_MODEL,
       systemInstruction: FEYNMAN_SYSTEM_PROMPT,
       userPrompt,
-      responseMimeType: 'application/json',
-      responseSchema: FEYNMAN_RESPONSE_SCHEMA,
+      jsonResponse: true,
       temperature: 0.4,
+      referer: c.env.OPENROUTER_REFERER,
+      title: 'Anti Noise',
     });
-    const payload = JSON.parse(raw) as Record<string, unknown>;
-    return c.json({ payload, model: c.env.GEMINI_MODEL });
+    const payload = JSON.parse(text) as Record<string, unknown>;
+    return c.json({ payload, model: resolvedModel });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'gemini-failed';
+    const msg = err instanceof Error ? err.message : 'ai-failed';
     return c.json({ error: 'ai-unavailable', detail: msg }, 502);
   }
 });
@@ -146,25 +146,26 @@ app.post('/v1/ai/flashcards', async (c) => {
   }
 
   try {
-    const raw = await callGemini({
-      apiKey: c.env.GEMINI_API_KEY,
-      model: c.env.GEMINI_MODEL,
+    const { text, resolvedModel } = await callAI({
+      apiKey: c.env.OPENROUTER_API_KEY,
+      model: c.env.OPENROUTER_MODEL,
       systemInstruction: FLASHCARDS_SYSTEM_PROMPT,
       userPrompt: body.text,
-      responseMimeType: 'application/json',
-      responseSchema: FLASHCARDS_RESPONSE_SCHEMA,
+      jsonResponse: true,
       temperature: 0.5,
+      referer: c.env.OPENROUTER_REFERER,
+      title: 'Anti Noise',
     });
 
-    const parsed = JSON.parse(raw) as { cards?: Flashcard[] };
+    const parsed = JSON.parse(text) as { cards?: Flashcard[] };
     const cards = parsed.cards;
     if (!Array.isArray(cards) || cards.length === 0) {
       throw new Error('cards-empty');
     }
 
-    return c.json({ cards, model: c.env.GEMINI_MODEL });
+    return c.json({ cards, model: resolvedModel });
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'gemini-failed';
+    const msg = err instanceof Error ? err.message : 'ai-failed';
     return c.json({ error: 'ai-unavailable', detail: msg }, 502);
   }
 });

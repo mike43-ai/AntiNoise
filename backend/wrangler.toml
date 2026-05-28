@@ -8,7 +8,12 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Public env (non-secret). Override per-environment below.
-GEMINI_MODEL = "gemini-2.0-flash"
+# Model is an OpenRouter model id — swap providers by changing this string only.
+# Examples: "google/gemini-2.0-flash-001", "anthropic/claude-haiku-4-5",
+# "openai/gpt-4o-mini". See https://openrouter.ai/models
+OPENROUTER_MODEL = "google/gemini-2.0-flash-001"
+# Attribution header sent to OpenRouter for the analytics dashboard.
+OPENROUTER_REFERER = "https://antinoise.app"
 FIREBASE_PROJECT_ID = "antinoise-6601f"
 
 # Free tier: 5 AI summaries / month per user
@@ -17,7 +22,7 @@ FREE_MONTHLY_LIMIT = "5"
 PRO_DAILY_LIMIT = "200"
 
 # Secrets (set via `wrangler secret put <NAME>`):
-#   GEMINI_API_KEY      — Google AI Studio key
+#   OPENROUTER_API_KEY  — https://openrouter.ai/keys
 #   RC_WEBHOOK_SECRET   — optional, for RevenueCat tier sync later
 
 # KV namespace for per-UID rate-limit counters.

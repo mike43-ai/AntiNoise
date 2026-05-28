@@ -1,13 +1,13 @@
 # Anti Noise API
 
-Server proxy for Anti Noise v1.0.1 — replaces the in-app BYOK flow with a Firebase-auth'd Gemini 2.0 Flash backend on Cloudflare Workers.
+Server proxy for Anti Noise v1.0.1 — replaces the in-app BYOK flow with a Firebase-auth'd, model-swappable AI backend on Cloudflare Workers.
 
 ## Stack
 
 - **Runtime:** Cloudflare Workers
 - **Framework:** Hono (TypeScript)
 - **Auth:** Firebase ID token (RS256, verified via Google public keys — no Firebase Admin SDK because it requires Node APIs unavailable on Workers)
-- **AI:** Gemini 2.0 Flash via direct REST
+- **AI:** OpenRouter chat completions (default: `google/gemini-2.0-flash-001`; swap any OpenRouter model id without code change)
 - **Rate limit:** Workers KV per-UID counters (free: 5/month, pro: 200/day)
 
 ## Endpoints
@@ -40,13 +40,13 @@ npx wrangler login
 npx wrangler kv namespace create RATE_LIMIT
 # → copy the returned id into wrangler.toml under [[kv_namespaces]]
 
-# 3. Set production Gemini key
-npx wrangler secret put GEMINI_API_KEY
-# → paste your Google AI Studio key
+# 3. Set production OpenRouter key
+npx wrangler secret put OPENROUTER_API_KEY
+# → paste your key from https://openrouter.ai/keys
 
 # 4. (Local dev) Copy secret template
 cp .dev.vars.example .dev.vars
-# → edit GEMINI_API_KEY for local-only use
+# → edit OPENROUTER_API_KEY for local-only use
 ```
 
 ## Run locally
@@ -93,9 +93,19 @@ npm run tail
 ## Cost monitoring
 
 - **Cloudflare free tier:** 100K req/day Worker + 100K read + 1K write KV/day
-- **Gemini 2.0 Flash:** ~$0.10/M input, $0.40/M output tokens
-- Estimate at 1000 active users: ~$25/mo total infra (workers free, gemini paid)
-- Watch [Cloudflare dashboard](https://dash.cloudflare.com) and [Google AI Studio billing](https://aistudio.google.com)
+- **OpenRouter:** pass-through provider pricing + ~5% margin. For default `google/gemini-2.0-flash-001`: ~$0.10/M input, ~$0.40/M output tokens.
+- Estimate at 1000 active users: ~$25–30/mo total infra (workers free, OpenRouter paid)
+- Watch [Cloudflare dashboard](https://dash.cloudflare.com) and [OpenRouter activity](https://openrouter.ai/activity)
+
+## Swapping models
+
+The active model is `OPENROUTER_MODEL` in `wrangler.toml`. To swap providers:
+
+1. Pick a model id from https://openrouter.ai/models
+2. Edit `OPENROUTER_MODEL` in `wrangler.toml`
+3. `npm run deploy`
+
+No code changes — prompts are model-agnostic (instruct strict JSON output via system instruction). Tested model ids: `google/gemini-2.0-flash-001`, `anthropic/claude-haiku-4-5`, `openai/gpt-4o-mini`.
 
 ## Hardening checklist (before v1.0.1 ASC submit)
 

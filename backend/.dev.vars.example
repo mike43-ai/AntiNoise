@@ -1,4 +1,4 @@
 # Copy to .dev.vars for local `wrangler dev`. NEVER commit .dev.vars.
 # Production secrets are set via `wrangler secret put <NAME>`.
 
-GEMINI_API_KEY=your-google-ai-studio-key-here
+OPENROUTER_API_KEY=your-openrouter-key-here
