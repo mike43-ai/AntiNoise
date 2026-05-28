@@ -8,7 +8,6 @@ struct ProfileRootView: View {
     @Environment(SubscriptionStore.self) private var subscription
 
     @State private var viewModel: ProfileViewModel?
-    @State private var isAPIKeySheetPresented = false
     @State private var isGoalsSheetPresented = false
     @State private var isDeleteSheetPresented = false
     @State private var exportItems: ShareItemsBox?
@@ -47,7 +46,6 @@ struct ProfileRootView: View {
             .background(Color.bgPrimary)
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
-            .sheet(isPresented: $isAPIKeySheetPresented) { APIKeyEntryView() }
             .sheet(isPresented: $isGoalsSheetPresented) { GoalSetupView() }
             .sheet(isPresented: $isDeleteSheetPresented) { DeleteAccountFlowView() }
             .sheet(item: $exportItems) { box in ShareSheet(items: box.items) }
@@ -135,9 +133,6 @@ struct ProfileRootView: View {
             SecondaryButton(title: "Manage learning goals", systemImage: "target") {
                 isGoalsSheetPresented = true
             }
-            SecondaryButton(title: hasKey ? "Manage OpenAI key" : "Add OpenAI key", systemImage: "key") {
-                isAPIKeySheetPresented = true
-            }
             SecondaryButton(title: "Export my data", systemImage: "square.and.arrow.up") {
                 exportAll()
             }
@@ -166,10 +161,6 @@ struct ProfileRootView: View {
             }
         }
         .padding(.top, AppSpacing.lg)
-    }
-
-    private var hasKey: Bool {
-        SecretStore.get(forKey: SecretStore.openAIAPIKey)?.isEmpty == false
     }
 
     private var alertBinding: Binding<Bool> {

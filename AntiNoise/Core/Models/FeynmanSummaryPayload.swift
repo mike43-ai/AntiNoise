@@ -1,7 +1,8 @@
 import Foundation
 
-// On-the-wire shape returned by GPT-4o with response_format = json_schema(strict).
-// Must stay in sync with the schema in FeynmanPrompt.swift.
+// On-the-wire shape returned by the v1.0.1 backend (/v1/ai/summarize), which
+// constrains Gemini 2.0 Flash via responseSchema. Schema lives in
+// backend/src/gemini-client.ts (FEYNMAN_RESPONSE_SCHEMA).
 struct FeynmanSummaryPayload: Codable, Equatable, Sendable {
     let simpleExplanation: String
     let analogy: String

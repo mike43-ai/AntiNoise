@@ -31,9 +31,11 @@ final class SummaryDetailModel {
         self.captureID = captureID
         self.modelContext = modelContext
         self.summarizerProvider = summarizerProvider
+        let proProvider = isProProvider
         self.cardGenerator = cardGenerator ?? CardGenerator(
             modelContainer: modelContext.container,
-            isOnline: { true }
+            isOnline: { true },
+            isProProvider: { proProvider() }
         )
         self.quotaUIDProvider = quotaUIDProvider
         self.isProProvider = isProProvider

@@ -41,7 +41,8 @@ struct SummaryDetailView: View {
                 let subRef = subscription
                 let generator = CardGenerator(
                     modelContainer: modelContext.container,
-                    isOnline: { reach.isOnline }
+                    isOnline: { reach.isOnline },
+                    isProProvider: { subRef.isPro }
                 )
                 model = SummaryDetailModel(
                     captureID: captureID,

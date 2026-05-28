@@ -59,6 +59,10 @@ struct AntiNoiseApp: App {
         subscription.bootstrap()
         reachability.start()
 
+        // v1.0.1 migration: nuke the legacy in-Keychain OpenAI BYOK key.
+        // Idempotent — `remove` returns success even when the entry is absent.
+        SecretStore.remove(forKey: SecretStore.legacyOpenAIAPIKey)
+
         let container = PersistenceContainer.shared
         let reach = reachability
         let authStore = auth

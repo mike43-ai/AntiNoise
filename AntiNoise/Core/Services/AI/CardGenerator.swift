@@ -1,19 +1,19 @@
 import Foundation
 import SwiftData
 
-// Generates a Deck of Flashcards from a Summary. Mirrors AISummarizer style
-// but writes to Deck + Flashcard tables. Reuses OpenAIClient + AIRetryEngine.
+// Generates a Deck of Flashcards from a Summary. Writes to Deck + Flashcard
+// tables via the v1.0.1 AIClient backend (Firebase-auth'd Gemini Flash).
 @MainActor
 final class CardGenerator {
     enum GenerationError: LocalizedError {
-        case missingAPIKey
+        case notAuthenticated
         case missingSummary
         case noCardsReturned
         case clientError(String)
 
         var errorDescription: String? {
             switch self {
-            case .missingAPIKey:           return "OpenAI API key is missing. Add it in Profile → Settings."
+            case .notAuthenticated:        return "Sign in to generate flashcards."
             case .missingSummary:          return "Couldn't find the summary to generate cards from."
             case .noCardsReturned:         return "AI didn't return any cards. Try again."
             case .clientError(let msg):    return msg
@@ -22,25 +22,22 @@ final class CardGenerator {
     }
 
     private let modelContainer: ModelContainer
-    private let client: OpenAIClient
+    private let client: AIClient
     private let isOnline: @MainActor () -> Bool
 
     init(
         modelContainer: ModelContainer,
-        client: OpenAIClient = OpenAIClient(),
-        isOnline: @escaping @MainActor () -> Bool
+        client: AIClient? = nil,
+        isOnline: @escaping @MainActor () -> Bool,
+        isProProvider: @escaping @MainActor @Sendable () -> Bool = { false }
     ) {
         self.modelContainer = modelContainer
-        self.client = client
+        self.client = client ?? AIClient(isProProvider: isProProvider)
         self.isOnline = isOnline
     }
 
     /// Returns the new Deck's ID on success.
     func generate(fromSummaryWithCaptureID captureID: UUID) async throws -> UUID {
-        guard let apiKey = SecretStore.get(forKey: SecretStore.openAIAPIKey), !apiKey.isEmpty else {
-            throw GenerationError.missingAPIKey
-        }
-
         let context = ModelContext(modelContainer)
         let summaryDescriptor = FetchDescriptor<Summary>(predicate: #Predicate { $0.captureID == captureID })
         guard let summary = (try? context.fetch(summaryDescriptor))?.first else {
@@ -49,16 +46,16 @@ final class CardGenerator {
         let captureDescriptor = FetchDescriptor<Capture>(predicate: #Predicate { $0.id == captureID })
         let capture = (try? context.fetch(captureDescriptor))?.first
 
-        let body = buildRequest(summary: summary, capture: capture)
+        let promptText = encodeSummaryForPrompt(summary: summary, capture: capture)
 
-        let raw: String
+        let cards: [FlashcardItem]
         do {
             let onlineSnapshot = await MainActor.run { isOnline() }
-            raw = try await AIRetryEngine.runWithRetries(
+            cards = try await AIRetryEngine.runWithRetries(
                 isOnline: { onlineSnapshot },
-                work: { try await client.complete(request: body) },
+                work: { try await client.generateFlashcards(text: promptText) },
                 isTransient: { error in
-                    if let e = error as? OpenAIClient.ClientError { return e.isTransient }
+                    if let e = error as? AIClient.ClientError { return e.isTransient }
                     return false
                 }
             )
@@ -68,8 +65,7 @@ final class CardGenerator {
             throw GenerationError.clientError(error.localizedDescription)
         }
 
-        let payload = try decodePayload(raw)
-        let clamped = clamp(payload.cards)
+        let clamped = clamp(cards)
         guard !clamped.isEmpty else { throw GenerationError.noCardsReturned }
 
         let deck = Deck(
@@ -95,21 +91,6 @@ final class CardGenerator {
 
     // MARK: - Helpers
 
-    private func buildRequest(summary: Summary, capture: Capture?) -> ChatCompletionRequest {
-        let payload = encodeSummaryForPrompt(summary: summary, capture: capture)
-        let messages: [ChatMessage] = [
-            ChatMessage(role: "system", content: [.text(CardGenerationPrompt.systemMessage)]),
-            ChatMessage(role: "user",   content: [.text(payload)]),
-        ]
-        return ChatCompletionRequest(
-            model: CardGenerationPrompt.model,
-            messages: messages,
-            responseFormat: CardGenerationPrompt.responseFormat(),
-            temperature: 0.4,
-            maxTokens: 2_500
-        )
-    }
-
     private func encodeSummaryForPrompt(summary: Summary, capture: Capture?) -> String {
         var lines: [String] = []
         if let title = capture?.sourceURL ?? capture?.rawText {
@@ -127,15 +108,8 @@ final class CardGenerator {
         return lines.joined(separator: "\n\n")
     }
 
-    private func decodePayload(_ raw: String) throws -> FlashcardGenerationPayload {
-        guard let data = raw.data(using: .utf8) else { throw GenerationError.noCardsReturned }
-        return try JSONDecoder().decode(FlashcardGenerationPayload.self, from: data)
-    }
-
     private func clamp(_ cards: [FlashcardItem]) -> [FlashcardItem] {
-        let trimmed = Array(cards.prefix(SM2Constants.maxCardsPerDeck))
-        // If model under-delivered, accept what we have but warn via deck size.
-        return trimmed
+        Array(cards.prefix(SM2Constants.maxCardsPerDeck))
     }
 
     private func deckTitle(capture: Capture?, summary: Summary) -> String {
@@ -149,11 +123,7 @@ final class CardGenerator {
     }
 }
 
-// MARK: - Decoded payload
-
-struct FlashcardGenerationPayload: Codable, Sendable {
-    let cards: [FlashcardItem]
-}
+// MARK: - Decoded payload (matches backend /v1/ai/flashcards response)
 
 struct FlashcardItem: Codable, Sendable {
     let question: String

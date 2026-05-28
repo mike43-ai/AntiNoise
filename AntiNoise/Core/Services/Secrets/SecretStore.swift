@@ -5,12 +5,14 @@ import Security
 // `kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly` so the value is
 // readable after the user has unlocked the device once per boot.
 //
-// MVP risk: client-side OpenAI keys are extractable from a jailbroken IPA.
-// v1.1 swaps this for a server proxy / RevenueCat-issued JWT.
+// v1.0.1 removed the OpenAI BYOK key (server proxy now). The store is kept
+// for future secrets and for the launch-migration cleanup of legacy keys.
 enum SecretStore {
-    private static let service = "com.antinoise.secrets"
+    static let service = "com.antinoise.secrets"
 
-    static let openAIAPIKey = "openai_api_key"
+    // Legacy account name — only used by the v1.0.1 migration that nukes the
+    // old BYOK key from Keychain on first launch after upgrade.
+    static let legacyOpenAIAPIKey = "openai_api_key"
 
     @discardableResult
     static func set(_ value: String, forKey account: String) -> Bool {
