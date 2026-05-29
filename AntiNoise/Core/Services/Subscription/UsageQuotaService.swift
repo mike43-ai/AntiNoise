@@ -1,16 +1,41 @@
 import Foundation
 
-// Free-tier counters per locked decision: 3 captures/day, 10 AI summaries/month.
-// Pro skips all checks. Counters are keyed by user UID + local date, so a
-// timezone-change abuse vector is "cheap to ignore" per Phase 11 R4.
+// Free-tier counters. Pro skips all checks. Counters are keyed by UID + window
+// (daily or monthly), so a timezone-change abuse vector is "cheap to ignore".
+//   capture   — 3/day   capture creation
+//   aiSummary — 10/month text summarization (AISummarizer)
+//   lesson    — 3/month  layered deck generation (deep-dive + study-this) [v1.1]
+//   article   — 1/day    daily-knowledge refresh [v1.1]
 enum UsageKind: Sendable {
     case capture
     case aiSummary
+    case lesson
+    case article
+
+    enum Window { case daily, monthly }
+
+    var window: Window {
+        switch self {
+        case .capture, .article: return .daily
+        case .aiSummary, .lesson: return .monthly
+        }
+    }
 
     var freeLimit: Int {
         switch self {
         case .capture:   return 3
         case .aiSummary: return 10
+        case .lesson:    return 3
+        case .article:   return 1
+        }
+    }
+
+    var bucketName: String {
+        switch self {
+        case .capture:   return "capture"
+        case .aiSummary: return "aiSummary"
+        case .lesson:    return "lesson"
+        case .article:   return "article"
         }
     }
 }
@@ -47,8 +72,7 @@ struct UsageQuotaService {
         let formatter = DateFormatter()
         formatter.calendar = Calendar.current
         formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = kind == .capture ? "yyyy-MM-dd" : "yyyy-MM"
-        let suffix = kind == .capture ? "capture" : "aiSummary"
-        return "quota.\(suffix).\(identity).\(formatter.string(from: now))"
+        formatter.dateFormat = kind.window == .daily ? "yyyy-MM-dd" : "yyyy-MM"
+        return "quota.\(kind.bucketName).\(identity).\(formatter.string(from: now))"
     }
 }

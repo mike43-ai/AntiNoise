@@ -86,10 +86,22 @@ final class DailySkillsModel {
     func refresh() async {
         state = .loading
         quotaExceeded = false
+        let uid = uidProvider()
+        let isPro = isProProvider()
+        // Free tier: 1 daily-skills refresh per day. (Auto-refresh on first open
+        // spends it; a manual re-tap past the cap → paywall.)
+        guard UsageQuotaService.canConsume(.article, uid: uid, isPro: isPro) else {
+            Telemetry.track(.quotaHit(kind: .article))
+            quotaExceeded = true
+            loadCached()
+            state = .idle
+            return
+        }
         do {
             let resp = try await aiClient.refreshDailyInbox()
             switch resp.status {
             case "ok":
+                _ = UsageQuotaService.consume(.article, uid: uid, isPro: isPro)
                 replaceToday(with: resp.items)
                 loadCached()
                 state = items.isEmpty ? .caughtUp : .idle
@@ -138,10 +150,11 @@ final class DailySkillsModel {
 
         let uid = uidProvider()
         let isPro = isProProvider()
-        guard UsageQuotaService.canConsume(.aiSummary, uid: uid, isPro: isPro) else {
-            Telemetry.track(.quotaHit(kind: .aiSummary))
+        // A study = 1 "lesson" (3/month free). The summary step inside also
+        // consumes .aiSummary; both are legitimate (summarize + generate deck).
+        guard UsageQuotaService.canConsume(.lesson, uid: uid, isPro: isPro) else {
+            Telemetry.track(.quotaHit(kind: .lesson))
             quotaExceeded = true
-            toast = "Monthly AI limit reached. Upgrade to Pro for more." // TODO(P6): → paywall
             return
         }
 
@@ -168,6 +181,7 @@ final class DailySkillsModel {
             }
 
             let deckID = try await cardGenerator.generate(fromSummaryWithCaptureID: capture.id)
+            _ = UsageQuotaService.consume(.lesson, uid: uid, isPro: isPro)
             item.studiedDeckID = deckID
             try? modelContext.save()
             route(mode: mode, captureID: capture.id, deckID: deckID)

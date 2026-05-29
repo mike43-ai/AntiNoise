@@ -12,6 +12,7 @@ struct HomeRootView: View {
     @State private var model: HomeViewModel?
     @State private var skillsModel: DailySkillsModel?
     @State private var navigationPath = NavigationPath()
+    @State private var showPaywall = false
 
     var body: some View {
         NavigationStack(path: $navigationPath) {
@@ -74,6 +75,16 @@ struct HomeRootView: View {
                     navigationPath.append(route)
                     skillsModel?.studyDeckRoute = nil
                 }
+            }
+            .onChange(of: skillsModel?.quotaExceeded) { _, _ in
+                if skillsModel?.quotaExceeded == true {
+                    showPaywall = true
+                    skillsModel?.quotaExceeded = false
+                }
+            }
+            .sheet(isPresented: $showPaywall) {
+                PaywallSheetView(offering: subscription.currentOffering)
+                    .onAppear { Telemetry.track(.paywallShown(trigger: .profileUpgrade)) }
             }
         }
     }

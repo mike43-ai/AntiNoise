@@ -246,7 +246,8 @@ app.post('/v1/daily/refresh', async (c) => {
   };
 
   // Server-side gate BEFORE any Gemini call (prevents cost-DoS). Reuses the
-  // shared AI quota bucket; the finer "1 article/day free" cap lands in Phase 6.
+  // shared AI quota bucket; the finer per-feature "1 article/day" cap is enforced
+  // client-side for now (a dedicated server bucket can be added later).
   const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
   for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
   if (!rl.allowed) {

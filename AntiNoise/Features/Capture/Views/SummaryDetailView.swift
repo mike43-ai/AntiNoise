@@ -68,7 +68,7 @@ struct SummaryDetailView: View {
         }
         .sheet(isPresented: $showDeckQuotaSheet, onDismiss: { model?.deckQuotaExceeded = false }) {
             QuotaHitSheet(
-                kind: .aiSummary,
+                kind: .lesson,
                 offering: subscription.currentOffering,
                 onUpgrade: { showDeckQuotaSheet = false; showPaywall = true },
                 onLater: {}

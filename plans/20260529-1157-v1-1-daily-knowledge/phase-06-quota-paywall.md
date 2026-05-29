@@ -1,10 +1,12 @@
 ---
 phase: 6
-title: "Quota & Paywall"
-status: pending
+title: Quota & Paywall
+status: completed
 priority: P2
-effort: "2d"
-dependencies: [4, 5]
+effort: 2d
+dependencies:
+  - 4
+  - 5
 ---
 
 # Phase 6: Quota & Paywall

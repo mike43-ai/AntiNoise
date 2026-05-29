@@ -43,6 +43,8 @@ struct QuotaHitSheet: View {
         switch kind {
         case .capture:   return "You've used today's free captures."
         case .aiSummary: return "You've used this month's free AI summaries."
+        case .lesson:    return "You've used this month's free lessons."
+        case .article:   return "You've seen today's free skills."
         }
     }
 
@@ -52,6 +54,10 @@ struct QuotaHitSheet: View {
             return "Pro lifts the 3-per-day cap so you can capture every signal — including binges. Free quota resets at midnight."
         case .aiSummary:
             return "Pro lifts the 10/month cap and gives you unlimited Feynman summaries + flashcard generation."
+        case .lesson:
+            return "Pro lifts the 3-lessons/month cap so you can turn any capture or skill into layered flashcards. Free quota resets monthly."
+        case .article:
+            return "Pro unlocks more daily skills. Your free pick refreshes tomorrow."
         }
     }
 
@@ -59,6 +65,8 @@ struct QuotaHitSheet: View {
         switch kind {
         case .capture:   return "plus.rectangle.on.rectangle"
         case .aiSummary: return "sparkles"
+        case .lesson:    return "rectangle.stack"
+        case .article:   return "sparkles.rectangle.stack"
         }
     }
 }

@@ -63,8 +63,10 @@ final class SummaryDetailModel {
         // so a failed attempt (or a retry) doesn't burn the user's monthly quota.
         let uid = quotaUIDProvider()
         let isPro = isProProvider()
-        guard UsageQuotaService.canConsume(.aiSummary, uid: uid, isPro: isPro) else {
-            Telemetry.track(.quotaHit(kind: .aiSummary))
+        // Deck generation is a "lesson" (3/month free), distinct from the
+        // .aiSummary quota the summarization step already consumed.
+        guard UsageQuotaService.canConsume(.lesson, uid: uid, isPro: isPro) else {
+            Telemetry.track(.quotaHit(kind: .lesson))
             deckQuotaExceeded = true
             return
         }
@@ -73,7 +75,7 @@ final class SummaryDetailModel {
         defer { isGeneratingDeck = false }
         do {
             let deckID = try await cardGenerator.generate(fromSummaryWithCaptureID: captureID)
-            _ = UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro)
+            _ = UsageQuotaService.consume(.lesson, uid: uid, isPro: isPro)
             generatedDeckID = deckID
             Telemetry.track(.deckGenerated(cardCount: cardCount(forDeckID: deckID)))
         } catch {

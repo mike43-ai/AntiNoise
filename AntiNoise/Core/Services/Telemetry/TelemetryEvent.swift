@@ -100,11 +100,15 @@ enum PaywallTrigger: String {
 enum QuotaEventKind: String {
     case capture
     case aiSummary = "ai_summary"
+    case lesson
+    case article
 
     init(_ kind: UsageKind) {
         switch kind {
         case .capture:   self = .capture
         case .aiSummary: self = .aiSummary
+        case .lesson:    self = .lesson
+        case .article:   self = .article
         }
     }
 }

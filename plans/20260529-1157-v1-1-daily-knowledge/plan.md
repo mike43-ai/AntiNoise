@@ -46,7 +46,7 @@ Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discove
 | 3 | [Backend Daily Pipeline (curated skill taxonomy)](./phase-03-backend-daily-pipeline.md) | Completed |
 | 4 | [iOS Daily Skills & Study This](./phase-04-ios-daily-articles-study-this.md) | Completed |
 | 5 | [Seed Content (1-2 lessons)](./phase-05-seed-content.md) | Completed |
-| 6 | [Quota & Paywall](./phase-06-quota-paywall.md) | Pending |
+| 6 | [Quota & Paywall](./phase-06-quota-paywall.md) | Completed |
 | 7 | [Polish Tests & ASC](./phase-07-polish-tests-asc.md) | Pending |
 
 > **Redesign split out (red-team 2026-05-29):** Kinetic Command UI redesign (cũ P0+P8) tách sang plan **v1.1.1** riêng (visual-only, QA + rollback độc lập). v1.1 ship trên design system HIỆN TẠI. Mockups + design system: see [[reference-anti-noise-kinetic-command-design]].
@@ -82,7 +82,7 @@ P1+P2 parallel (no design-system dep — build trên UI hiện tại). P3 needs 
 | 3 | SwiftData migration unsafe: non-optional `unlockedAt: Date` w/ init-default → migration fails → `fatalError` crash-loop + data loss for live v1.0 users | Crit | Completed |
 | 4 | Layered cards instantly due: new cards default `nextReviewAt=Date()`; `dueTodayCount` predicate has NO unlock filter → 15 cards flood Day 1 | Crit | Completed |
 | 5 | Backend has ZERO Firestore read/write code (`firebase-admin.ts` = only `setUserTier`) — "extend" is net-new infra; effort underestimated | Crit | Completed |
-| 6 | "Study this → 15 cards" FALSE: card gen is manual (`SummaryDetailView` CTA); `CaptureFlowModel.save()` only summarizes | Crit | P4 |
+| 6 | "Study this → 15 cards" FALSE: card gen is manual (`SummaryDetailView` CTA); `CaptureFlowModel.save()` only summarizes | Crit | Completed |
 | 7 | `/daily/refresh` no server-side quota gate before Reddit/Gemini → cost-DoS drains shared Gemini key for all users | High | P3 |
 | 8 | SSRF: Reddit-sourced article URLs → `ReadabilityExtractor` fetch w/ no scheme/host validation (file://, internal hosts, prompt-injection) | High | P4 |
 | 9 | Phase 0 no-op risk: colors live in `Assets.xcassets` colorsets (not `AppColor.swift`); `AppFont` uses `.system` (no `Font.custom`) | High | P0 |
