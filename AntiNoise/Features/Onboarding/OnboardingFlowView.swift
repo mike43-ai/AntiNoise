@@ -5,24 +5,36 @@ import SwiftUI
 // accounts on the same device doesn't leak the previous user's answers.
 // Phase 07 reads these scopes for the priority engine.
 struct OnboardingFlowView: View {
-    enum Step { case profile, notifications }
+    enum Step { case topicPacks, profile, notifications }
 
     let uid: String
     let initialDisplayName: String?
     let onFinish: () -> Void
 
-    @State private var step: Step = .profile
+    @State private var step: Step = .topicPacks
     @State private var nameDraft = ""
     @State private var selectedScopes: Set<GrowthScope> = []
+    @State private var selectedPacks: Set<TopicPack> = []
 
     var body: some View {
         Group {
             switch step {
+            case .topicPacks:     topicPacksStep
             case .profile:        profileStep
             case .notifications:  NotificationPermissionStep(onFinish: onFinish)
             }
         }
         .animation(AppMotion.standard, value: step)
+    }
+
+    private var topicPacksStep: some View {
+        TopicPacksSelectionView(selection: $selectedPacks) {
+            OnboardingStore.setTopicPacks(selectedPacks, uid: uid)
+            // Best-effort mirror so the daily ranker has signals; never blocks.
+            Task { await UserProfileSyncService.syncSignals(uid: uid) }
+            step = .profile
+        }
+        .onAppear { selectedPacks = OnboardingStore.topicPacks(uid: uid) }
     }
 
     private var profileStep: some View {

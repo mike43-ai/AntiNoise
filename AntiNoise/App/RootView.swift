@@ -6,6 +6,7 @@ struct RootView: View {
     @Environment(SubscriptionStore.self) private var subscription
     @State private var authSheet: AuthSheet?
     @State private var onboardingDone = false
+    @State private var topicPacksReady = false
     @State private var showTrialExpiry = false
     @State private var showPaywall = false
 
@@ -18,7 +19,12 @@ struct RootView: View {
                 AuthLandingView(onEmailTap: { authSheet = .signIn })
             case .signedIn(let user):
                 if onboardingDone || OnboardingStore.isCompleted(uid: user.id) {
-                    MainTabView()
+                    if topicPacksReady || OnboardingStore.hasTopicPacks(uid: user.id) {
+                        MainTabView()
+                    } else {
+                        // Existing v1.0 user upgrading — backfill topic packs once.
+                        TopicPacksBackfillView(uid: user.id, onDone: { topicPacksReady = true })
+                    }
                 } else {
                     OnboardingFlowView(
                         uid: user.id,
@@ -42,8 +48,10 @@ struct RootView: View {
         .onChange(of: auth.state) { _, newState in
             if case .signedIn(let user) = newState {
                 onboardingDone = OnboardingStore.isCompleted(uid: user.id)
+                topicPacksReady = OnboardingStore.hasTopicPacks(uid: user.id)
             } else {
                 onboardingDone = false
+                topicPacksReady = false
             }
         }
         .onChange(of: subscription.trialState) { _, newState in

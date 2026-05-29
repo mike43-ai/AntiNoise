@@ -9,6 +9,7 @@ struct ProfileRootView: View {
 
     @State private var viewModel: ProfileViewModel?
     @State private var isGoalsSheetPresented = false
+    @State private var isSignalsSheetPresented = false
     @State private var isDeleteSheetPresented = false
     @State private var exportItems: ShareItemsBox?
     @State private var errorMessage: String?
@@ -47,6 +48,11 @@ struct ProfileRootView: View {
             .navigationTitle("Profile")
             .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isGoalsSheetPresented) { GoalSetupView() }
+            .sheet(isPresented: $isSignalsSheetPresented) {
+                if let uid = auth.currentUser?.id {
+                    ProfileSignalsEditView(uid: uid)
+                }
+            }
             .sheet(isPresented: $isDeleteSheetPresented) { DeleteAccountFlowView() }
             .sheet(item: $exportItems) { box in ShareSheet(items: box.items) }
             .sheet(isPresented: $showPaywall) {
@@ -130,6 +136,9 @@ struct ProfileRootView: View {
     private var settingsSection: some View {
         VStack(alignment: .leading, spacing: AppSpacing.md) {
             Text("Settings").appFont(.caption).textCase(.uppercase).foregroundStyle(Color.textMuted)
+            SecondaryButton(title: "Improve your feed", systemImage: "sparkles") {
+                isSignalsSheetPresented = true
+            }
             SecondaryButton(title: "Manage learning goals", systemImage: "target") {
                 isGoalsSheetPresented = true
             }
