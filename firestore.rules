@@ -1,0 +1,26 @@
+rules_version = '2';
+
+// Anti Noise Firestore security rules.
+// Backend writes (daily_inbox) go through the Admin/REST service-account token,
+// which BYPASSES these rules — so client writes to daily_inbox are denied here.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // User profile: ranking signals (topicPacks/role/level/goal), seenSkillIds,
+    // and soft-delete flags. Owner-only read+write.
+    match /users/{uid} {
+      allow read, write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    // Daily Knowledge inbox: owner reads their own; only the backend (admin) writes.
+    match /daily_inbox/{uid} {
+      allow read: if request.auth != null && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    // Default deny.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

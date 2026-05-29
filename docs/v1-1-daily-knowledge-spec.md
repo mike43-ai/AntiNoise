@@ -14,23 +14,23 @@ Mục tiêu: lý do open mỗi ngày.
 
 ---
 
-## Feature 1: Daily 3 articles
+## Feature 1: Daily 3 skills
+
+> **Content-source đổi 2026-05-29 (supersedes Reddit-only):** Daily Knowledge = **curriculum** — 3 skill/concept "đáng học thời AI" mỗi ngày từ **curated taxonomy + AI explainer**, KHÔNG phải news feed. Bỏ Reddit hoàn toàn (no OAuth/creds). Build-authoritative: plan phase-03/04 (`plans/20260529-1157-v1-1-daily-knowledge/`).
 
 ### Content source
 
-**Reddit API only** (free, OAuth). Skip Twitter ($100+/mo), skip HN/Dev.to.
+**Curated skill taxonomy** bundle trong Worker (`backend/src/skill-taxonomy.ts`), version-controlled — KHÔNG external API/creds. Per topic pack ~10-15 skill item `{ id, title, keyword, seedNote }` (concept thời AI: RAG, evals, agentic workflows, prompt caching…). On-demand (cron defer): pick 3 unseen theo packs → Gemini explainer → `daily_inbox`. Seen-tracking qua `seenSkillIds` trên `users/{uid}`.
 
-Backend cron 6AM UTC: fetch top of day từ subs theo topic pack mapping.
+### Topic packs (5 default — map taxonomy categories, KHÔNG subreddits)
 
-### Topic packs (5 default)
-
-| Pack | Subreddits |
+| Pack | Taxonomy category |
 |---|---|
-| 🧠 AI/ML | r/MachineLearning, r/LocalLLaMA, r/learnmachinelearning |
-| 🛠 Engineering | r/programming, r/webdev |
-| 🎨 Product/Design | r/UXDesign, r/ProductManagement |
-| 🚀 Startup | r/startups, r/SaaS, r/Entrepreneur |
-| ⏱ Productivity | r/productivity, r/getdisciplined |
+| 🧠 AI/ML | LLMs, RAG, evals, fine-tuning, agents |
+| 🛠 Engineering | systems, web, infra, tooling |
+| 🎨 Product/Design | UX, PM, research, design systems |
+| 🚀 Startup | GTM, SaaS, growth, fundraising |
+| ⏱ Productivity | focus, habits, workflows |
 
 ### Onboarding (3 signals for AI rank)
 

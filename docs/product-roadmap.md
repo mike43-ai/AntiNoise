@@ -57,7 +57,7 @@ Học xong deck/topic → opt-in **course 7 ngày** (14-day defer). Mỗi "ngày
 
 1. **§2 unlocked**: Original plan locked "GPT-4o vision only" — unlocked 2026-05-23, switching all AI to **Gemini 2.0 Flash** starting v1.0.1.
 2. **AI vendor consolidation**: Single provider Gemini cho rank + summary + flashcard. Lý do: cheaper, VI tốt hơn (Google data), free tier overlap, native multimodal.
-3. **Content source**: Reddit API only (free, OAuth). Skip Twitter (API quá đắt từ 2023), skip HN/Dev.to.
+3. **Content source**: ~~Reddit API only~~ → **đổi 2026-05-29: curated skill taxonomy + AI explainer** (curriculum "skills thời AI", KHÔNG news; bỏ Reddit/OAuth hoàn toàn — bundle trong Worker). Lý do: định vị Daily Knowledge = skills nên học, tự kiểm soát chất lượng, gỡ blocker creds.
 4. **Card mechanic**: Layered 15 cards (Recognize → Recall → Apply) replacing 5-card lessons. Per Bloom's taxonomy.
 5. **Server-shared API key**: Kill BYOK entirely. All AI calls qua server proxy với operator's Gemini key.
 

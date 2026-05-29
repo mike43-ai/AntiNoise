@@ -8,6 +8,7 @@ import {
   FLASHCARDS_SYSTEM_PROMPT,
 } from './openrouter-client';
 import { handleRevenueCatWebhook } from './revenuecat-webhook';
+import { runDailyRefresh } from './daily-pipeline';
 
 interface Env {
   OPENROUTER_API_KEY: string;
@@ -230,6 +231,47 @@ app.post('/v1/ai/flashcards', async (c) => {
     const raw = err instanceof Error ? err.message : 'ai-failed';
     console.error('flashcards.failed', { uid: user.uid, raw });
     return c.json({ error: 'ai-unavailable', detail: classifyAIError(raw) }, 502);
+  }
+});
+
+// Daily Knowledge refresh — picks 3 unseen skills for the user's topic packs and
+// writes them to daily_inbox. Under /v1/* so auth is enforced; uid comes from the
+// verified token (never the body) so a caller can't refresh/poison another user.
+app.post('/v1/daily/refresh', async (c) => {
+  const user = c.get('user');
+  const tier = c.get('tier');
+  const limits = {
+    freeMonthlyLimit: parseInt(c.env.FREE_MONTHLY_LIMIT, 10),
+    proDailyLimit: parseInt(c.env.PRO_DAILY_LIMIT, 10),
+  };
+
+  // Server-side gate BEFORE any Gemini call (prevents cost-DoS). Reuses the
+  // shared AI quota bucket; the finer "1 article/day free" cap lands in Phase 6.
+  const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+  for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
+  if (!rl.allowed) {
+    return c.json({ error: 'rate-limit-exceeded', tier, resetAt: rl.resetAt }, 429);
+  }
+
+  try {
+    const result = await runDailyRefresh(
+      {
+        OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
+        OPENROUTER_MODEL: c.env.OPENROUTER_MODEL,
+        OPENROUTER_REFERER: c.env.OPENROUTER_REFERER,
+        FIREBASE_SERVICE_ACCOUNT_JSON: c.env.FIREBASE_SERVICE_ACCOUNT_JSON,
+      },
+      user.uid,
+    );
+    // Only consume quota when a model call actually happened.
+    if (result.status === 'ok') {
+      await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+    }
+    return c.json({ status: result.status, items: result.items });
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : 'daily-failed';
+    console.error('daily.refresh.failed', { uid: user.uid, raw });
+    return c.json({ error: 'daily-unavailable', detail: classifyAIError(raw) }, 502);
   }
 });
 

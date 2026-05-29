@@ -1,9 +1,9 @@
 import Foundation
 
 /// Daily Knowledge topic packs the user picks during onboarding. Distinct from
-/// `ClassificationScope` (personal/work/business) — these drive daily-article
-/// curation. The subreddit mapping lives backend-side (the Worker owns the
-/// Reddit fetch), so this enum stays display-only on iOS.
+/// `ClassificationScope` (personal/work/business) — these drive daily skill
+/// curation. The curated skill taxonomy lives backend-side (the Worker owns it),
+/// so this enum stays display-only on iOS.
 enum TopicPack: String, CaseIterable, Codable, Sendable, Identifiable {
     case aiml
     case engineering

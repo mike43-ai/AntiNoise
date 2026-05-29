@@ -22,7 +22,9 @@ source: skill
 
 ## Overview
 
-Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discovery (3 ranked articles/ngày từ Reddit), (b) 3-day layered study journey (15 cards Recognize→Recall→Apply) thay 1-shot 5-card. Cộng "Study this" nối article vào core loop + seed content fix cold-start. Big launch moment (PH/HN/Reddit).
+Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discovery (3 **skill/concept "đáng học thời AI"**/ngày từ **curated taxonomy + AI explainer**), (b) layered study (15 cards Recognize→Recall→Apply ordering) thay 1-shot. Cộng "Study this" nối item vào core loop + seed content fix cold-start. Big launch moment (PH/HN/Reddit).
+
+> **Content-source đổi 2026-05-29:** Reddit-only → **curated skill taxonomy** (curriculum, KHÔNG news). Bỏ Reddit OAuth + fetch infra hoàn toàn. Lý do: định vị Daily Knowledge = "skills nên học thời AI", không phải feed tin. Supersedes locked decision #3 (Reddit-only, 2026-05-23). Red-team findings nay N/A: #8 SSRF (không fetch URL ngoài), #17 Reddit secret. Còn áp dụng: #2 route auth, #5 Firestore client net-new, #7 quota gate, #12 Firestore states+dedupe.
 
 **Spec**: `docs/v1-1-daily-knowledge-spec.md` · **Roadmap**: `docs/product-roadmap.md`
 **Depends**: v1.0.1 server proxy (✅ shipped). **Blocks**: v1.2 Deep Learn (cần layered-card infra của Phase 2).
@@ -30,7 +32,7 @@ Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discove
 ## Key grounding (from codebase scout)
 
 - `SM2Constants.maxCardsPerDeck = 15` đã sẵn; CardGenerator clamp 15 (`Core/Services/AI/CardGenerator.swift:112`). Cần thêm layer/day fields.
-- Backend = Hono/Cloudflare Workers (`backend/src/index.ts`), proxy OpenRouter Gemini Flash. **Chưa có** cron / Reddit / Firestore document write.
+- Backend = Hono/Cloudflare Workers (`backend/src/index.ts`), proxy OpenRouter Gemini Flash. **Chưa có** Firestore document write (cần REST client mới). Reddit KHÔNG dùng (đổi sang curated taxonomy bundle trong Worker).
 - iOS **chưa có** Firestore data-sync layer (chỉ account deletion chạm Firestore). `daily_inbox` cần read service mới.
 - Onboarding 2 step hiện tại (`Features/Onboarding/OnboardingFlowView.swift`), store UserDefaults per-uid (`OnboardingStore.swift`). Topic packs = concept MỚI (khác `ClassificationScope` Personal/Work/Business).
 - Notifications + StreakEngine sẵn sàng reuse (`Core/Services/Notifications/`). Streak đã đếm review-days → v1.1 không đụng.
@@ -41,8 +43,8 @@ Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discove
 |-------|------|--------|
 | 1 | [Onboarding Topic Packs (+ optional signals)](./phase-01-onboarding-signals-topic-packs.md) | Completed |
 | 2 | [Layered 15 Flashcards (ordering, no lock)](./phase-02-layered-15-flashcards.md) | Completed |
-| 3 | [Backend Daily Pipeline (on-demand only)](./phase-03-backend-daily-pipeline.md) | Pending |
-| 4 | [iOS Daily Articles & Study This](./phase-04-ios-daily-articles-study-this.md) | Pending |
+| 3 | [Backend Daily Pipeline (curated skill taxonomy)](./phase-03-backend-daily-pipeline.md) | Completed |
+| 4 | [iOS Daily Skills & Study This](./phase-04-ios-daily-articles-study-this.md) | Pending |
 | 5 | [Seed Content (1-2 lessons)](./phase-05-seed-content.md) | Pending |
 | 6 | [Quota & Paywall](./phase-06-quota-paywall.md) | Pending |
 | 7 | [Polish Tests & ASC](./phase-07-polish-tests-asc.md) | Pending |
@@ -77,7 +79,7 @@ P1+P2 parallel (no design-system dep — build trên UI hiện tại). P3 needs 
 |---|---------|-----|---------|
 | 1 | No `firestore.rules`/`firebase.json` in repo — new `daily_inbox`/`users/{uid}` collections unsecured | Crit | Completed |
 | 2 | `/daily/refresh` named outside `/v1/*` auth middleware → may ship UNauthenticated; uid must come from token not body | Crit | Completed |
-| 3 | SwiftData migration unsafe: non-optional `unlockedAt: Date` w/ init-default → migration fails → `fatalError` crash-loop + data loss for live v1.0 users | Crit | P2 |
+| 3 | SwiftData migration unsafe: non-optional `unlockedAt: Date` w/ init-default → migration fails → `fatalError` crash-loop + data loss for live v1.0 users | Crit | Completed |
 | 4 | Layered cards instantly due: new cards default `nextReviewAt=Date()`; `dueTodayCount` predicate has NO unlock filter → 15 cards flood Day 1 | Crit | P2 |
 | 5 | Backend has ZERO Firestore read/write code (`firebase-admin.ts` = only `setUserTier`) — "extend" is net-new infra; effort underestimated | Crit | P3 |
 | 6 | "Study this → 15 cards" FALSE: card gen is manual (`SummaryDetailView` CTA); `CaptureFlowModel.save()` only summarizes | Crit | P4 |

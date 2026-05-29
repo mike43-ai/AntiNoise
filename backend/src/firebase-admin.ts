@@ -27,7 +27,14 @@ function parseServiceAccount(raw: string): ServiceAccount {
   return sa;
 }
 
-async function mintAccessToken(raw: string): Promise<string> {
+export function getProjectId(raw: string): string {
+  return parseServiceAccount(raw).project_id;
+}
+
+// Exported so the Firestore REST client (daily pipeline) can reuse the same
+// short-lived, cached service-account token. Scope includes `datastore` for
+// Firestore document reads/writes in addition to identitytoolkit (custom claims).
+export async function mintAccessToken(raw: string): Promise<string> {
   const now = Math.floor(Date.now() / 1000);
   if (cachedAccessToken && cachedAccessToken.expiresAt - 60 > now) {
     return cachedAccessToken.token;
@@ -38,7 +45,8 @@ async function mintAccessToken(raw: string): Promise<string> {
 
   const key = await importPKCS8(sa.private_key, 'RS256');
   const assertion = await new SignJWT({
-    scope: 'https://www.googleapis.com/auth/firebase https://www.googleapis.com/auth/identitytoolkit',
+    scope:
+      'https://www.googleapis.com/auth/firebase https://www.googleapis.com/auth/identitytoolkit https://www.googleapis.com/auth/datastore',
   })
     .setProtectedHeader({ alg: 'RS256' })
     .setIssuer(sa.client_email)
