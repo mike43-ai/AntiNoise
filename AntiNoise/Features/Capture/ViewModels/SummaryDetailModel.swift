@@ -59,7 +59,11 @@ final class SummaryDetailModel {
     func generateDeck() async {
         guard !isGeneratingDeck else { return }
         Telemetry.track(.deepDiveStarted)
-        guard UsageQuotaService.consume(.aiSummary, uid: quotaUIDProvider(), isPro: isProProvider()) else {
+        // Gate without consuming; spend the slot only after generation succeeds
+        // so a failed attempt (or a retry) doesn't burn the user's monthly quota.
+        let uid = quotaUIDProvider()
+        let isPro = isProProvider()
+        guard UsageQuotaService.canConsume(.aiSummary, uid: uid, isPro: isPro) else {
             Telemetry.track(.quotaHit(kind: .aiSummary))
             deckQuotaExceeded = true
             return
@@ -69,6 +73,7 @@ final class SummaryDetailModel {
         defer { isGeneratingDeck = false }
         do {
             let deckID = try await cardGenerator.generate(fromSummaryWithCaptureID: captureID)
+            _ = UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro)
             generatedDeckID = deckID
             Telemetry.track(.deckGenerated(cardCount: cardCount(forDeckID: deckID)))
         } catch {

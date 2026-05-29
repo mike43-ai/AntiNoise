@@ -41,7 +41,12 @@ final class AISummarizer: SummarizerService {
         let sourceURLString = capture.sourceURL
 
         let (uid, isPro) = await MainActor.run { (uidProvider(), isProProvider()) }
-        let quotaOk = await MainActor.run { UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro) }
+        // Gate WITHOUT consuming. The slot is only spent after the AI call
+        // succeeds (see below), so a failed call — or a user tapping Try again
+        // on a transient error — never burns the user's monthly quota. The
+        // backend enforces the same limit authoritatively; this is the local
+        // pre-check that avoids a wasted round-trip when already at the cap.
+        let quotaOk = await MainActor.run { UsageQuotaService.canConsume(.aiSummary, uid: uid, isPro: isPro) }
         guard quotaOk else {
             Telemetry.track(.quotaHit(kind: .aiSummary))
             await markFailed(captureID: captureID, kind: kind, error: "Monthly AI summary limit reached. Upgrade to Pro for unlimited summaries.", errorCode: "quota_exceeded")
@@ -69,6 +74,8 @@ final class AISummarizer: SummarizerService {
                 }
             )
 
+            // Consume the slot only now that we have a real result.
+            await MainActor.run { _ = UsageQuotaService.consume(.aiSummary, uid: uid, isPro: isPro) }
             await persist(captureID: captureID, payload: payload)
             Telemetry.track(.summarySucceeded(kind: kind, latencyMs: Int(Date().timeIntervalSince(startedAt) * 1000)))
 
