@@ -1,9 +1,9 @@
 ---
 phase: 2
-title: "Layered 15 Flashcards (ordering, no lock)"
-status: pending
+title: 'Layered 15 Flashcards (ordering, no lock)'
+status: completed
 priority: P1
-effort: "3d"
+effort: 3d
 dependencies: []
 ---
 

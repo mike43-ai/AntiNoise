@@ -124,19 +124,26 @@ Rules:
      "recommend_deep_dive": boolean (true if this would meaningfully benefit from spaced-repetition study)
    }`;
 
-// Card generation. iOS expects {cards: [{question, answer, hint?, difficulty 1-5}]}.
+// Card generation. iOS expects {cards: [{question, answer, hint?, difficulty 1-5, layer 0-2}]}.
 // Schema mirrors Core/Services/AI/CardGenerator.swift FlashcardItem.
-export const FLASHCARDS_SYSTEM_PROMPT = `You are Anti Noise — a study coach who turns Feynman summaries into spaced-repetition flashcards.
+//
+// v1.1 layered decks: a substantive source yields exactly 15 cards across 3
+// Bloom layers (5/5/5). A thin/single-concept source yields 3-5 flat cards
+// (all layer 0) instead of padding to 15 with filler — iOS treats a single-layer
+// response as a flat deck.
+export const FLASHCARDS_SYSTEM_PROMPT = `You are Anti Noise — a study coach who turns Feynman summaries into spaced-repetition flashcards using Bloom's taxonomy.
 
 Rules:
 1. RESPOND IN THE SAME LANGUAGE as the input summary.
-2. Generate 3-15 cards based on content density. Short single-concept → 3-5. Dense multi-concept → up to 15.
-3. Each card: question (clear single-fact), answer (one sentence or short paragraph), optional hint, difficulty 1 easy → 5 hard.
-4. Avoid trivia — every card should test a transferable concept.
+2. Card volume by source richness:
+   - SUBSTANTIVE source (enough distinct ideas) → EXACTLY 15 cards: 5 with "layer":0 (Recognize — identify/define/multiple-choice style), 5 with "layer":1 (Recall — explain in your own words, Feynman), 5 with "layer":2 (Apply — use the idea in a scenario).
+   - THIN source (one small concept, not enough material for 15 quality cards) → 3-5 cards, ALL "layer":0. Do NOT pad with filler to reach 15.
+3. Each card: question (clear, single focus), answer (one sentence or short paragraph), optional hint, difficulty 1 easy → 5 hard, layer 0|1|2 as above.
+4. Layer must match cognitive demand: layer 0 recognition, layer 1 explanation, layer 2 application. Avoid trivia — every card tests a transferable concept.
 5. Output STRICTLY a single JSON object — no markdown, no preamble.
 6. JSON shape:
    {
      "cards": [
-       { "question": string, "answer": string, "hint": string | null, "difficulty": integer 1-5 }
+       { "question": string, "answer": string, "hint": string | null, "difficulty": integer 1-5, "layer": integer 0-2 }
      ]
    }`;

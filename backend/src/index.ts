@@ -173,6 +173,7 @@ interface Flashcard {
   answer: string;
   hint?: string | null;
   difficulty: number;
+  layer?: number; // Bloom layer 0-2 (v1.1 layered decks); absent → flat (0)
 }
 
 app.post('/v1/ai/flashcards', async (c) => {
@@ -212,10 +213,16 @@ app.post('/v1/ai/flashcards', async (c) => {
     });
 
     const parsed = JSON.parse(text) as { cards?: Flashcard[] };
-    const cards = parsed.cards;
-    if (!Array.isArray(cards) || cards.length === 0) {
+    const rawCards = parsed.cards;
+    if (!Array.isArray(rawCards) || rawCards.length === 0) {
       throw new Error('cards-empty');
     }
+    // Normalize layer to 0-2 (default 0) so a missing/garbage layer never breaks
+    // iOS ordering; cap at 15 (the layered ceiling).
+    const cards = rawCards.slice(0, 15).map((card) => ({
+      ...card,
+      layer: Math.min(2, Math.max(0, Math.round(Number(card.layer ?? 0)) || 0)),
+    }));
 
     await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
     return c.json({ cards, model: resolvedModel });

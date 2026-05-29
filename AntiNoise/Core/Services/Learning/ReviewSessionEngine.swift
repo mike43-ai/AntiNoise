@@ -5,13 +5,14 @@ import SwiftData
 struct ReviewSessionEngine {
     let modelContainer: ModelContainer
 
-    /// Cards in `deckID` whose `nextReviewAt <= now`. Sorted by `nextReviewAt`
-    /// ascending so the most-overdue cards lead.
+    /// Cards in `deckID` whose `nextReviewAt <= now`. Layered decks review in
+    /// Bloom order (layer 0→1→2); within a layer, most-overdue leads. Flat/legacy
+    /// decks all share layerIndex 0, so this collapses to nextReviewAt ordering.
     func dueCards(for deckID: UUID, now: Date = Date()) -> [Flashcard] {
         let context = ModelContext(modelContainer)
         let descriptor = FetchDescriptor<Flashcard>(
             predicate: #Predicate { $0.deckID == deckID && $0.nextReviewAt <= now },
-            sortBy: [SortDescriptor(\.nextReviewAt)]
+            sortBy: [SortDescriptor(\.layerIndex), SortDescriptor(\.nextReviewAt)]
         )
         return (try? context.fetch(descriptor)) ?? []
     }

@@ -9,19 +9,24 @@ final class Deck {
     var title: String
     var scopeRaw: String?
     var createdAt: Date
+    /// True when cards span Bloom layers (v1.1). Drives layered display; flat/legacy
+    /// decks stay false. Literal default keeps SwiftData migration safe for v1.0.
+    var isLayered: Bool = false
 
     init(
         id: UUID = UUID(),
         sourceSummaryID: UUID? = nil,
         title: String,
         scope: ClassificationScope? = nil,
-        createdAt: Date = Date()
+        createdAt: Date = Date(),
+        isLayered: Bool = false
     ) {
         self.id = id
         self.sourceSummaryID = sourceSummaryID
         self.title = title
         self.scopeRaw = scope?.rawValue
         self.createdAt = createdAt
+        self.isLayered = isLayered
     }
 
     var scope: ClassificationScope? {

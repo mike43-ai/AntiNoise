@@ -68,10 +68,15 @@ final class CardGenerator {
         let clamped = clamp(cards)
         guard !clamped.isEmpty else { throw GenerationError.noCardsReturned }
 
+        // Layered when the model returned >1 distinct Bloom layer (15-card 5/5/5);
+        // thin sources come back single-layer → flat deck.
+        let layered = Set(clamped.map { $0.layer ?? 0 }).count > 1
+
         let deck = Deck(
             sourceSummaryID: summary.captureID,
             title: deckTitle(capture: capture, summary: summary),
-            scope: PriorityScorer.resolveScope(capture: capture, summary: summary)
+            scope: PriorityScorer.resolveScope(capture: capture, summary: summary),
+            isLayered: layered
         )
         context.insert(deck)
 
@@ -81,7 +86,8 @@ final class CardGenerator {
                 question: card.question,
                 answer: card.answer,
                 hint: card.hint,
-                difficulty: card.difficulty
+                difficulty: card.difficulty,
+                layerIndex: max(0, min(2, card.layer ?? 0))
             )
             context.insert(row)
         }
@@ -130,4 +136,6 @@ struct FlashcardItem: Codable, Sendable {
     let answer: String
     let hint: String?
     let difficulty: Int
+    /// Bloom layer 0/1/2 (v1.1). Optional — legacy/thin responses omit it (treated as 0).
+    let layer: Int?
 }
