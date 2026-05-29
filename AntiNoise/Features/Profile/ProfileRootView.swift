@@ -117,7 +117,7 @@ struct ProfileRootView: View {
             AppCard(style: .elevated) {
                 VStack(alignment: .leading, spacing: AppSpacing.sm) {
                     Text("Free plan").appFont(.bodySmall).fontWeight(.semibold)
-                    Text("3 captures/day · 5 AI summaries/month")
+                    Text("3 captures/day · 10 AI summaries/month")
                         .appFont(.caption).foregroundStyle(Color.textMuted)
                     PrimaryButton(title: "Upgrade to Pro", fullWidth: false) {
                         showPaywall = true

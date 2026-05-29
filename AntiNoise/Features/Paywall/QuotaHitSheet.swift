@@ -51,7 +51,7 @@ struct QuotaHitSheet: View {
         case .capture:
             return "Pro lifts the 3-per-day cap so you can capture every signal — including binges. Free quota resets at midnight."
         case .aiSummary:
-            return "Pro lifts the 5/month cap and gives you unlimited Feynman summaries + flashcard generation."
+            return "Pro lifts the 10/month cap and gives you unlimited Feynman summaries + flashcard generation."
         }
     }
 

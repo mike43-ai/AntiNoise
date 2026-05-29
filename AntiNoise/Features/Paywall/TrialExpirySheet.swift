@@ -14,7 +14,7 @@ struct TrialExpirySheet: View {
                     .font(.system(size: 48, weight: .light))
                     .foregroundStyle(Color.accent)
                 Text("Your 7-day Pro trial just ended.").appFont(.h1)
-                Text("You can keep using Anti Noise on Free: 3 captures a day, 5 AI summaries a month. Or stay Pro for unlimited everything.")
+                Text("You can keep using Anti Noise on Free: 3 captures a day, 10 AI summaries a month. Or stay Pro for unlimited everything.")
                     .appFont(.body)
                     .foregroundStyle(Color.textMuted)
                 Spacer()

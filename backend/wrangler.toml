@@ -16,8 +16,8 @@ OPENROUTER_MODEL = "google/gemini-2.0-flash-001"
 OPENROUTER_REFERER = "https://antinoise.app"
 FIREBASE_PROJECT_ID = "antinoise-6601f"
 
-# Free tier: 5 AI summaries / month per user
-FREE_MONTHLY_LIMIT = "5"
+# Free tier: 10 AI summaries / month per user
+FREE_MONTHLY_LIMIT = "10"
 # Pro tier: 200 calls / day per user (anti-abuse cap)
 PRO_DAILY_LIMIT = "200"
 

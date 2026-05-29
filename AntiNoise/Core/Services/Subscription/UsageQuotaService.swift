@@ -1,6 +1,6 @@
 import Foundation
 
-// Free-tier counters per locked decision: 3 captures/day, 5 AI summaries/month.
+// Free-tier counters per locked decision: 3 captures/day, 10 AI summaries/month.
 // Pro skips all checks. Counters are keyed by user UID + local date, so a
 // timezone-change abuse vector is "cheap to ignore" per Phase 11 R4.
 enum UsageKind: Sendable {
@@ -10,7 +10,7 @@ enum UsageKind: Sendable {
     var freeLimit: Int {
         switch self {
         case .capture:   return 3
-        case .aiSummary: return 5
+        case .aiSummary: return 10
         }
     }
 }
