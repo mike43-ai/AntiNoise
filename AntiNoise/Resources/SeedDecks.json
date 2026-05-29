@@ -1,0 +1,46 @@
+{
+  "decks": [
+    {
+      "pack": "productivity",
+      "title": "Deep Work & Focus",
+      "cards": [
+        { "question": "What is \"deep work\"?", "answer": "Focused, distraction-free work on a cognitively demanding task.", "hint": null, "difficulty": 2, "layer": 0 },
+        { "question": "What is context switching?", "answer": "Shifting attention between tasks, which carries a hidden time and energy cost.", "hint": null, "difficulty": 2, "layer": 0 },
+        { "question": "What is time blocking?", "answer": "Assigning specific calendar slots to specific tasks in advance.", "hint": null, "difficulty": 1, "layer": 0 },
+        { "question": "What is the Pomodoro Technique?", "answer": "Working in fixed intervals (e.g. 25 minutes) separated by short breaks.", "hint": null, "difficulty": 1, "layer": 0 },
+        { "question": "What does \"single-tasking\" mean?", "answer": "Doing one task at a time instead of juggling several at once.", "hint": null, "difficulty": 1, "layer": 0 },
+        { "question": "Why is multitasking usually slower than single-tasking?", "answer": "Each switch reloads mental context, wasting time and increasing errors.", "hint": "switching cost", "difficulty": 3, "layer": 1 },
+        { "question": "Explain why deep work is increasingly valuable.", "answer": "As shallow tasks get automated and distractions grow, the rare ability to focus and produce high-quality output is highly rewarded.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "In your own words, what is \"attention residue\"?", "answer": "Part of your attention stays stuck on the previous task after switching, lowering focus on the new one.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "Why schedule work to your energy, not just your time?", "answer": "Cognitive performance varies through the day, so doing hard work at peak energy gives better results.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "How does time blocking reduce decision fatigue?", "answer": "Deciding in advance what to do and when removes repeated in-the-moment choices.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "You keep checking Slack while writing. How do you apply deep work?", "answer": "Block a fixed focus period, close notifications, and batch-check messages only between blocks.", "hint": null, "difficulty": 3, "layer": 2 },
+        { "question": "Your afternoons are low-energy. How should you schedule?", "answer": "Put demanding creative work in your high-energy window and save admin or email for the low window.", "hint": null, "difficulty": 3, "layer": 2 },
+        { "question": "A task feels overwhelming. Apply time blocking.", "answer": "Break it into smaller subtasks and assign each a concrete calendar slot.", "hint": null, "difficulty": 4, "layer": 2 },
+        { "question": "You're constantly interrupted in an open office. What's a strategy?", "answer": "Signal focus time (headphones/status), batch interruptions, and protect at least one daily deep-work block.", "hint": null, "difficulty": 4, "layer": 2 },
+        { "question": "How would you run a Pomodoro session for studying?", "answer": "25 minutes focused on one goal, 5-minute break, repeat about four times, then a longer break.", "hint": null, "difficulty": 3, "layer": 2 }
+      ]
+    },
+    {
+      "pack": "aiml",
+      "title": "LLM Foundations",
+      "cards": [
+        { "question": "What is a large language model (LLM)?", "answer": "A neural network trained on large amounts of text to predict the next token, letting it generate and understand language.", "hint": null, "difficulty": 2, "layer": 0 },
+        { "question": "What is a \"token\" in an LLM?", "answer": "A chunk of text (a word or subword) that the model processes as a single unit.", "hint": null, "difficulty": 2, "layer": 0 },
+        { "question": "What is a prompt?", "answer": "The input text or instructions you give an LLM to steer its output.", "hint": null, "difficulty": 1, "layer": 0 },
+        { "question": "What is RAG (Retrieval-Augmented Generation)?", "answer": "Giving an LLM relevant retrieved documents so its answer is grounded in real data, not just memory.", "hint": null, "difficulty": 3, "layer": 0 },
+        { "question": "What is an embedding?", "answer": "A numeric vector representing the meaning of text, so similarity can be computed.", "hint": null, "difficulty": 2, "layer": 0 },
+        { "question": "Why does RAG reduce hallucination?", "answer": "The model answers from supplied source text instead of relying only on its trained memory.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "Explain why context window size matters.", "answer": "It limits how much text the model can consider at once; bigger windows allow more context but cost more.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "In your own words, what are \"evals\" for LLMs?", "answer": "Systematic tests with datasets and scorers that measure output quality objectively.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "Why use embeddings for search instead of keyword matching?", "answer": "Embeddings capture meaning, so semantically similar text matches even without shared keywords.", "hint": null, "difficulty": 3, "layer": 1 },
+        { "question": "What is the trade-off between fine-tuning and prompting?", "answer": "Fine-tuning adapts the model to a task (more cost and effort); prompting is fast and cheap but limited by the context window.", "hint": null, "difficulty": 4, "layer": 1 },
+        { "question": "Your chatbot invents facts. How do you apply RAG?", "answer": "Retrieve authoritative documents for the query and instruct the model to answer only from them, citing sources.", "hint": null, "difficulty": 4, "layer": 2 },
+        { "question": "You need answers over 10k internal docs. What's the approach?", "answer": "Embed the docs, store the vectors, retrieve the top-k relevant chunks per query, and feed them as context (RAG).", "hint": null, "difficulty": 4, "layer": 2 },
+        { "question": "How would you tell if a prompt change improved quality?", "answer": "Build an eval set of inputs and expected criteria, then score before and after — don't eyeball a single example.", "hint": null, "difficulty": 4, "layer": 2 },
+        { "question": "A prompt works sometimes but fails often. First step?", "answer": "Add evals to measure the failure rate, then iterate the prompt and context systematically.", "hint": null, "difficulty": 3, "layer": 2 },
+        { "question": "When would you fine-tune instead of prompt?", "answer": "When you need consistent style, format, or domain behavior that prompting can't reliably achieve and you have training data.", "hint": null, "difficulty": 4, "layer": 2 }
+      ]
+    }
+  ]
+}

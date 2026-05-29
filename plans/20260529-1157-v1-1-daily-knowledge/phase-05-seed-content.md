@@ -1,10 +1,11 @@
 ---
 phase: 5
-title: "Seed Content"
-status: pending
+title: Seed Content
+status: completed
 priority: P2
-effort: "1d"
-dependencies: [2]
+effort: 1d
+dependencies:
+  - 2
 ---
 
 # Phase 5: Seed Content

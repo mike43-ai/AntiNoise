@@ -57,6 +57,9 @@ struct HomeRootView: View {
                         isProProvider: { subRef.isPro }
                     )
                 }
+                if let uid = auth.currentUser?.id {
+                    SeedDeckRepository.seedIfNeeded(uid: uid, context: modelContext)
+                }
                 model?.refresh()
                 await skillsModel?.loadOnAppear()
             }
