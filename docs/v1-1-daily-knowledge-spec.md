@@ -87,9 +87,12 @@ Same core logic (fetch 30 → Gemini rank → save inbox). Khác là scope (1 vs
 - **Push notification** 7AM user local: "3 articles ready for [Topic]"
 - **Home tab redesign**: "Today's 3" card grid
   - Title + source (subreddit name) + reading time estimate
-  - Skip button + "Capture this" button
+  - Skip button + **"Study this"** button
 - **FOMO mechanic**: skipped articles vanish 23:59 local
-- Tap "Capture this" → existing capture flow + AI summary + 15 layered cards
+- **"Study this" → action sheet 2 lựa chọn** (article đã có URL → reuse capture pipeline). Cả 2 đều chạy **full pipeline** (summary + 15 layered cards) — **luôn tạo card** để không mất retention hook (decision 2026-05-29). Khác nhau chỉ ở màn mở đầu:
+  - **Feynman** — mở summary đọc trước; card sinh nền, vào SRS sau
+  - **Flashcards** — vào thẳng 15 layered cards (summary vẫn lưu kèm)
+  - Mục đích: nối Daily Knowledge vào core loop capture→summarize→flashcard, article không thụ động "đọc xong quên".
 
 ### Fallback handling (on-demand path)
 
@@ -129,6 +132,16 @@ AI generates 15 cards per capture (thay vì 5), theo Bloom's taxonomy:
 
 ---
 
+## Seed content for new users (cold-start)
+
+> Added 2026-05-29. Fix empty-state: user mới vào 0 capture → Learn tab rỗng → bounce trước khi hiểu giá trị flashcard/SRS.
+
+- Bundle sẵn lesson evergreen cho **cả 5 topic pack**, load first launch (zero network, zero AI cost).
+- **Chọn 3 lesson theo topic pack user pick lúc onboarding** (Screen 1). Không pick / fallback → **Productivity** (decision 2026-05-29).
+- Mỗi lesson = 1 bộ **layered cards hoàn chỉnh** (Recognize→Recall→Apply) như capture thật → user trải nghiệm full mechanic ngày 1.
+- Static JSON bundle trong app. Đánh dấu `isSample`. **KHÔNG tính vào quota Free 3 lessons/month** (decision 2026-05-29).
+- Tái dùng cho **Deep Learn demo** (v1.2) sau.
+
 ## Quota structure v1.1
 
 | Tier | Daily articles | Captures | Layered card lessons |
@@ -146,6 +159,7 @@ Pro pricing giữ $9.99/mo (review sau data v1.1).
 |---|---|
 | Articles (Reddit OAuth, cron + on-demand endpoint, rank, 3-step onboarding + first-run loading + profile edit, Home inbox UI, push, fallback handling) | 7-8 |
 | Layered cards (AI prompt, Learn tab UI, lock countdown, migration) | 3-5 |
+| "Study this" action sheet (Feynman/Flashcard) + 3 seed lessons (bundle JSON, first-run load) | 1-2 |
 | Polish + paywall update | 2 |
 | ASC re-review | ~3 |
 | **Total** | **~2 tuần dev + 3 ngày review** |

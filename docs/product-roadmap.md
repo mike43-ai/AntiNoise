@@ -1,17 +1,48 @@
 # Anti Noise — Product Roadmap
 
-> Locked 2026-05-23 brainstorm session. v1.0 đang Apple review round 3.
+> Locked 2026-05-23 brainstorm. Updated 2026-05-29: v1.2 = Deep Learn (replaces Focus).
 
 ## Roadmap summary
 
 | Version | Theme | Effort | Status |
 |---|---|---|---|
-| v1.0 | MVP | — | In Apple review (Build 6) |
-| v1.0.1 | Server proxy + Gemini Flash migration | 3-5 ngày | Scoped — see [v1.0.1 spec](v1-0-1-server-proxy-spec.md) |
-| v1.1 | Daily Knowledge (articles + layered cards) | ~2 tuần | Scoped — see [v1.1 spec](v1-1-daily-knowledge-spec.md) |
-| v1.2 | Widgets + Chrome Ext + Android port | TBD | Candidates only |
+| v1.0 | MVP | — | **LIVE on App Store 2026-05-28** |
+| v1.0.1 | Server proxy + Gemini Flash migration | 3-5 ngày | **Shipped 2026-05-29** (OpenRouter swap) |
+| v1.1 | Daily Knowledge (articles + layered cards) | ~2 tuần | Scoped — see [v1.1 spec](v1-1-daily-knowledge-spec.md) — **not shipped** |
+| v1.2 | **Deep Learn** (multi-day course từ flashcard, replaces Focus) | ~2-3 tuần | Scoped 2026-05-29 — see [v1.2 spec](v1-2-deep-learn-spec.md) |
+| v1.3 | Widgets + Chrome Ext + Android port | TBD | Candidates only (bumped from v1.2) |
 
-## v1.2 candidates (defer until v1.1 data)
+## v1.2 — Deep Learn (replaces Focus)
+
+> Scoped 2026-05-29 brainstorm. **Depends on v1.1** (card mechanic + Gemini + cron) → ships sau v1.1. v1.2 headliner.
+
+### Why
+Focus (Pomodoro timer) lạc đề + buggy (build 16) → gỡ. Deep Learn kéo dài value ladder: capture → summarize → flashcard → **mastery course**. Gộp luôn retention hook (bài học mỗi ngày = daily reason-to-open).
+
+### Mechanic
+Học xong deck/topic → opt-in **course 7 ngày** (14-day defer). Mỗi "ngày" = micro-lesson 3-5':
+- Concept explainer (Feynman — reuse summarize prompt)
+- 3-5 card mới (reuse Flashcard + SRS)
+- 1 apply/reflection (reuse layered "Apply" từ v1.1)
+- Resurface card ngày trước (SRS spaced over course window)
+
+### Locked decisions (2026-05-29)
+1. **Replace Focus entirely** — gỡ Pomodoro timer, tab Focus → Learn. Không check telemetry trước (user OK gỡ thẳng).
+2. **Content source = hybrid (a)+(b)**: seed từ captures của user + Gemini lấp gap; captures thưa → Gemini tự sinh full. Web/Reddit source defer.
+3. **Pro-gate full** — Deep Learn là Pro feature (không free trial course).
+4. **Lazy generation** — sinh Day 1 lúc opt-in, ngày còn lại qua cron/on-open (tiết kiệm token + cho phép adaptive).
+5. **MVP cut**: chỉ 7-day, 1 active path/lúc. Defer: 14-day, adaptive difficulty, web source, share path.
+
+### Data model
+- Mới: `LearningPath` (topic, durationDays, startDate, currentDay, status) + `LearningDay` (index, lessonText, cardIDs, completed).
+- Reuse: Flashcard, SRS, summarize prompt, **notification code của FocusSessionEngine** (lịch reminder). Retire `FocusSession` + timer.
+
+### ⚠️ Removal impact (Focus → Deep Learn)
+- **Streak ownership phải chuyển**: streak hiện đếm "consecutive days với completed Focus session" (support.md:66). Bỏ Focus → streak phải buộc vào **completed daily lesson / review** (Deep Learn hoặc card review). KHÔNG để streak chết.
+- **Docs cần update khi ship**: `legal/privacy-policy.md` (telemetry "focus session started", export "focus sessions"), `legal/support.md` (FAQ "Focus mode" + streak definition), `x-content-6-weeks.md` (marketing tweet bán "Focus timer + streak" — line 64/359/580 cần đổi message).
+- **Telemetry event** `focus_session_started` → thay bằng `learn_day_completed` / `learn_path_started`.
+
+## v1.3 candidates (defer)
 
 - **iOS Widgets**: Daily 3 articles widget, streak/due cards widget, quick capture widget
 - **Chrome Extension**: Capture URL from browser → push to iOS app, reading-time text selection capture. Cần backend endpoint mới.
@@ -50,4 +81,5 @@ Per [growth-playbook.md](growth-playbook.md) Path C, updated 2026-05-23:
 
 - [v1.0.1 server proxy spec](v1-0-1-server-proxy-spec.md)
 - [v1.1 daily knowledge spec](v1-1-daily-knowledge-spec.md)
+- [v1.2 deep learn spec](v1-2-deep-learn-spec.md)
 - [Growth playbook](growth-playbook.md)
