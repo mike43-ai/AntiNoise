@@ -52,7 +52,7 @@ final class AISummarizer: SummarizerService {
 
         do {
             let normalized = try await CaptureNormalizer.normalize(capture)
-            let promptText = try PromptBuilder.userPrompt(
+            let built = PromptBuilder.build(
                 normalized: normalized,
                 userScopes: await MainActor.run { userScopesProvider() }
             )
@@ -62,7 +62,7 @@ final class AISummarizer: SummarizerService {
             let onlineSnapshot = await MainActor.run { isOnline() }
             let payload = try await AIRetryEngine.runWithRetries(
                 isOnline: { onlineSnapshot },
-                work: { try await client.summarize(text: promptText, sourceURL: sourceURLString) },
+                work: { try await client.summarize(text: built.text, sourceURL: sourceURLString, imageDataUri: built.imageDataUri) },
                 isTransient: { error in
                     if let e = error as? AIClient.ClientError { return e.isTransient }
                     return false
@@ -80,7 +80,6 @@ final class AISummarizer: SummarizerService {
 
     private func errorCode(for error: Error) -> String {
         let underlying: Error = (error as? AIRetryEngine.GiveUp)?.lastError ?? error
-        if underlying is PromptBuilder.PromptError { return "image_unsupported" }
         if let client = underlying as? AIClient.ClientError {
             switch client {
             case .notAuthenticated:        return "not_authenticated"

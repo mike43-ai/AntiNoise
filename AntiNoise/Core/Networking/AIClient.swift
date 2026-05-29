@@ -33,8 +33,18 @@ struct AIClient: Sendable {
             case .rateLimited:
                 return "Monthly AI summary limit reached. Upgrade to Pro for unlimited summaries."
             case .aiUnavailable(let detail):
-                return detail.map { "AI temporarily unavailable: \($0)" }
-                    ?? "AI temporarily unavailable. Try again in a moment."
+                switch detail {
+                case "rate-limited":
+                    return "AI is busy right now. Try again in a minute."
+                case "provider-down":
+                    return "AI is temporarily unavailable. Try again shortly."
+                case "parse-failed":
+                    return "AI returned something unexpected. Tap Try again."
+                case "empty-response":
+                    return "AI didn't return anything. Tap Try again."
+                default:
+                    return "AI temporarily unavailable. Try again in a moment."
+                }
             }
         }
 
@@ -64,14 +74,14 @@ struct AIClient: Sendable {
         self.isProProvider = isProProvider
     }
 
-    func summarize(text: String, sourceURL: String?) async throws -> FeynmanSummaryPayload {
-        let body = AIRequestBody(text: text, sourceUrl: sourceURL)
+    func summarize(text: String, sourceURL: String?, imageDataUri: String? = nil) async throws -> FeynmanSummaryPayload {
+        let body = AIRequestBody(text: text, sourceUrl: sourceURL, imageDataUri: imageDataUri)
         let response: SummarizeResponse = try await performRequest(path: "/v1/ai/summarize", body: body)
         return response.payload
     }
 
     func generateFlashcards(text: String) async throws -> [FlashcardItem] {
-        let body = AIRequestBody(text: text, sourceUrl: nil)
+        let body = AIRequestBody(text: text, sourceUrl: nil, imageDataUri: nil)
         let response: FlashcardsResponse = try await performRequest(path: "/v1/ai/flashcards", body: body)
         return response.cards
     }
@@ -150,6 +160,18 @@ struct AIClient: Sendable {
 private struct AIRequestBody: Encodable, Sendable {
     let text: String
     let sourceUrl: String?
+    let imageDataUri: String?
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        try c.encode(text, forKey: .text)
+        try c.encodeIfPresent(sourceUrl, forKey: .sourceUrl)
+        try c.encodeIfPresent(imageDataUri, forKey: .imageDataUri)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case text, sourceUrl, imageDataUri
+    }
 }
 
 private struct SummarizeResponse: Decodable, Sendable {

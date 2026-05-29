@@ -1,3 +1,4 @@
+import FirebaseAuth
 import Foundation
 import Observation
 import RevenueCat
@@ -92,7 +93,18 @@ final class SubscriptionStore {
     private func apply(customerInfo info: CustomerInfo) {
         let entitlement = info.entitlements[Self.proEntitlementID]
         let active = entitlement?.isActive == true
+        let priorIsPro = self.isPro
         self.isPro = active
+
+        // Pro state flipped — the RC webhook should have written a new `tier`
+        // custom claim on the Firebase user by now. Force-refresh the ID token
+        // so the next backend call carries the server-signed tier instead of
+        // the legacy client-attached header.
+        if active != priorIsPro {
+            Task.detached(priority: .utility) {
+                _ = try? await Auth.auth().currentUser?.getIDTokenResult(forcingRefresh: true)
+            }
+        }
 
         if let entitlement, active {
             switch entitlement.periodType {

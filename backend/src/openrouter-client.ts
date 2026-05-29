@@ -23,6 +23,11 @@ export interface CallAIOptions {
   model: string;
   systemInstruction: string;
   userPrompt: string;
+  // Optional base64 data URI (e.g. "data:image/jpeg;base64,..."). When set, the
+  // user message is sent as an OpenAI-style multimodal content array, which
+  // OpenRouter forwards to any vision-capable model (Gemini Flash, Claude,
+  // GPT-4o, …) without code change.
+  imageDataUri?: string;
   jsonResponse?: boolean;
   temperature?: number;
   referer?: string;
@@ -39,11 +44,18 @@ export interface CallAIResult {
 export async function callAI(opts: CallAIOptions): Promise<CallAIResult> {
   const url = 'https://openrouter.ai/api/v1/chat/completions';
 
+  const userContent: unknown = opts.imageDataUri
+    ? [
+        { type: 'text', text: opts.userPrompt },
+        { type: 'image_url', image_url: { url: opts.imageDataUri } },
+      ]
+    : opts.userPrompt;
+
   const body: Record<string, unknown> = {
     model: opts.model,
     messages: [
       { role: 'system', content: opts.systemInstruction },
-      { role: 'user', content: opts.userPrompt },
+      { role: 'user', content: userContent },
     ],
     temperature: opts.temperature ?? 0.4,
   };
@@ -58,11 +70,19 @@ export async function callAI(opts: CallAIOptions): Promise<CallAIResult> {
   if (opts.referer) headers['HTTP-Referer'] = opts.referer;
   if (opts.title) headers['X-Title'] = opts.title;
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  });
+  const payload = JSON.stringify(body);
+
+  // One retry on 429 (provider-level rate limit) after ~2s. Most 429s on
+  // OpenRouter are short hot-spike bursts that clear in <2s — a single retry
+  // converts a user-visible "AI busy" into a transparent recovery. We do NOT
+  // retry 5xx or network errors here because (a) iOS already retries via
+  // AIRetryEngine on transient failures, (b) doubling worker latency on real
+  // outages just delays the user's error toast.
+  let res = await fetch(url, { method: 'POST', headers, body: payload });
+  if (res.status === 429) {
+    await sleep(2000);
+    res = await fetch(url, { method: 'POST', headers, body: payload });
+  }
 
   if (!res.ok) {
     const errText = await res.text().catch(() => '');
@@ -79,6 +99,10 @@ export async function callAI(opts: CallAIOptions): Promise<CallAIResult> {
   if (!text) throw new Error('openrouter-empty-response');
 
   return { text, resolvedModel: data.model ?? opts.model };
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // Anti Noise iOS expects this exact shape (FeynmanSummaryPayload, snake_case).

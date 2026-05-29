@@ -22,8 +22,13 @@ FREE_MONTHLY_LIMIT = "5"
 PRO_DAILY_LIMIT = "200"
 
 # Secrets (set via `wrangler secret put <NAME>`):
-#   OPENROUTER_API_KEY  — https://openrouter.ai/keys
-#   RC_WEBHOOK_SECRET   — optional, for RevenueCat tier sync later
+#   OPENROUTER_API_KEY             — https://openrouter.ai/keys
+#   FIREBASE_SERVICE_ACCOUNT_JSON  — raw JSON of a Firebase service account key
+#                                    (Firebase Console → Settings → Service
+#                                    accounts → Generate new private key)
+#   REVENUECAT_WEBHOOK_AUTH        — the Authorization header value RC will
+#                                    send (set in RC Dashboard → Integrations
+#                                    → Webhooks → Add new)
 
 # KV namespace for per-UID rate-limit counters.
 # Create with: wrangler kv namespace create RATE_LIMIT

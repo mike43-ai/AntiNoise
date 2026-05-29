@@ -30,6 +30,10 @@ export interface FirebaseUser {
   uid: string;
   email?: string;
   emailVerified: boolean;
+  // Custom claim populated by the RC → Firebase webhook bridge. Absent for
+  // users who haven't been touched by the bridge yet (e.g. just signed in,
+  // never purchased) — caller treats absent as "free".
+  tier?: 'pro' | 'free';
 }
 
 export async function verifyFirebaseIdToken(
@@ -66,9 +70,14 @@ export async function verifyFirebaseIdToken(
     throw new Error('token-auth-time-invalid');
   }
 
+  const claimedTier = (payload as JWTPayload & { tier?: unknown }).tier;
+  const tier: 'pro' | 'free' | undefined =
+    claimedTier === 'pro' ? 'pro' : claimedTier === 'free' ? 'free' : undefined;
+
   return {
     uid: sub,
     email: typeof payload.email === 'string' ? payload.email : undefined,
     emailVerified: (payload as JWTPayload & { email_verified?: boolean }).email_verified === true,
+    tier,
   };
 }
