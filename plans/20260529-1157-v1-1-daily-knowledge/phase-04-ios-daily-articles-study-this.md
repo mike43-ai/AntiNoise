@@ -1,10 +1,13 @@
 ---
 phase: 4
-title: "iOS Daily Skills & Study This"
-status: pending
+title: iOS Daily Skills & Study This
+status: completed
 priority: P1
-effort: "3-4d"
-dependencies: [1, 2, 3]
+effort: 3-4d
+dependencies:
+  - 1
+  - 2
+  - 3
 ---
 
 # Phase 4: iOS Daily Skills & Study This

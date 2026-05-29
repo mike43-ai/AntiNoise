@@ -44,7 +44,7 @@ Thêm 2 retention mechanic vào MVP capture-on-demand: (a) daily content discove
 | 1 | [Onboarding Topic Packs (+ optional signals)](./phase-01-onboarding-signals-topic-packs.md) | Completed |
 | 2 | [Layered 15 Flashcards (ordering, no lock)](./phase-02-layered-15-flashcards.md) | Completed |
 | 3 | [Backend Daily Pipeline (curated skill taxonomy)](./phase-03-backend-daily-pipeline.md) | Completed |
-| 4 | [iOS Daily Skills & Study This](./phase-04-ios-daily-articles-study-this.md) | Pending |
+| 4 | [iOS Daily Skills & Study This](./phase-04-ios-daily-articles-study-this.md) | Completed |
 | 5 | [Seed Content (1-2 lessons)](./phase-05-seed-content.md) | Pending |
 | 6 | [Quota & Paywall](./phase-06-quota-paywall.md) | Pending |
 | 7 | [Polish Tests & ASC](./phase-07-polish-tests-asc.md) | Pending |
@@ -80,7 +80,7 @@ P1+P2 parallel (no design-system dep — build trên UI hiện tại). P3 needs 
 | 1 | No `firestore.rules`/`firebase.json` in repo — new `daily_inbox`/`users/{uid}` collections unsecured | Crit | Completed |
 | 2 | `/daily/refresh` named outside `/v1/*` auth middleware → may ship UNauthenticated; uid must come from token not body | Crit | Completed |
 | 3 | SwiftData migration unsafe: non-optional `unlockedAt: Date` w/ init-default → migration fails → `fatalError` crash-loop + data loss for live v1.0 users | Crit | Completed |
-| 4 | Layered cards instantly due: new cards default `nextReviewAt=Date()`; `dueTodayCount` predicate has NO unlock filter → 15 cards flood Day 1 | Crit | P2 |
+| 4 | Layered cards instantly due: new cards default `nextReviewAt=Date()`; `dueTodayCount` predicate has NO unlock filter → 15 cards flood Day 1 | Crit | Completed |
 | 5 | Backend has ZERO Firestore read/write code (`firebase-admin.ts` = only `setUserTier`) — "extend" is net-new infra; effort underestimated | Crit | P3 |
 | 6 | "Study this → 15 cards" FALSE: card gen is manual (`SummaryDetailView` CTA); `CaptureFlowModel.save()` only summarizes | Crit | P4 |
 | 7 | `/daily/refresh` no server-side quota gate before Reddit/Gemini → cost-DoS drains shared Gemini key for all users | High | P3 |

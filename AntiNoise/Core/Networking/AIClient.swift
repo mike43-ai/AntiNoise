@@ -105,6 +105,23 @@ struct AIClient: Sendable {
             throw ClientError.decode(error)
         }
 
+        return try await send(urlRequest)
+    }
+
+    /// Daily Knowledge refresh. POST with no body — uid is derived server-side
+    /// from the Firebase token, so nothing to send.
+    func refreshDailyInbox() async throws -> DailyRefreshResponse {
+        let token = try await fetchIDToken()
+        let isPro = await MainActor.run { isProProvider() }
+        var req = URLRequest(url: baseURL.appendingPathComponent("/v1/daily/refresh"))
+        req.httpMethod = "POST"
+        req.timeoutInterval = 60
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue(isPro ? "pro" : "free", forHTTPHeaderField: "x-an-tier")
+        return try await send(req)
+    }
+
+    private func send<T: Decodable>(_ urlRequest: URLRequest) async throws -> T {
         let data: Data
         let response: URLResponse
         do {
@@ -187,4 +204,20 @@ private struct FlashcardsResponse: Decodable, Sendable {
 private struct ErrorEnvelope: Decodable, Sendable {
     let error: String
     let detail: String?
+}
+
+// Daily Knowledge — matches backend POST /v1/daily/refresh response.
+struct DailyRefreshResponse: Decodable, Sendable {
+    let status: String // "ok" | "caught_up" | "no_profile"
+    let items: [DailySkillDTO]
+}
+
+struct DailySkillDTO: Decodable, Sendable {
+    let id: String
+    let title: String
+    let keyword: String
+    let whyNow: String
+    let coreConcept: String
+    let suggestedSearch: String
+    let pack: String
 }

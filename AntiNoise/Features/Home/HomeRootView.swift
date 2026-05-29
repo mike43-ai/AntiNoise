@@ -6,7 +6,11 @@ struct HomeRootView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(AuthStore.self) private var auth
     @Environment(AppRouter.self) private var router
+    @Environment(SummarizerHolder.self) private var summarizerHolder
+    @Environment(ReachabilityObserver.self) private var reachability
+    @Environment(SubscriptionStore.self) private var subscription
     @State private var model: HomeViewModel?
+    @State private var skillsModel: DailySkillsModel?
     @State private var navigationPath = NavigationPath()
 
     var body: some View {
@@ -25,6 +29,9 @@ struct HomeRootView: View {
             .navigationDestination(for: UUID.self) { captureID in
                 SummaryDetailView(captureID: captureID)
             }
+            .navigationDestination(for: DeckRoute.self) { route in
+                DeckDetailView(deckID: route.id)
+            }
             .task {
                 if model == nil {
                     model = HomeViewModel(
@@ -32,7 +39,38 @@ struct HomeRootView: View {
                         userScopesProvider: { resolveUserScopes() }
                     )
                 }
+                if skillsModel == nil {
+                    let holder = summarizerHolder
+                    let reach = reachability
+                    let authRef = auth
+                    let subRef = subscription
+                    skillsModel = DailySkillsModel(
+                        modelContext: modelContext,
+                        aiClient: AIClient(isProProvider: { subRef.isPro }),
+                        summarizerProvider: { holder.summarizer },
+                        cardGenerator: CardGenerator(
+                            modelContainer: modelContext.container,
+                            isOnline: { reach.isOnline },
+                            isProProvider: { subRef.isPro }
+                        ),
+                        uidProvider: { authRef.currentUser?.id },
+                        isProProvider: { subRef.isPro }
+                    )
+                }
                 model?.refresh()
+                await skillsModel?.loadOnAppear()
+            }
+            .onChange(of: skillsModel?.studyCaptureID) { _, _ in
+                if let captureID = skillsModel?.studyCaptureID {
+                    navigationPath.append(captureID)
+                    skillsModel?.studyCaptureID = nil
+                }
+            }
+            .onChange(of: skillsModel?.studyDeckRoute) { _, _ in
+                if let route = skillsModel?.studyDeckRoute {
+                    navigationPath.append(route)
+                    skillsModel?.studyDeckRoute = nil
+                }
             }
         }
     }
@@ -42,6 +80,9 @@ struct HomeRootView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: AppSpacing.lg) {
                 TodaySnapshotCard(stats: model.stats)
+                if let skillsModel {
+                    DailySkillsSection(model: skillsModel)
+                }
                 queueSection(model: model)
                 ctaSection
             }
