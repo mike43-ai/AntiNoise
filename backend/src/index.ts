@@ -1,7 +1,7 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { verifyFirebaseIdToken, type FirebaseUser } from './firebase-token-verifier';
-import { checkAndIncrement, type Tier, type RateLimitResult } from './rate-limiter';
+import { peekUsage, commitUsage, type Tier, type RateLimitResult } from './rate-limiter';
 import {
   callAI,
   FEYNMAN_SYSTEM_PROMPT,
@@ -69,6 +69,7 @@ app.use('/v1/*', async (c, next) => {
     }
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'auth-failed';
+    console.log('auth.fail', { detail: msg });
     return c.json({ error: 'auth-invalid', detail: msg }, 401);
   }
   await next();
@@ -124,11 +125,15 @@ app.post('/v1/ai/summarize', async (c) => {
 
   const user = c.get('user');
   const tier = c.get('tier');
-
-  const rl = await checkAndIncrement(c.env.RATE_LIMIT, user.uid, tier, {
+  const limits = {
     freeMonthlyLimit: parseInt(c.env.FREE_MONTHLY_LIMIT, 10),
     proDailyLimit: parseInt(c.env.PRO_DAILY_LIMIT, 10),
-  });
+  };
+
+  // Gate on usage WITHOUT consuming a slot — a slot is only committed after the
+  // AI call fully succeeds, so a failed upstream call never burns the user's
+  // monthly quota (otherwise N failed attempts lock out a paying-attention user).
+  const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
 
   for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
 
@@ -154,6 +159,7 @@ app.post('/v1/ai/summarize', async (c) => {
       title: 'Anti Noise',
     });
     const payload = JSON.parse(text) as Record<string, unknown>;
+    await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
     return c.json({ payload, model: resolvedModel });
   } catch (err) {
     const raw = err instanceof Error ? err.message : 'ai-failed';
@@ -180,11 +186,12 @@ app.post('/v1/ai/flashcards', async (c) => {
 
   const user = c.get('user');
   const tier = c.get('tier');
-
-  const rl = await checkAndIncrement(c.env.RATE_LIMIT, user.uid, tier, {
+  const limits = {
     freeMonthlyLimit: parseInt(c.env.FREE_MONTHLY_LIMIT, 10),
     proDailyLimit: parseInt(c.env.PRO_DAILY_LIMIT, 10),
-  });
+  };
+
+  const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
 
   for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
 
@@ -210,6 +217,7 @@ app.post('/v1/ai/flashcards', async (c) => {
       throw new Error('cards-empty');
     }
 
+    await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
     return c.json({ cards, model: resolvedModel });
   } catch (err) {
     const raw = err instanceof Error ? err.message : 'ai-failed';

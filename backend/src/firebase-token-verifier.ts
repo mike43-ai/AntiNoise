@@ -56,17 +56,24 @@ export async function verifyFirebaseIdToken(
 
   const publicKey = await importX509(pem, 'RS256');
 
+  // Allow a small clock-skew window. Cloudflare edge time can trail Google's
+  // token-issuing clock by a second or two; with zero tolerance a freshly
+  // minted token (auth_time/iat ≈ now, e.g. a brand-new sign-in) gets rejected
+  // as "issued in the future". 60s matches the Firebase Admin SDK default.
+  const CLOCK_SKEW_SECONDS = 60;
+
   const { payload } = await jwtVerify(token, publicKey, {
     issuer: `https://securetoken.google.com/${projectId}`,
     audience: projectId,
     algorithms: ['RS256'],
+    clockTolerance: CLOCK_SKEW_SECONDS,
   });
 
   const sub = payload.sub;
   if (typeof sub !== 'string' || sub.length === 0) throw new Error('token-sub-missing');
 
   const authTime = (payload as JWTPayload & { auth_time?: number }).auth_time;
-  if (typeof authTime !== 'number' || authTime > Math.floor(Date.now() / 1000)) {
+  if (typeof authTime !== 'number' || authTime > Math.floor(Date.now() / 1000) + CLOCK_SKEW_SECONDS) {
     throw new Error('token-auth-time-invalid');
   }
 
