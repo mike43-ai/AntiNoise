@@ -65,6 +65,12 @@ GoogleService-Info.plist
 *.swp
 *.swo
 
+# ClaudeKit toolkit (local AI tooling, not app source)
+.claude/
+.repomixignore
+release-manifest.json
+plans/templates/
+
 # Archive of original assets (one-time import)
 Product UI-20260516T073324Z-3-001.zip
 
