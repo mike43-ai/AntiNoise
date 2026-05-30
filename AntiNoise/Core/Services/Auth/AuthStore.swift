@@ -32,6 +32,20 @@ final class AuthStore {
     // No deinit cleanup: AuthStore is a singleton owned by App for the
     // process lifetime, so the Firebase listener never needs removal.
 
+    // MARK: Email (sign-IN only — hidden entry for App Review + legacy accounts;
+    // no public sign-up. Surfaced via a deliberate gesture, see AuthLandingView.)
+
+    func signIn(email: String, password: String) async throws {
+        let trimmed = email.trimmingCharacters(in: .whitespaces)
+        guard !trimmed.isEmpty, !password.isEmpty else { throw AuthError.invalidEmail }
+        do {
+            _ = try await Auth.auth().signIn(withEmail: trimmed, password: password)
+            Telemetry.track(.login(method: .email))
+        } catch {
+            throw AuthError(error)
+        }
+    }
+
     // MARK: Apple
 
     func signInWithApple() async throws {

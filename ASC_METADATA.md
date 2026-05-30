@@ -234,9 +234,16 @@ Decision 2026-05-30: ship the Deep-Learn build directly as **v1.2.0** (skip a se
 ## App Review Information (App Review Notes — v1.2)
 
 ```
-Anti Noise requires sign-in to function. Demo account (Pro entitlement active):
+Anti Noise requires sign-in. New users sign in with Google or Apple. For review,
+use the demo account (Pro entitlement active) via the hidden email sign-in:
+
+HOW TO REACH EMAIL SIGN-IN: on the first (landing) screen, tap the "ANTI NOISE"
+wordmark at the top 5 times. An "Email sign-in" sheet appears. Then enter:
 - Email: nvhuy2708@gmail.com
 - Password: [PASTE IN ASC — see Firebase Auth user]
+
+(Email sign-in is intentionally hidden — new users only see Google/Apple; this
+entry exists for review + legacy accounts.)
 
 The demo account is pre-seeded with sample captures, AI summaries, and flashcards, has topic packs selected (so the Home tab shows "Today's skills"), and has a Pro entitlement so you can test Deep Learn.
 
@@ -248,8 +255,8 @@ How to test the main features:
 Notes:
 - AI runs entirely server-side. Users do NOT enter any API key — just sign in.
 - Push notifications are local-only (review reminders). No remote push.
-- Sign in with Apple and email/password are both supported.
-- No user-to-user content, chat, or third-party login beyond Apple.
+- Public sign-in: Google and Apple. Email sign-in exists but is hidden (see gesture above) — for review + legacy accounts only; no public email sign-up.
+- No user-to-user content or chat. Third-party login: Google (Sign in with Apple also offered, per guideline 4.8).
 ```
 
 **Internal reference (do not paste to ASC — kept here for debugging):**

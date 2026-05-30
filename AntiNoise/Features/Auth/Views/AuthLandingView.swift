@@ -8,6 +8,7 @@ struct AuthLandingView: View {
     @State private var isGoogleLoading = false
     @State private var error: AuthError?
     @State private var appeared = false
+    @State private var showEmailSignIn = false
 
     var body: some View {
         VStack(spacing: 0) {
@@ -53,6 +54,7 @@ struct AuthLandingView: View {
         } message: { err in
             Text(err.localizedDescription)
         }
+        .sheet(isPresented: $showEmailSignIn) { EmailSignInView() }
     }
 
     private var brandBar: some View {
@@ -71,6 +73,10 @@ struct AuthLandingView: View {
                 .tracking(3)
                 .foregroundStyle(Color.textPrimary)
         }
+        // Hidden email sign-in entry (App Review + legacy accounts): 5 taps on
+        // the wordmark. Not discoverable by normal users; documented in ASC notes.
+        .contentShape(Rectangle())
+        .onTapGesture(count: 5) { showEmailSignIn = true }
     }
 
     // Warm radial glow sits behind the signal wave to give the hero some depth.

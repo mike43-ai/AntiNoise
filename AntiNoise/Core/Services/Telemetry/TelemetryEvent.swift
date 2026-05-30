@@ -91,6 +91,7 @@ enum TelemetryEvent {
 enum AuthMethod: String {
     case apple
     case google
+    case email // sign-in only, hidden entry (App Review + legacy accounts)
 }
 
 enum CaptureSource: String {
