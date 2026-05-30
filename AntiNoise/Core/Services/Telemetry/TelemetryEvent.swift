@@ -11,7 +11,10 @@ enum TelemetryEvent {
     case deepDiveStarted
     case deckGenerated(cardCount: Int)
     case reviewSessionCompleted(cardsReviewed: Int, correctCount: Int)
-    case focusSessionCompleted(durationMinutes: Int)
+    case learnPathStarted(topic: String)
+    case learnDayCompleted(dayIndex: Int)
+    case learnPathCompleted(topic: String)
+    case learnPathAbandoned(atDay: Int)
     case trialStarted
     case trialExpired
     case paywallShown(trigger: PaywallTrigger)
@@ -32,7 +35,10 @@ enum TelemetryEvent {
         case .deepDiveStarted:         return "deep_dive_started"
         case .deckGenerated:           return "deck_generated"
         case .reviewSessionCompleted:  return "review_session_completed"
-        case .focusSessionCompleted:   return "focus_session_completed"
+        case .learnPathStarted:        return "learn_path_started"
+        case .learnDayCompleted:       return "learn_day_completed"
+        case .learnPathCompleted:      return "learn_path_completed"
+        case .learnPathAbandoned:      return "learn_path_abandoned"
         case .trialStarted:            return "trial_started"
         case .trialExpired:            return "trial_expired"
         case .paywallShown:            return "paywall_shown"
@@ -59,8 +65,12 @@ enum TelemetryEvent {
             return ["card_count": cardCount]
         case .reviewSessionCompleted(let reviewed, let correct):
             return ["cards_reviewed": reviewed, "correct_count": correct]
-        case .focusSessionCompleted(let minutes):
-            return ["duration_minutes": minutes]
+        case .learnPathStarted(let topic), .learnPathCompleted(let topic):
+            return ["topic": topic]
+        case .learnDayCompleted(let dayIndex):
+            return ["day_index": dayIndex]
+        case .learnPathAbandoned(let atDay):
+            return ["at_day": atDay]
         case .paywallShown(let trigger):
             return ["trigger": trigger.rawValue]
         case .subscriptionStarted(let productID):

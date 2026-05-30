@@ -14,7 +14,7 @@ struct TodaySnapshotCard: View {
                 HStack(alignment: .top, spacing: AppSpacing.lg) {
                     stat(value: stats.capturesToday, label: "captured")
                     stat(value: stats.dueCardsCount, label: "cards due")
-                    stat(value: stats.focusStreakDays, label: "day streak")
+                    stat(value: stats.streakDays, label: "day streak")
                 }
             }
         }

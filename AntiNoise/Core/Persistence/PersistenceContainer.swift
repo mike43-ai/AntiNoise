@@ -8,7 +8,7 @@ import SwiftData
 enum PersistenceContainer {
     static let shared: ModelContainer = {
         do {
-            let schema = Schema([Capture.self, Summary.self, LearningGoal.self, Deck.self, Flashcard.self, FocusSession.self, DailySkillItem.self])
+            let schema = Schema([Capture.self, Summary.self, LearningGoal.self, Deck.self, Flashcard.self, DailySkillItem.self, LearningPath.self, LearningDay.self])
             let storeURL = storeURL()
             let config = ModelConfiguration(
                 schema: schema,

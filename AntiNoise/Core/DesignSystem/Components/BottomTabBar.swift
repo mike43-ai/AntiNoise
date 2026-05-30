@@ -1,14 +1,13 @@
 import SwiftUI
 
 enum AppTab: Hashable, CaseIterable {
-    case home, learn, capture, focus, profile
+    case home, learn, capture, profile
 
     var title: String {
         switch self {
         case .home:    return "Home"
         case .learn:   return "Learn"
         case .capture: return "Capture"
-        case .focus:   return "Focus"
         case .profile: return "Profile"
         }
     }
@@ -18,7 +17,6 @@ enum AppTab: Hashable, CaseIterable {
         case .home:    return "house"
         case .learn:   return "book"
         case .capture: return "plus.circle.fill"
-        case .focus:   return "timer"
         case .profile: return "person.crop.circle"
         }
     }

@@ -35,9 +35,11 @@ struct HomeRootView: View {
             }
             .task {
                 if model == nil {
+                    let authRef = auth
                     model = HomeViewModel(
                         modelContext: modelContext,
-                        userScopesProvider: { resolveUserScopes() }
+                        userScopesProvider: { resolveUserScopes() },
+                        uidProvider: { authRef.currentUser?.id }
                     )
                 }
                 if skillsModel == nil {
@@ -143,8 +145,8 @@ struct HomeRootView: View {
 
     private var ctaSection: some View {
         VStack(spacing: AppSpacing.sm) {
-            PrimaryButton(title: "Start a focus session", systemImage: "timer") {
-                router.selectTab(.focus)
+            PrimaryButton(title: "Review your cards", systemImage: "rectangle.stack") {
+                router.selectTab(.learn)
             }
             SecondaryButton(title: "Capture something new", systemImage: "plus") {
                 router.presentCapture()

@@ -6,14 +6,17 @@ struct DashboardStats: Sendable {
     var capturesTotal: Int = 0
     var summariesTotal: Int = 0
     var dueCardsCount: Int = 0
-    var focusStreakDays: Int = 0
-    var totalFocusMinutes: Int = 0
+    var streakDays: Int = 0
     var scopeBreakdown: [ClassificationScope: Int] = [:]
 }
 
 @MainActor
 struct StatsAggregator {
     let modelContainer: ModelContainer
+    // Streak now counts days with ≥1 completed card review (StreakEngine), not
+    // Focus sessions. The provider supplies the same uid the review side writes
+    // under, so the displayed count matches the recorded one.
+    var uidProvider: () -> String? = { nil }
 
     func compute(now: Date = Date(), calendar: Calendar = .current) -> DashboardStats {
         let context = ModelContext(modelContainer)
@@ -36,15 +39,8 @@ struct StatsAggregator {
         let dueCountDescriptor = FetchDescriptor<Flashcard>(predicate: #Predicate { $0.nextReviewAt < endOfToday })
         stats.dueCardsCount = (try? context.fetchCount(dueCountDescriptor)) ?? 0
 
-        // Focus sessions: total minutes + streak
-        let sessions = (try? context.fetch(FetchDescriptor<FocusSession>())) ?? []
-        let completedSessions = sessions.filter { $0.completed }
-        stats.totalFocusMinutes = completedSessions.reduce(0) { partial, session in
-            guard let endedAt = session.endedAt else { return partial }
-            let seconds = Int(endedAt.timeIntervalSince(session.startedAt))
-            return partial + max(0, seconds / 60)
-        }
-        stats.focusStreakDays = streakLength(sessions: completedSessions, today: startOfToday, calendar: calendar)
+        // Review streak (days with ≥1 completed review), keyed by current uid.
+        stats.streakDays = StreakEngine(uid: uidProvider()).currentStreak(now: now)
 
         // Scope breakdown — count captures by resolved scope (user override > AI suggestion).
         let summaries = (try? context.fetch(FetchDescriptor<Summary>())) ?? []
@@ -58,18 +54,5 @@ struct StatsAggregator {
         stats.scopeBreakdown = breakdown
 
         return stats
-    }
-
-    private func streakLength(sessions: [FocusSession], today: Date, calendar: Calendar) -> Int {
-        guard !sessions.isEmpty else { return 0 }
-        let days = Set(sessions.map { calendar.startOfDay(for: $0.startedAt) })
-        var streak = 0
-        var cursor = today
-        while days.contains(cursor) {
-            streak += 1
-            guard let prev = calendar.date(byAdding: .day, value: -1, to: cursor) else { break }
-            cursor = prev
-        }
-        return streak
     }
 }

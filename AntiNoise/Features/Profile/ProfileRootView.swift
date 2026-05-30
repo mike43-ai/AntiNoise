@@ -61,7 +61,11 @@ struct ProfileRootView: View {
             }
             .task {
                 if viewModel == nil {
-                    viewModel = ProfileViewModel(modelContext: modelContext)
+                    let authRef = auth
+                    viewModel = ProfileViewModel(
+                        modelContext: modelContext,
+                        uidProvider: { authRef.currentUser?.id }
+                    )
                 }
                 if let uid = auth.currentUser?.id {
                     viewModel?.refresh(uid: uid)

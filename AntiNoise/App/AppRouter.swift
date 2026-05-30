@@ -9,9 +9,9 @@ final class AppRouter {
     var selectedTab: AppTab = .home
     var isCaptureSheetPresented = false
 
-    // Set by an immersive screen (e.g. an active focus session) to hide the
-    // bottom tab bar. Keeps full-screen content clear of the bar and prevents
-    // tab-switching from tearing down a running session.
+    // Set by an immersive screen (e.g. a Deep Learn lesson) to hide the bottom
+    // tab bar. Keeps full-screen content clear of the bar and prevents
+    // tab-switching from tearing down an in-progress flow.
     var hideTabBar = false
 
     func selectTab(_ tab: AppTab) {

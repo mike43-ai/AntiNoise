@@ -12,9 +12,9 @@ final class ProfileViewModel {
     private let aggregator: StatsAggregator
     private let goalRepo: LearningGoalRepository
 
-    init(modelContext: ModelContext) {
+    init(modelContext: ModelContext, uidProvider: @escaping () -> String? = { nil }) {
         self.modelContext = modelContext
-        self.aggregator = StatsAggregator(modelContainer: modelContext.container)
+        self.aggregator = StatsAggregator(modelContainer: modelContext.container, uidProvider: uidProvider)
         self.goalRepo = LearningGoalRepository(context: modelContext)
     }
 

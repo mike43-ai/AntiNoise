@@ -19,8 +19,8 @@ struct MainTabView: View {
 
     // Show/hide the bar via an outer branch, not a conditional *inside*
     // `safeAreaInset`: a conditional placed directly in the inset makes SwiftUI
-    // draw the bar while reserving zero inset height, and a focus session needs
-    // the inset gone entirely for true full-screen. This inset does not cross
+    // draw the bar while reserving zero inset height, and an immersive lesson
+    // needs the inset gone entirely for true full-screen. This inset does not cross
     // into each tab's own NavigationStack, so scrollable roots additionally
     // clear the bar via `contentMargins(.bottom, BottomTabBar.contentHeight)`.
     @ViewBuilder
@@ -42,7 +42,6 @@ struct MainTabView: View {
         switch router.selectedTab {
         case .home:    HomeRootView()
         case .learn:   LearnRootView()
-        case .focus:   FocusRootView()
         case .profile: ProfileRootView()
         case .capture: HomeRootView() // unreachable — capture opens modally via selectTab(_:)
         }

@@ -7,8 +7,8 @@ struct StatsGrid: View {
         LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: AppSpacing.sm) {
             cell(value: "\(stats.capturesTotal)", label: "Captures")
             cell(value: "\(stats.summariesTotal)", label: "Summaries")
-            cell(value: "\(stats.focusStreakDays)", label: "Day streak")
-            cell(value: "\(stats.totalFocusMinutes) min", label: "Total focus")
+            cell(value: "\(stats.dueCardsCount)", label: "Cards due")
+            cell(value: "\(stats.streakDays)", label: "Day streak")
         }
     }
 

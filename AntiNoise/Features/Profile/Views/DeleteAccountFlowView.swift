@@ -58,7 +58,7 @@ struct DeleteAccountFlowView: View {
         AppCard(style: .elevated) {
             VStack(alignment: .leading, spacing: AppSpacing.sm) {
                 Text("This will delete your Anti Noise account.").appFont(.h3)
-                Text("We'll keep your data for 7 days in case you change your mind. After that, captures, summaries, decks, flashcards, goals, and focus sessions are permanently removed.")
+                Text("We'll keep your data for 7 days in case you change your mind. After that, captures, summaries, decks, flashcards, and goals are permanently removed.")
                     .appFont(.bodySmall)
                     .foregroundStyle(Color.textMuted)
             }

@@ -15,10 +15,11 @@ final class HomeViewModel {
 
     init(
         modelContext: ModelContext,
-        userScopesProvider: @escaping () -> Set<ClassificationScope>
+        userScopesProvider: @escaping () -> Set<ClassificationScope>,
+        uidProvider: @escaping () -> String? = { nil }
     ) {
         self.modelContext = modelContext
-        self.aggregator = StatsAggregator(modelContainer: modelContext.container)
+        self.aggregator = StatsAggregator(modelContainer: modelContext.container, uidProvider: uidProvider)
         self.priorityEngine = DailyPriorityEngine(
             modelContainer: modelContext.container,
             userScopesProvider: userScopesProvider

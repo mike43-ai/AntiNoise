@@ -143,7 +143,11 @@ struct AccountDeletionService {
                 rows.forEach { context.delete($0) }
             }),
             .init(perform: { context in
-                let rows = (try? context.fetch(FetchDescriptor<FocusSession>())) ?? []
+                let rows = (try? context.fetch(FetchDescriptor<LearningPath>())) ?? []
+                rows.forEach { context.delete($0) }
+            }),
+            .init(perform: { context in
+                let rows = (try? context.fetch(FetchDescriptor<LearningDay>())) ?? []
                 rows.forEach { context.delete($0) }
             }),
         ]

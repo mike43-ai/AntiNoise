@@ -93,6 +93,8 @@ targets:
       - package: Firebase
         product: FirebaseAuth
       - package: Firebase
+        product: FirebaseAppCheck
+      - package: Firebase
         product: FirebaseFirestore
       - package: Firebase
         product: FirebaseAnalytics
