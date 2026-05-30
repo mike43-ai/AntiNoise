@@ -11,6 +11,7 @@ struct LearnHubView: View {
     enum LearnDestination: Hashable {
         case capture(UUID)
         case deck(UUID)
+        case deepLearnPath
     }
 
     var body: some View {
@@ -32,6 +33,8 @@ struct LearnHubView: View {
                     SummaryDetailView(captureID: captureID)
                 case .deck(let deckID):
                     DeckDetailView(deckID: deckID)
+                case .deepLearnPath:
+                    LearningPathView()
                 }
             }
             .task {
@@ -82,9 +85,12 @@ struct LearnHubView: View {
                         .padding(.horizontal, AppSpacing.xl)
                     }
                 case .decks:
-                    DeckListView(onSelect: { deckID in
-                        navigationPath.append(LearnDestination.deck(deckID))
-                    })
+                    VStack(alignment: .leading, spacing: AppSpacing.md) {
+                        DeepLearnSection(onOpenPath: { navigationPath.append(LearnDestination.deepLearnPath) })
+                        DeckListView(onSelect: { deckID in
+                            navigationPath.append(LearnDestination.deck(deckID))
+                        })
+                    }
                     .padding(.horizontal, AppSpacing.xl)
                 }
             }

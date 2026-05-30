@@ -54,6 +54,7 @@ struct DeckDetailView: View {
                 ) {
                     navigateToReview = true
                 }
+                DeepLearnStartButton(deck: deck)
             }
         }
     }

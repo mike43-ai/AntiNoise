@@ -1,0 +1,76 @@
+import SwiftData
+import SwiftUI
+
+/// Entry point to start a Deep Learn course from a specific deck. Pro is the real
+/// gate server-side; the paywall is wired in a later phase. Enforces the
+/// one-active-path rule and routes into the path view on success.
+@MainActor
+struct DeepLearnStartButton: View {
+    let deck: Deck
+
+    @Environment(\.modelContext) private var modelContext
+    @Environment(AuthStore.self) private var auth
+    @Environment(SubscriptionStore.self) private var subscription
+    @State private var model: DeepLearnModel?
+    @State private var navigate = false
+    @State private var showBusyAlert = false
+
+    var body: some View {
+        VStack(spacing: AppSpacing.sm) {
+            PrimaryButton(
+                title: "Start Deep Learn · 7 days",
+                systemImage: "graduationcap.fill",
+                isLoading: model?.isWorking == true
+            ) {
+                Task { await start() }
+            }
+            if let error = model?.errorMessage {
+                Text(error).appFont(.caption).foregroundStyle(Color.danger)
+            }
+        }
+        .navigationDestination(isPresented: $navigate) { LearningPathView() }
+        .alert("Finish your current course first", isPresented: $showBusyAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("You can run one Deep Learn course at a time. Complete or abandon it before starting another.")
+        }
+        .task { ensureModel() }
+    }
+
+    private func ensureModel() {
+        guard model == nil else { return }
+        let authRef = auth, subRef = subscription
+        model = DeepLearnModel(
+            modelContext: modelContext,
+            client: AIClient(isProProvider: { subRef.isPro }),
+            uidProvider: { authRef.currentUser?.id }
+        )
+        model?.refresh()
+    }
+
+    private func start() async {
+        ensureModel()
+        guard let model else { return }
+        model.refresh()
+        if let active = model.activePath, active.deckID != deck.id {
+            showBusyAlert = true
+            return
+        }
+        if model.activePath?.deckID == deck.id {
+            navigate = true // resume existing course for this deck
+            return
+        }
+        let uid = auth.currentUser?.id ?? ""
+        // Snippet-mining from the user's captures is deferred; the backend handles
+        // the cold-start (no snippets) case by generating a standard progression.
+        await model.startPath(
+            deck: deck,
+            role: OnboardingStore.role(uid: uid)?.rawValue,
+            level: OnboardingStore.experienceLevel(uid: uid)?.rawValue,
+            snippets: []
+        )
+        if model.activePath != nil && model.errorMessage == nil {
+            navigate = true
+        }
+    }
+}

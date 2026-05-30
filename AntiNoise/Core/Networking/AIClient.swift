@@ -1,3 +1,4 @@
+import FirebaseAppCheck
 import FirebaseAuth
 import Foundation
 
@@ -98,6 +99,9 @@ struct AIClient: Sendable {
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         urlRequest.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         urlRequest.setValue(isPro ? "pro" : "free", forHTTPHeaderField: "x-an-tier")
+        if let appCheckToken = await fetchAppCheckToken() {
+            urlRequest.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+        }
 
         do {
             urlRequest.httpBody = try JSONEncoder().encode(body)
@@ -118,6 +122,54 @@ struct AIClient: Sendable {
         req.timeoutInterval = 60
         req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         req.setValue(isPro ? "pro" : "free", forHTTPHeaderField: "x-an-tier")
+        if let appCheckToken = await fetchAppCheckToken() {
+            req.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+        }
+        return try await send(req)
+    }
+
+    /// Deep Learn — create a 7-day course: backend returns the outline + Day 1
+    /// content in one call. Pro-only server-side (free token → 403 → .http(403)).
+    func startLearningPath(
+        topic: String,
+        deckTitle: String?,
+        captureSnippets: [String],
+        role: String?,
+        level: String?
+    ) async throws -> LearnPathResponse {
+        let body = LearnPathBody(topic: topic, deckTitle: deckTitle, captureSnippets: captureSnippets, role: role, level: level)
+        return try await performLearnRequest(path: "/v1/learn/path", body: body)
+    }
+
+    /// Deep Learn — lazily expand one later day of an active course.
+    func expandLearningDay(
+        topic: String,
+        dayIndex: Int,
+        subtopic: String,
+        objective: String,
+        priorSubtopics: [String]
+    ) async throws -> LearnDayResponse {
+        let body = LearnDayBody(topic: topic, dayIndex: dayIndex, subtopic: subtopic, objective: objective, priorSubtopics: priorSubtopics)
+        return try await performLearnRequest(path: "/v1/learn/day", body: body)
+    }
+
+    private func performLearnRequest<B: Encodable, T: Decodable>(path: String, body: B) async throws -> T {
+        let token = try await fetchIDToken()
+        let isPro = await MainActor.run { isProProvider() }
+        var req = URLRequest(url: baseURL.appendingPathComponent(path))
+        req.httpMethod = "POST"
+        req.timeoutInterval = 90 // path call runs two sequential model calls
+        req.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        req.setValue(isPro ? "pro" : "free", forHTTPHeaderField: "x-an-tier")
+        if let appCheckToken = await fetchAppCheckToken() {
+            req.setValue(appCheckToken, forHTTPHeaderField: "X-Firebase-AppCheck")
+        }
+        do {
+            req.httpBody = try JSONEncoder().encode(body)
+        } catch {
+            throw ClientError.decode(error)
+        }
         return try await send(req)
     }
 
@@ -164,6 +216,21 @@ struct AIClient: Sendable {
             return try await user.getIDToken()
         } catch {
             throw ClientError.tokenFetchFailed(error)
+        }
+    }
+
+    /// Fetch the current App Check token. Returns nil (and logs in DEBUG) on
+    /// failure so a token hiccup never blocks a request while the backend runs
+    /// App Check in monitor mode. Once the backend enforces App Check, a nil here
+    /// surfaces as a 401 from the server, handled by the existing error path.
+    private func fetchAppCheckToken() async -> String? {
+        do {
+            return try await AppCheck.appCheck().token(forcingRefresh: false).token
+        } catch {
+            #if DEBUG
+            print("[AIClient] App Check token fetch failed: \(error.localizedDescription)")
+            #endif
+            return nil
         }
     }
 
@@ -220,4 +287,41 @@ struct DailySkillDTO: Decodable, Sendable {
     let coreConcept: String
     let suggestedSearch: String
     let pack: String
+}
+
+// MARK: - Deep Learn wire shapes (POST /v1/learn/path + /v1/learn/day)
+
+private struct LearnPathBody: Encodable, Sendable {
+    let topic: String
+    let deckTitle: String?
+    let captureSnippets: [String]
+    let role: String?
+    let level: String?
+}
+
+private struct LearnDayBody: Encodable, Sendable {
+    let topic: String
+    let dayIndex: Int
+    let subtopic: String
+    let objective: String
+    let priorSubtopics: [String]
+}
+
+/// One expanded day's content (shared by /learn/path's `day1` and /learn/day).
+struct LearnDayContent: Decodable, Sendable {
+    let concept: String
+    let cards: [FlashcardItem]
+    let applyPrompt: String
+}
+
+struct LearnPathResponse: Decodable, Sendable {
+    let outlineJSON: String
+    let day1: LearnDayContent
+    let model: String
+}
+
+struct LearnDayResponse: Decodable, Sendable {
+    let concept: String
+    let cards: [FlashcardItem]
+    let applyPrompt: String
 }
