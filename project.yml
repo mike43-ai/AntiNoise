@@ -72,12 +72,10 @@ targets:
           - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:
               - antinoise
-          # GOOGLE SIGN-IN: after enabling the Google provider in Firebase Console
-          # and re-downloading GoogleService-Info.plist, add a second entry here:
-          #   - CFBundleURLName: com.antinoise.focus.google
-          #     CFBundleURLSchemes:
-          #       - <REVERSED_CLIENT_ID from the plist, e.g. com.googleusercontent.apps.123-abc>
-          # Omitted until then — an invalid placeholder scheme is rejected by ASC (ITMS-90158).
+          # Google Sign-In redirect — REVERSED_CLIENT_ID from GoogleService-Info.plist.
+          - CFBundleURLName: com.antinoise.focus.google
+            CFBundleURLSchemes:
+              - com.googleusercontent.apps.783988295054-19qp23rs5i08v8gbrd1gr9vbdo9jie2n
     entitlements:
       path: AntiNoise/Resources/AntiNoise.entitlements
       properties:
