@@ -209,13 +209,18 @@ v1.1 ships server-side AI + Daily Knowledge. Re-check these App Privacy data typ
 - BYOK removed: no more user-supplied API key in Keychain (privacy policy §3/§8 updated to match).
 - No new third-party SDK added on-device (gateway is our own Cloudflare Worker; OpenRouter is reached server-side only) → no `PrivacyInfo.xcprivacy` "tracking domains" change.
 
-## v1.1 release prep checklist
+## v1.2 release prep checklist (consolidated — Daily Knowledge + Deep Learn, Focus removed)
 
-- [ ] Bump `MARKETING_VERSION` 1.0.1 → 1.1.0 in `project.yml` (decide with build number).
-- [ ] Paste v1.1 What's New (EN + VI) into ASC.
-- [ ] Confirm App Privacy labels per the delta above.
-- [ ] Screenshots: UI redesign deferred to v1.1.1 → keep current screenshots unless Daily Knowledge / Home screen changed enough to warrant a refresh (review on device).
-- [ ] **Description copy (v1.2 branch):** Focus timer section swapped to Deep Learn (Pro); keyword focustimer→deeplearn. NOTE: the v1.1 submission (from main) still ships Focus, so its description keeps the Focus section — this swap applies only when v1.2 ships.
+Decision 2026-05-30: ship the Deep-Learn build directly as **v1.2.0** (skip a separate v1.1 release; v1.1's Daily Knowledge is included). Order matters — deploy backend BEFORE submit or Deep Learn will fail in review.
+
+- [x] Bump `MARKETING_VERSION` → 1.2.0 in `project.yml`.
+- [ ] **Deploy backend** `cd backend && wrangler deploy` (enables /v1/learn/*; without it Deep Learn errors). Verify per `plans/20260530-v1-2-deep-learn/reports/v1-2-deploy-and-test-runbook.md`.
+- [ ] Demo account: confirm it has Pro entitlement + topic packs selected (so reviewers can test Deep Learn + Daily Knowledge).
+- [ ] Device migration test: install over an existing v1.1 store → no crash, streak intact.
+- [ ] Paste v1.2 What's New (EN + VI) into ASC.
+- [ ] Description: Focus timer section already swapped to Deep Learn (Pro); keyword focustimer→deeplearn (done on this branch).
+- [ ] App Privacy labels per the delta above (no NEW data types vs v1.1 — Deep Learn content is the same User Content category via the same gateway).
+- [ ] Screenshots: current set (incl. Daily Knowledge + layered cards). Optionally add a Deep Learn shot.
 
 ## Categories
 
@@ -226,19 +231,25 @@ v1.1 ships server-side AI + Daily Knowledge. Re-check these App Privacy data typ
 
 Đề xuất: 4+ (không có content trưởng thành; UGC qua note input nhưng private không share).
 
-## App Review Information (App Review Notes)
+## App Review Information (App Review Notes — v1.2)
 
 ```
-Anti Noise requires sign-in to function. Please use the demo account:
+Anti Noise requires sign-in to function. Demo account (Pro entitlement active):
 - Email: nvhuy2708@gmail.com
 - Password: [PASTE IN ASC — see Firebase Auth user]
 
-The demo account is pre-seeded with sample captures, AI summaries, and flashcards so you can exercise the full flow without making OpenAI API calls. Pro features are pre-entitled on this account via RevenueCat promotional grant.
+The demo account is pre-seeded with sample captures, AI summaries, and flashcards, has topic packs selected (so the Home tab shows "Today's skills"), and has a Pro entitlement so you can test Deep Learn.
+
+How to test the main features:
+- Daily Knowledge: Home tab shows 3 suggested skills; tap "Study this" to generate flashcards.
+- Deep Learn (Pro): Learn tab → open a deck → "Start Deep Learn · 7 days" → a 7-day course. Day 1 loads immediately; later days load on first open. Complete a day to advance.
+- Review: Learn tab → a deck → Start review.
 
 Notes:
-- The app uses an OpenAI API key entered by the user (Profile → API Key) for AI summaries. The demo account already has summaries persisted, so no key entry is needed.
+- AI runs entirely server-side. Users do NOT enter any API key — just sign in.
 - Push notifications are local-only (review reminders). No remote push.
-- Sign In with Apple is supported. Email/password account creation also available.
+- Sign in with Apple and email/password are both supported.
+- No user-to-user content, chat, or third-party login beyond Apple.
 ```
 
 **Internal reference (do not paste to ASC — kept here for debugging):**
