@@ -9,7 +9,8 @@ final class LayeredDeckMigrationTests: XCTestCase {
 
     private static let schema = Schema([
         Capture.self, Summary.self, LearningGoal.self,
-        Deck.self, Flashcard.self, FocusSession.self, DailySkillItem.self,
+        Deck.self, Flashcard.self, DailySkillItem.self,
+        LearningPath.self, LearningDay.self,
     ])
 
     private func inMemoryContainer() throws -> ModelContainer {
