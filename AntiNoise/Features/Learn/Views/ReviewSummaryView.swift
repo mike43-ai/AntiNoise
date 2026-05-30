@@ -6,36 +6,52 @@ struct ReviewSummaryView: View {
     let lapses: Int
     let onDone: () -> Void
 
+    @State private var revealed = false
+
     var body: some View {
-        VStack(spacing: AppSpacing.xl) {
-            Spacer()
+        ZStack {
+            VStack(spacing: AppSpacing.xl) {
+                Spacer()
 
-            VStack(spacing: AppSpacing.sm) {
-                Image(systemName: "checkmark.seal.fill")
-                    .font(.system(size: 56, weight: .light))
-                    .foregroundStyle(Color.success)
-                Text("Session complete")
-                    .appFont(.h1)
+                VStack(spacing: AppSpacing.sm) {
+                    Image(systemName: "checkmark.seal.fill")
+                        .font(.system(size: 56, weight: .light))
+                        .foregroundStyle(Color.success)
+                        .scaleEffect(revealed ? 1 : 0.5)
+                        .opacity(revealed ? 1 : 0)
+                    Text("Session complete")
+                        .appFont(.h1)
+                }
+
+                HStack(spacing: AppSpacing.lg) {
+                    stat(label: "Reviewed", value: total)
+                    stat(label: "Correct",  value: correct)
+                    stat(label: "Lapses",   value: lapses)
+                }
+
+                Spacer()
+
+                PrimaryButton(title: "Done", action: onDone)
+                    .padding(.horizontal, AppSpacing.xl)
+                    .padding(.bottom, AppSpacing.lg)
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            HStack(spacing: AppSpacing.lg) {
-                stat(label: "Reviewed", value: total)
-                stat(label: "Correct",  value: correct)
-                stat(label: "Lapses",   value: lapses)
+            if revealed {
+                ConfettiView()
             }
-
-            Spacer()
-
-            PrimaryButton(title: "Done", action: onDone)
-                .padding(.horizontal, AppSpacing.xl)
-                .padding(.bottom, AppSpacing.lg)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .onAppear {
+            Haptics.notify(.success)
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.6)) { revealed = true }
+        }
     }
 
     private func stat(label: String, value: Int) -> some View {
         VStack(spacing: 2) {
-            Text("\(value)").appFont(.h1)
+            Text("\(revealed ? value : 0)")
+                .appFont(.h1)
+                .contentTransition(.numericText(value: Double(revealed ? value : 0)))
             Text(label).appFont(.caption).foregroundStyle(Color.textMuted).textCase(.uppercase)
         }
         .padding(AppSpacing.md)

@@ -41,6 +41,13 @@
 	<string>Anti Noise reads images from your photo library to summarize them.</string>
 	<key>RCAppPublicKey</key>
 	<string>appl_IBXtxoUvtmJQRCdnHXZVbHWzeIW</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>SpaceGrotesk-Regular.ttf</string>
+		<string>SpaceGrotesk-Medium.ttf</string>
+		<string>SpaceGrotesk-SemiBold.ttf</string>
+		<string>SpaceGrotesk-Bold.ttf</string>
+	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

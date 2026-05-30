@@ -42,22 +42,27 @@ struct LearningPathView: View {
     @ViewBuilder
     private func content(model: DeepLearnModel) -> some View {
         if let path = model.activePath {
-            ScrollView {
-                VStack(alignment: .leading, spacing: AppSpacing.lg) {
-                    if path.statusValue == .completed {
-                        completionBadge(topic: path.topic)
-                    } else {
-                        progressHeader(path: path, current: model.currentDayIndex)
+            ZStack {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: AppSpacing.lg) {
+                        if path.statusValue == .completed {
+                            completionBadge(topic: path.topic)
+                        } else {
+                            progressHeader(path: path, current: model.currentDayIndex)
+                        }
+                        ForEach(model.days, id: \.id) { day in
+                            dayRow(day: day, current: model.currentDayIndex)
+                        }
+                        if path.statusValue == .active {
+                            SecondaryButton(title: "Abandon course") { model.abandon() }
+                                .padding(.top, AppSpacing.md)
+                        }
                     }
-                    ForEach(model.days, id: \.id) { day in
-                        dayRow(day: day, current: model.currentDayIndex)
-                    }
-                    if path.statusValue == .active {
-                        SecondaryButton(title: "Abandon course") { model.abandon() }
-                            .padding(.top, AppSpacing.md)
-                    }
+                    .padding(AppSpacing.xl)
                 }
-                .padding(AppSpacing.xl)
+                if path.statusValue == .completed {
+                    ConfettiView()
+                }
             }
         } else {
             AppEmptyState(systemImage: "graduationcap", title: "No active course",
@@ -78,13 +83,16 @@ struct LearningPathView: View {
     private func completionBadge(topic: String) -> some View {
         AppCard(style: .elevated) {
             VStack(spacing: AppSpacing.sm) {
-                Text("🏆").font(.system(size: 56))
+                Image(systemName: "trophy.fill")
+                    .font(.system(size: 52))
+                    .foregroundStyle(Color.accent)
                 Text("Mastered in 7 days").appFont(.h3)
                 Text(topic).appFont(.bodySmall).foregroundStyle(Color.textMuted)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, AppSpacing.md)
         }
+        .onAppear { Haptics.notify(.success) }
     }
 
     private func dayRow(day: LearningDay, current: Int) -> some View {

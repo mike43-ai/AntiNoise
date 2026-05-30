@@ -13,7 +13,7 @@ struct PrimaryButton: View {
     private var isInactive: Bool { isLoading || isDisabled }
 
     var body: some View {
-        Button(action: action) {
+        Button(action: { Haptics.tap(.medium); action() }) {
             HStack(spacing: AppSpacing.sm) {
                 if isLoading {
                     ProgressView()
@@ -33,9 +33,9 @@ struct PrimaryButton: View {
             .padding(.horizontal, AppSpacing.lg)
             .background(isDisabled ? Color.textDisabled : Color.accent)
             .clipShape(RoundedRectangle(cornerRadius: AppRadius.md, style: .continuous))
-            .scaleEffect(isPressed ? 0.97 : 1.0)
+            .scaleEffect(isPressed ? 0.96 : 1.0)
             .opacity(isLoading ? 0.85 : 1.0)
-            .animation(AppMotion.standard, value: isPressed)
+            .animation(AppMotion.quick, value: isPressed)
         }
         .disabled(isInactive)
         .buttonStyle(.plain)

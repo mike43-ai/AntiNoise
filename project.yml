@@ -59,6 +59,11 @@ targets:
         NSPhotoLibraryAddUsageDescription: Anti Noise saves captured screenshots back to your photo library on request.
         ITSAppUsesNonExemptEncryption: false
         RCAppPublicKey: appl_IBXtxoUvtmJQRCdnHXZVbHWzeIW
+        UIAppFonts:
+          - SpaceGrotesk-Regular.ttf
+          - SpaceGrotesk-Medium.ttf
+          - SpaceGrotesk-SemiBold.ttf
+          - SpaceGrotesk-Bold.ttf
         CFBundleURLTypes:
           - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:

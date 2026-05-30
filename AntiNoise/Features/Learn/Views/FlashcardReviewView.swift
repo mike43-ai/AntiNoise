@@ -10,6 +10,7 @@ struct FlashcardReviewView: View {
     @Environment(AuthStore.self) private var auth
     @State private var model: ReviewSessionModel?
     @State private var dragOffset: CGSize = .zero
+    @State private var hapticArmed = false
 
     var body: some View {
         Group {
@@ -87,22 +88,71 @@ struct FlashcardReviewView: View {
             ? FlashcardFaceView(title: "Answer", text: card.answer, footer: card.hint, isAnswer: true)
             : FlashcardFaceView(title: "Question", text: card.question, footer: card.hint.map { "Hint: \($0)" }, isAnswer: false)
 
-        return face
-            .frame(maxHeight: 360)
+        // Flip transforms stay on the face; tilt/offset/hint live on the outer ZStack so the
+        // hint badge isn't mirrored by the answer-side horizontal flip.
+        let flippedFace = face
             .rotation3DEffect(.degrees(isAnswer ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             .scaleEffect(x: isAnswer ? -1 : 1, y: 1)
-            .offset(dragOffset)
-            .gesture(
-                DragGesture()
-                    .onChanged { dragOffset = $0.translation }
-                    .onEnded { value in
-                        handleSwipe(value: value)
-                    }
-            )
-            .onTapGesture {
-                withAnimation(AppMotion.standard) { model?.flipCard() }
+
+        return ZStack {
+            flippedFace
+            if isAnswer { swipeHint }
+        }
+        .frame(maxHeight: 360)
+        .rotationEffect(.degrees(tiltDegrees))
+        .offset(dragOffset)
+        .gesture(
+            DragGesture()
+                .onChanged { value in
+                    dragOffset = value.translation
+                    armHapticIfCrossed(value.translation)
+                }
+                .onEnded { value in
+                    handleSwipe(value: value)
+                }
+        )
+        .onTapGesture {
+            Haptics.tap()
+            withAnimation(AppMotion.standard) { model?.flipCard() }
+        }
+        .animation(AppMotion.standard, value: isAnswer)
+        .animation(AppMotion.quick, value: dragOffset)
+    }
+
+    // Right = Easy (green), Left = Hard (red), Up = Again (accent). Opacity tracks drag distance.
+    @ViewBuilder private var swipeHint: some View {
+        let dx = dragOffset.width
+        let dy = dragOffset.height
+        let horizontal = abs(dx) >= abs(dy)
+        let (text, color, strength): (String, Color, CGFloat) = {
+            if horizontal {
+                return dx >= 0 ? ("EASY", .success, dx) : ("HARD", .danger, -dx)
+            } else {
+                return dy < 0 ? ("AGAIN", .accent, -dy) : ("", .clear, 0)
             }
-            .animation(AppMotion.standard, value: isAnswer)
+        }()
+        let opacity = Double(min(max(strength - 20, 0) / 80, 1))
+
+        RoundedRectangle(cornerRadius: AppRadius.lg, style: .continuous)
+            .fill(color.opacity(0.16 * opacity))
+            .overlay(
+                Text(text)
+                    .appFont(.h2)
+                    .fontWeight(.bold)
+                    .foregroundStyle(color)
+                    .opacity(opacity)
+            )
+            .allowsHitTesting(false)
+    }
+
+    private var tiltDegrees: Double {
+        Double(max(-12, min(12, dragOffset.width / 14)))
+    }
+
+    private func armHapticIfCrossed(_ t: CGSize) {
+        let crossed = abs(t.width) > 80 || t.height < -80
+        if crossed, !hapticArmed { Haptics.selection(); hapticArmed = true }
+        if !crossed, hapticArmed { hapticArmed = false }
     }
 
     private func handleSwipe(value: DragGesture.Value) {
@@ -113,30 +163,35 @@ struct FlashcardReviewView: View {
 
         defer {
             withAnimation(AppMotion.quick) { dragOffset = .zero }
+            hapticArmed = false
         }
 
         // Ignore swipes if the answer isn't revealed yet — force flip first.
         guard model.isAnswerVisible else {
             if abs(dx) > threshold || abs(dy) > threshold {
+                Haptics.tap()
                 withAnimation(AppMotion.standard) { model.flipCard() }
             }
             return
         }
 
         if dy < -threshold {
+            Haptics.notify(.error)
             model.grade(1)   // swipe up → again
         } else if dx > threshold {
+            Haptics.notify(.success)
             model.grade(5)   // swipe right → easy
         } else if dx < -threshold {
+            Haptics.notify(.warning)
             model.grade(3)   // swipe left → hard
         }
     }
 
     private func gradeButtons(model: ReviewSessionModel) -> some View {
         HStack(spacing: AppSpacing.md) {
-            gradeButton(title: "Again", color: .danger) { model.grade(1) }
-            gradeButton(title: "Hard",  color: .textPrimary) { model.grade(3) }
-            gradeButton(title: "Easy",  color: .success) { model.grade(5) }
+            gradeButton(title: "Again", color: .danger) { Haptics.notify(.error); model.grade(1) }
+            gradeButton(title: "Hard",  color: .textPrimary) { Haptics.notify(.warning); model.grade(3) }
+            gradeButton(title: "Easy",  color: .success) { Haptics.notify(.success); model.grade(5) }
         }
         .opacity(model.isAnswerVisible ? 1 : 0.4)
         .disabled(!model.isAnswerVisible)

@@ -1,8 +1,10 @@
 import SwiftUI
 
 // Type scale mirrors Tailwind mockup spec.
-// Family: system today; swap to "Space Grotesk" once font is bundled in Resources/Fonts/.
-// `.fontWeight(...)` calls after `.appFont(.x)` will override token weight — intentional but rare.
+// Display/headings/body render in Space Grotesk (4 static faces registered under the
+// shared family name, so `.fontWeight(...)` resolves to the matching face). The `.mono`
+// token stays on the system monospaced face — Space Grotesk has no monospaced cut.
+// `.fontWeight(...)` calls after `.appFont(.x)` override the token weight — by design.
 enum AppFont {
     case display
     case h1
@@ -76,6 +78,8 @@ enum AppFont {
 
 // Dynamic Type-aware modifier. All app text should use this — `appFont` is an alias.
 struct ScaledAppFont: ViewModifier {
+    static let brandFamily = "Space Grotesk"
+
     let style: AppFont
     @ScaledMetric private var scaledSize: CGFloat
 
@@ -86,9 +90,19 @@ struct ScaledAppFont: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .font(.system(size: scaledSize, weight: style.weight, design: style.design))
+            .font(resolvedFont)
+            .fontWeight(style.weight)
             .tracking(style.tracking)
             .lineSpacing(style.lineSpacing)
+    }
+
+    // Size is pre-scaled via ScaledMetric, so the fixed-size `.custom` keeps Dynamic Type
+    // behaviour without double-scaling. Falls back to the system face if the family is absent.
+    private var resolvedFont: Font {
+        if style.design == .monospaced {
+            return .system(size: scaledSize, weight: style.weight, design: .monospaced)
+        }
+        return .custom(Self.brandFamily, size: scaledSize)
     }
 }
 
