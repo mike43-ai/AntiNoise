@@ -1,3 +1,4 @@
+import FirebaseAppCheck
 import FirebaseCore
 import SwiftData
 import SwiftUI
@@ -119,6 +120,8 @@ struct AntiNoiseApp: App {
             #endif
             return
         }
+        // Must precede configure() so the first token request uses our provider.
+        AppCheck.setAppCheckProviderFactory(AntiNoiseAppCheckProviderFactory())
         FirebaseApp.configure()
     }
 }

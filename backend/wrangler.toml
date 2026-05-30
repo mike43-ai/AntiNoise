@@ -15,6 +15,12 @@ OPENROUTER_MODEL = "google/gemini-2.0-flash-001"
 # Attribution header sent to OpenRouter for the analytics dashboard.
 OPENROUTER_REFERER = "https://antinoise.app"
 FIREBASE_PROJECT_ID = "antinoise-6601f"
+# Numeric GCP project number — App Check token issuer/audience (non-secret).
+FIREBASE_PROJECT_NUMBER = "783988295054"
+# App Check rollout: "false" = monitor (verify + log, never block). Flip to
+# "true" only after logs confirm ~all traffic carries a valid App Check token,
+# else older clients without a token get 401'd.
+APP_CHECK_ENFORCE = "false"
 
 # Free tier: 10 AI summaries / month per user
 FREE_MONTHLY_LIMIT = "10"
