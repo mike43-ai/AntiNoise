@@ -190,7 +190,7 @@ struct FlashcardReviewView: View {
     private func gradeButtons(model: ReviewSessionModel) -> some View {
         HStack(spacing: AppSpacing.md) {
             gradeButton(title: "Again", color: .danger) { Haptics.notify(.error); model.grade(1) }
-            gradeButton(title: "Hard",  color: .textPrimary) { Haptics.notify(.warning); model.grade(3) }
+            gradeButton(title: "Hard",  color: .warning) { Haptics.notify(.warning); model.grade(3) }
             gradeButton(title: "Easy",  color: .success) { Haptics.notify(.success); model.grade(5) }
         }
         .opacity(model.isAnswerVisible ? 1 : 0.4)

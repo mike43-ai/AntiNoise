@@ -40,7 +40,9 @@ struct Chip: View {
     private var foreground: Color {
         switch variant {
         case .neutral: return isSelected ? .white : .textPrimary
-        case .accent:  return isSelected ? .white : .accent
+        // `accentStrong` is a darkened orange that clears AA 4.5:1 on white for the
+        // 12pt uppercase label — the brand `accent` only reaches ~3.3:1 at this size.
+        case .accent:  return isSelected ? .white : .accentStrong
         case .success: return isSelected ? .white : .success
         case .danger:  return isSelected ? .white : .danger
         }
@@ -49,7 +51,7 @@ struct Chip: View {
     private var background: Color {
         switch variant {
         case .neutral: return isSelected ? .textPrimary : .surface
-        case .accent:  return isSelected ? .accent : .surface
+        case .accent:  return isSelected ? .accentStrong : .surface
         case .success: return isSelected ? .success : .surface
         case .danger:  return isSelected ? .danger : .surface
         }
@@ -58,7 +60,7 @@ struct Chip: View {
     private var borderColor: Color {
         switch variant {
         case .neutral: return isSelected ? .textPrimary : .appBorder
-        case .accent:  return .accent
+        case .accent:  return .accentStrong
         case .success: return .success
         case .danger:  return .danger
         }

@@ -52,7 +52,7 @@ struct ReviewSummaryView: View {
             Text("\(revealed ? value : 0)")
                 .appFont(.h1)
                 .contentTransition(.numericText(value: Double(revealed ? value : 0)))
-            Text(label).appFont(.caption).foregroundStyle(Color.textMuted).textCase(.uppercase)
+            Text(label).appFont(.caption).foregroundStyle(Color.textMuted)
         }
         .padding(AppSpacing.md)
         .frame(minWidth: 90)

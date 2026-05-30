@@ -16,7 +16,7 @@ struct StatsGrid: View {
         AppCard {
             VStack(alignment: .leading, spacing: 0) {
                 Text(value).appFont(.h2)
-                Text(label).appFont(.caption).foregroundStyle(Color.textMuted).textCase(.uppercase)
+                Text(label).appFont(.caption).foregroundStyle(Color.textMuted)
             }
         }
     }

@@ -42,7 +42,6 @@ struct TodaySnapshotCard: View {
                     .contentTransition(.numericText(value: Double(revealed ? stats.streakDays : 0)))
                 Text("day streak")
                     .appFont(.caption)
-                    .textCase(.uppercase)
                     .foregroundStyle(Color.textMuted)
             }
         }
@@ -51,7 +50,7 @@ struct TodaySnapshotCard: View {
     private func secondaryStat(value: Int, label: String) -> some View {
         VStack(alignment: .leading, spacing: 0) {
             Text("\(value)").appFont(.h2)
-            Text(label).appFont(.caption).foregroundStyle(Color.textMuted).textCase(.uppercase)
+            Text(label).appFont(.caption).foregroundStyle(Color.textMuted)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }

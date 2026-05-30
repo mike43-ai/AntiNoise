@@ -11,8 +11,10 @@ enum AppColor: String {
     case textDisabled    = "TextDisabled"
     case accent          = "Accent"
     case accentMuted     = "AccentMuted"
+    case accentStrong    = "AccentStrong"
     case border          = "Border"
     case danger          = "Danger"
+    case warning         = "Warning"
     case success         = "Success"
 
     var color: Color { Color(rawValue, bundle: .main) }
@@ -30,7 +32,9 @@ extension Color {
     static let textDisabled    = AppColor.textDisabled.color
     static let accent          = AppColor.accent.color
     static let accentMuted     = AppColor.accentMuted.color
+    static let accentStrong    = AppColor.accentStrong.color
     static let appBorder       = AppColor.border.color
     static let danger          = AppColor.danger.color
+    static let warning         = AppColor.warning.color
     static let success         = AppColor.success.color
 }
