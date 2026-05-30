@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Effective date:** 18 May 2026
-**Last updated:** 30 May 2026
+**Last updated:** 31 May 2026
 
 This Privacy Policy describes how Anti Noise ("Anti Noise", "we", "us") handles personal information when you use the Anti Noise iOS app and any related services (the "Service"). Anti Noise is operated by an independent developer based in Vietnam.
 
@@ -12,8 +12,9 @@ We aim to collect as little data as possible, never sell your data, and never us
 We collect the following categories of data, all of which are linked to your account identifier and used only to operate the Service:
 
 ### 1.1 Account information
-- **Email address** — used to create and authenticate your account, send transactional messages (password reset, account-deletion confirmation).
-- **Name** — provided by you when signing in with Apple. Used for personalization in the app. You can leave this blank.
+You sign in with Google or Apple. (Email/password sign-in remains available for existing accounts.)
+- **Email address** — from your Google or Apple account, used to identify your account and send transactional messages (account-deletion confirmation).
+- **Name** — provided by your Google or Apple account. Used for personalization in the app. You can leave this blank.
 - **User ID** — a unique identifier assigned by Firebase Authentication and used internally to associate your captures, summaries, and flashcards with your account.
 
 ### 1.2 Content you create
@@ -56,8 +57,9 @@ Anti Noise relies on the following processors. Each operates under its own priva
 
 | Service | Purpose | Data sent |
 |---|---|---|
-| **Apple Sign In** | Authentication | Apple ID identifier, name (optional) |
-| **Firebase Authentication** (Google LLC) | Account management | Email, hashed password, Firebase UID |
+| **Sign in with Apple** (Apple Inc.) | Authentication | Apple ID identifier, name (optional) |
+| **Google Sign-In** (Google LLC) | Authentication | Email, name, and Google account identifier |
+| **Firebase Authentication** (Google LLC) | Account management | Email, hashed password (legacy email accounts), Firebase UID |
 | **Firebase Firestore** (Google LLC) | Cloud sync of captures, summaries, flashcards | Your user content keyed to your Firebase UID |
 | **Firebase Analytics** (Google LLC) | Anonymous product analytics | Aggregated event names (no content) |
 | **Firebase Crashlytics** (Google LLC) | Crash reporting | Stack traces, device model, iOS version |
