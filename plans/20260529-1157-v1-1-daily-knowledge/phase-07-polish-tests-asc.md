@@ -1,7 +1,7 @@
 ---
 phase: 7
 title: "Polish Tests & ASC"
-status: pending
+status: completed
 priority: P2
 effort: "3d"
 dependencies: [6]

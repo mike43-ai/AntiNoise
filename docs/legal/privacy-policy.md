@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Effective date:** 18 May 2026
-**Last updated:** 18 May 2026
+**Last updated:** 30 May 2026
 
 This Privacy Policy describes how Anti Noise ("Anti Noise", "we", "us") handles personal information when you use the Anti Noise iOS app and any related services (the "Service"). Anti Noise is operated by an independent developer based in Vietnam.
 
@@ -18,16 +18,20 @@ We collect the following categories of data, all of which are linked to your acc
 
 ### 1.2 Content you create
 - **User content** — articles, notes, screenshots, AI-generated summaries, and flashcards you create inside the app. Stored locally on your device (SwiftData) and mirrored to Firebase Firestore so you can sync across your devices.
+- **Daily Knowledge inbox** — a short list of curated learning topics with AI-written explainers, generated for you each day from a fixed in-app catalogue. Stored in Firestore so the same list is available across your devices.
 
-### 1.3 Subscription and purchase data
+### 1.3 Learning preferences
+- **Topic packs and signals** — the topic packs you select and, optionally, your role, experience level, and learning goal. Used only to personalize which Daily Knowledge topics you are shown. Stored in your Firestore user document. You can change or clear these at any time in **Profile → Improve your feed**.
+
+### 1.4 Subscription and purchase data
 - **Purchase history** — records of in-app subscriptions (free trial, monthly, annual) managed through RevenueCat. Used to deliver subscription entitlements and prevent fraud.
 
-### 1.4 Diagnostic and product data
+### 1.5 Diagnostic and product data
 - **Product interaction** — anonymous, aggregated events about feature usage (e.g., "capture created", "focus session started"). Used to fix bugs and improve the app. We never log the *contents* of your captures.
 - **Performance data** — startup time, render time, memory usage. Used to detect performance regressions.
 - **Crash data** — automatic crash reports from Firebase Crashlytics, including stack traces and device model. Used to identify and fix crashes.
 
-### 1.5 What we do NOT collect
+### 1.6 What we do NOT collect
 - We do not collect your precise or coarse location.
 - We do not access your contacts, calendar, microphone, or health data.
 - We do not collect biometric data, browsing history outside the app, or device advertising identifiers.
@@ -57,14 +61,15 @@ Anti Noise relies on the following processors. Each operates under its own priva
 | **Firebase Firestore** (Google LLC) | Cloud sync of captures, summaries, flashcards | Your user content keyed to your Firebase UID |
 | **Firebase Analytics** (Google LLC) | Anonymous product analytics | Aggregated event names (no content) |
 | **Firebase Crashlytics** (Google LLC) | Crash reporting | Stack traces, device model, iOS version |
-| **OpenAI** (OpenAI, L.L.C.) | AI summaries and flashcard generation | The content of the capture being summarized (URL contents, your notes, your images) |
+| **Anti Noise API** (Cloudflare Workers) | AI gateway for summaries, flashcards, and Daily Knowledge | The content being summarized (URL contents, your notes, your images) and your Firebase UID, forwarded to the AI provider below |
+| **OpenRouter** (OpenRouter, Inc.) and the underlying AI model provider | AI summaries, flashcard generation, Daily Knowledge explainers | The content being processed, relayed by our API |
 | **RevenueCat** (RevenueCat, Inc.) | Subscription management | Anonymous user ID derived from your Firebase UID, purchase events |
 
-**About OpenAI:** the captures you send for AI processing are transmitted to OpenAI servers using an API key you provide in **Profile → API Key**, which is stored only in the iOS Keychain on your device. OpenAI's data handling is governed by their own [Privacy Policy](https://openai.com/policies/privacy-policy) and [API data usage policies](https://openai.com/policies/api-data-usage-policies). Per OpenAI's API policy, API inputs are not used to train their models by default.
+**About AI processing:** AI features are processed server-side. The content you submit is sent to our own gateway (running on Cloudflare Workers), which authenticates your request with your Firebase UID and forwards the content to our AI provider (OpenRouter and the underlying model) using a key we operate — **you no longer need to provide your own API key**. We do not retain the content of your captures on the gateway beyond the time needed to process the request; per our provider's API policy, API inputs are not used to train models by default. We store only the resulting summaries, flashcards, and Daily Knowledge items in your account as described in Section 1.
 
 ## 4. International data transfers
 
-Anti Noise is operated from Vietnam. Firebase, OpenAI, and RevenueCat process data primarily in the United States and the European Economic Area. By using the Service you consent to your data being processed in these jurisdictions.
+Anti Noise is operated from Vietnam. Firebase, Cloudflare, OpenRouter, and RevenueCat process data primarily in the United States and the European Economic Area. By using the Service you consent to your data being processed in these jurisdictions.
 
 ## 5. Data retention
 
@@ -95,7 +100,7 @@ We use industry-standard security measures to protect your data, including:
 
 - TLS for all network communication.
 - Firebase Authentication for credential hashing and session management.
-- iOS Keychain for storing your OpenAI API key locally.
+- Server-side AI gateway that authenticates every request with your Firebase identity, so API keys are never embedded in the app.
 - Firestore security rules limiting reads/writes to your own user document tree.
 
 No method of transmission or storage is 100% secure. If you suspect a security incident affecting your account, contact us immediately.

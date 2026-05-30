@@ -8,7 +8,7 @@
 |---|---|---|---|
 | v1.0 | MVP | — | **LIVE on App Store 2026-05-28** |
 | v1.0.1 | Server proxy + Gemini Flash migration | 3-5 ngày | **Shipped 2026-05-29** (OpenRouter swap) |
-| v1.1 | Daily Knowledge (articles + layered cards) | ~2 tuần | Scoped — see [v1.1 spec](v1-1-daily-knowledge-spec.md) — **not shipped** |
+| v1.1 | Daily Knowledge (skills feed + layered cards) | ~2 tuần | **Code complete + tested 2026-05-30** (P1–P7; 40 tests green; backend deployed) — pending ASC submit. See [v1.1 spec](v1-1-daily-knowledge-spec.md) |
 | v1.2 | **Deep Learn** (multi-day course từ flashcard, replaces Focus) | ~2-3 tuần | Scoped 2026-05-29 — see [v1.2 spec](v1-2-deep-learn-spec.md) |
 | v1.3 | Widgets + Chrome Ext + Android port | TBD | Candidates only (bumped from v1.2) |
 
