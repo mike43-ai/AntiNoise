@@ -67,6 +67,7 @@ GoogleService-Info.plist
 
 # ClaudeKit toolkit (local AI tooling, not app source)
 .claude/
+.agents/
 .repomixignore
 release-manifest.json
 plans/templates/
@@ -76,3 +77,6 @@ Product UI-20260516T073324Z-3-001.zip
 
 # Tailwind mockup index — regenerated, not source of truth
 Product UI/index.html
+
+# App Store screenshot editor (local marketing tooling)
+store-screenshots/
