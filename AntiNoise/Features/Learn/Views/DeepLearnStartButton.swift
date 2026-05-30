@@ -1,9 +1,10 @@
 import SwiftData
 import SwiftUI
 
-/// Entry point to start a Deep Learn course from a specific deck. Pro is the real
-/// gate server-side; the paywall is wired in a later phase. Enforces the
-/// one-active-path rule and routes into the path view on success.
+/// Entry point to start a Deep Learn course from a specific deck. Deep Learn is
+/// Pro-only: a free user tapping this gets the paywall and no network call (the
+/// server also rejects non-pro as defense in depth). An already-started course
+/// stays openable even if the user later downgrades. Enforces one active path.
 @MainActor
 struct DeepLearnStartButton: View {
     let deck: Deck
@@ -14,6 +15,7 @@ struct DeepLearnStartButton: View {
     @State private var model: DeepLearnModel?
     @State private var navigate = false
     @State private var showBusyAlert = false
+    @State private var showPaywall = false
 
     var body: some View {
         VStack(spacing: AppSpacing.sm) {
@@ -33,6 +35,10 @@ struct DeepLearnStartButton: View {
             Button("OK", role: .cancel) {}
         } message: {
             Text("You can run one Deep Learn course at a time. Complete or abandon it before starting another.")
+        }
+        .sheet(isPresented: $showPaywall) {
+            PaywallSheetView(offering: subscription.currentOffering)
+                .onAppear { Telemetry.track(.paywallShown(trigger: .deepLearn)) }
         }
         .task { ensureModel() }
     }
@@ -57,7 +63,12 @@ struct DeepLearnStartButton: View {
             return
         }
         if model.activePath?.deckID == deck.id {
-            navigate = true // resume existing course for this deck
+            navigate = true // resume existing course for this deck (open even if now free)
+            return
+        }
+        // Starting a NEW course is Pro-only — gate before any network call.
+        guard subscription.isPro else {
+            showPaywall = true
             return
         }
         let uid = auth.currentUser?.id ?? ""

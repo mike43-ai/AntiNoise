@@ -103,6 +103,7 @@ enum PaywallTrigger: String {
     case quotaCapture = "quota_capture"
     case quotaAI = "quota_ai"
     case profileUpgrade = "profile_upgrade"
+    case deepLearn = "deep_learn"
 }
 
 // UsageKind is service-internal (consume() / canConsume()). Surface a flat
