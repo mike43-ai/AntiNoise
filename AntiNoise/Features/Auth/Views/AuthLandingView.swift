@@ -5,10 +5,9 @@ import SwiftUI
 struct AuthLandingView: View {
     @Environment(AuthStore.self) private var auth
     @State private var isAppleLoading = false
+    @State private var isGoogleLoading = false
     @State private var error: AuthError?
     @State private var appeared = false
-
-    let onEmailTap: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
@@ -97,7 +96,7 @@ struct AuthLandingView: View {
 
     private var authActions: some View {
         VStack(spacing: AppSpacing.md) {
-            emailButton
+            googleButton
             appleButton
             Text("By continuing you agree to our Terms & Privacy.")
                 .appFont(.caption)
@@ -108,15 +107,19 @@ struct AuthLandingView: View {
     }
 
     // Primary CTA — warm gradient with a soft accent glow, the screen's visual focal point.
-    private var emailButton: some View {
+    private var googleButton: some View {
         Button {
             Haptics.tap(.medium)
-            onEmailTap()
+            Task { await runGoogleSignIn() }
         } label: {
             HStack(spacing: AppSpacing.sm) {
-                Image(systemName: "envelope.fill")
-                    .font(.system(size: 16, weight: .semibold))
-                Text("Continue with Email")
+                if isGoogleLoading {
+                    ProgressView().tint(.white)
+                } else {
+                    Image(systemName: "g.circle.fill")
+                        .font(.system(size: 18, weight: .semibold))
+                }
+                Text("Continue with Google")
                     .appFont(.bodySmall)
                     .fontWeight(.semibold)
             }
@@ -132,6 +135,7 @@ struct AuthLandingView: View {
             .shadow(color: Color.accent.opacity(0.35), radius: 14, y: 6)
         }
         .buttonStyle(.plain)
+        .disabled(isGoogleLoading)
     }
 
     private var appleButton: some View {
@@ -175,12 +179,26 @@ struct AuthLandingView: View {
         }
     }
 
+    @MainActor
+    private func runGoogleSignIn() async {
+        isGoogleLoading = true
+        defer { isGoogleLoading = false }
+        do {
+            try await auth.signInWithGoogle()
+        } catch let err as AuthError {
+            if case .googleCancelled = err { return }
+            error = err
+        } catch {
+            self.error = AuthError(error)
+        }
+    }
+
     private var errorBinding: Binding<Bool> {
         Binding(get: { error != nil }, set: { if !$0 { error = nil } })
     }
 }
 
 #Preview {
-    AuthLandingView(onEmailTap: {})
+    AuthLandingView()
         .environment(AuthStore())
 }

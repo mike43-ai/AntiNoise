@@ -28,6 +28,9 @@ packages:
   RevenueCat:
     url: https://github.com/RevenueCat/purchases-ios
     from: "5.0.0"
+  GoogleSignIn:
+    url: https://github.com/google/GoogleSignIn-iOS
+    from: "7.1.0"
 
 targets:
   AntiNoise:
@@ -68,6 +71,12 @@ targets:
           - CFBundleURLName: com.antinoise.focus
             CFBundleURLSchemes:
               - antinoise
+          # Google Sign-In redirect. Replace the scheme with REVERSED_CLIENT_ID
+          # from GoogleService-Info.plist after enabling the Google provider in
+          # Firebase Console + re-downloading the plist.
+          - CFBundleURLName: com.antinoise.focus.google
+            CFBundleURLSchemes:
+              - REPLACE_WITH_REVERSED_CLIENT_ID
     entitlements:
       path: AntiNoise/Resources/AntiNoise.entitlements
       properties:
@@ -109,6 +118,8 @@ targets:
         product: RevenueCat
       - package: RevenueCat
         product: RevenueCatUI
+      - package: GoogleSignIn
+        product: GoogleSignIn
       - target: AntiNoiseShareExtension
         embed: true
 

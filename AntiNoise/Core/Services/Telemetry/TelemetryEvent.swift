@@ -89,8 +89,8 @@ enum TelemetryEvent {
 }
 
 enum AuthMethod: String {
-    case email
     case apple
+    case google
 }
 
 enum CaptureSource: String {

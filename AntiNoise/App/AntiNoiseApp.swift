@@ -1,5 +1,6 @@
 import FirebaseAppCheck
 import FirebaseCore
+import GoogleSignIn
 import SwiftData
 import SwiftUI
 
@@ -33,6 +34,10 @@ struct AntiNoiseApp: App {
                 .modelContainer(PersistenceContainer.shared)
                 .task {
                     bootstrap()
+                }
+                .onOpenURL { url in
+                    // Google Sign-In redirect callback.
+                    GIDSignIn.sharedInstance.handle(url)
                 }
                 .onChange(of: scenePhase) { _, newPhase in
                     handleScenePhase(newPhase)

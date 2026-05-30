@@ -4,7 +4,6 @@ import SwiftUI
 struct RootView: View {
     @Environment(AuthStore.self) private var auth
     @Environment(SubscriptionStore.self) private var subscription
-    @State private var authSheet: AuthSheet?
     @State private var onboardingDone = false
     @State private var topicPacksReady = false
     @State private var showTrialExpiry = false
@@ -16,7 +15,7 @@ struct RootView: View {
             case .unknown:
                 splash
             case .signedOut:
-                AuthLandingView(onEmailTap: { authSheet = .signIn })
+                AuthLandingView()
             case .signedIn(let user):
                 if onboardingDone || OnboardingStore.isCompleted(uid: user.id) {
                     if topicPacksReady || OnboardingStore.hasTopicPacks(uid: user.id) {
@@ -35,16 +34,6 @@ struct RootView: View {
             }
         }
         .animation(AppMotion.standard, value: auth.state)
-        .sheet(item: $authSheet) { sheet in
-            NavigationStack {
-                switch sheet {
-                case .signIn:
-                    SignInView(onSwitchToSignUp: { authSheet = .signUp })
-                case .signUp:
-                    SignUpView(onSwitchToSignIn: { authSheet = .signIn })
-                }
-            }
-        }
         .onChange(of: auth.state) { _, newState in
             if case .signedIn(let user) = newState {
                 onboardingDone = OnboardingStore.isCompleted(uid: user.id)
@@ -92,9 +81,4 @@ struct RootView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.bgPrimary.ignoresSafeArea())
     }
-}
-
-private enum AuthSheet: String, Identifiable {
-    case signIn, signUp
-    var id: String { rawValue }
 }

@@ -10,6 +10,8 @@ enum AuthError: LocalizedError {
     case networkOffline
     case appleCancelled
     case appleFailed(String)
+    case googleCancelled
+    case googleFailed(String)
     case missingIDToken
     case requiresReauthentication
     case revokedByUser
@@ -25,7 +27,9 @@ enum AuthError: LocalizedError {
         case .networkOffline:          return "You're offline. Connect and try again."
         case .appleCancelled:          return "Sign in with Apple was cancelled."
         case .appleFailed(let msg):    return "Apple sign-in failed: \(msg)"
-        case .missingIDToken:          return "Apple did not return a valid identity token."
+        case .googleCancelled:         return "Sign in with Google was cancelled."
+        case .googleFailed(let msg):   return "Google sign-in failed: \(msg)"
+        case .missingIDToken:          return "Sign-in did not return a valid identity token."
         case .requiresReauthentication:return "Please sign in again to continue."
         case .revokedByUser:           return "Your Apple ID access was revoked. Please sign in again."
         case .unknown(let msg):        return msg

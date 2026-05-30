@@ -19,6 +19,7 @@ final class AuthStore {
 
     private var stateHandle: AuthStateDidChangeListenerHandle?
     private let appleCoordinator = AppleSignInCoordinator()
+    private let googleCoordinator = GoogleSignInCoordinator()
 
     func bootstrap() {
         stateHandle = Auth.auth().addStateDidChangeListener { [weak self] _, user in
@@ -31,39 +32,20 @@ final class AuthStore {
     // No deinit cleanup: AuthStore is a singleton owned by App for the
     // process lifetime, so the Firebase listener never needs removal.
 
-    // MARK: Email / password
-
-    func signUp(email: String, password: String, displayName: String?) async throws {
-        try Self.validate(email: email, password: password)
-        do {
-            let result = try await Auth.auth().createUser(withEmail: email, password: password)
-            if let displayName, !displayName.isEmpty {
-                let change = result.user.createProfileChangeRequest()
-                change.displayName = displayName
-                try await change.commitChanges()
-            }
-            Telemetry.track(.signUp(method: .email))
-        } catch {
-            throw AuthError(error)
-        }
-    }
-
-    func signIn(email: String, password: String) async throws {
-        try Self.validate(email: email, password: password)
-        do {
-            _ = try await Auth.auth().signIn(withEmail: email, password: password)
-            Telemetry.track(.login(method: .email))
-        } catch {
-            throw AuthError(error)
-        }
-    }
-
     // MARK: Apple
 
     func signInWithApple() async throws {
         let result = try await appleCoordinator.signIn()
         let isNewUser = result.additionalUserInfo?.isNewUser == true
         Telemetry.track(isNewUser ? .signUp(method: .apple) : .login(method: .apple))
+    }
+
+    // MARK: Google
+
+    func signInWithGoogle() async throws {
+        let result = try await googleCoordinator.signIn()
+        let isNewUser = result.additionalUserInfo?.isNewUser == true
+        Telemetry.track(isNewUser ? .signUp(method: .google) : .login(method: .google))
     }
 
     // MARK: Session
@@ -84,18 +66,6 @@ final class AuthStore {
             try await user.delete()
         } catch {
             throw AuthError(error)
-        }
-    }
-
-    // MARK: Validation
-
-    private static func validate(email: String, password: String) throws {
-        let emailRegex = #"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"#
-        guard email.range(of: emailRegex, options: .regularExpression) != nil else {
-            throw AuthError.invalidEmail
-        }
-        guard password.count >= 8 else {
-            throw AuthError.weakPassword
         }
     }
 }
