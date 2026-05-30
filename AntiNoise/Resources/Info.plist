@@ -28,6 +28,14 @@
 				<string>antinoise</string>
 			</array>
 		</dict>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>com.antinoise.focus.google</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>REPLACE_WITH_REVERSED_CLIENT_ID</string>
+			</array>
+		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
