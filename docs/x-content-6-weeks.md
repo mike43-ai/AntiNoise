@@ -61,7 +61,7 @@ The flow:
 2. AI writes a Feynman-style summary (5 parts)
 3. Anti Noise auto-generates 3-15 flashcards
 4. SM-2 spaced repetition queues review
-5. Focus timer to actually sit and study
+5. Deep Learn turns any deck into a 7-day mastery course
 
 Capture → summarize → remember.
 ```
@@ -356,7 +356,7 @@ What's in v1.0:
 ✓ Capture (URL / note / image) via Share Extension
 ✓ Feynman 5-part AI summary
 ✓ Auto-flashcards (SM-2 spaced repetition)
-✓ Focus timer
+✓ Deep Learn 7-day mastery courses
 ✓ Local-first SwiftData + optional Firebase sync
 ✓ EN + VI
 ```
@@ -577,7 +577,7 @@ Don't double-spend hours.
 What's in the demo video:
 
 15 seconds capture → summary → flashcards
-15 seconds focus timer + streak
+15 seconds Deep Learn course + streak
 30 seconds total
 
 Recorded on simulator with ScreenStudio. No narration, just text overlay.

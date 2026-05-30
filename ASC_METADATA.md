@@ -44,8 +44,8 @@ Every capture gets a clear, five-part breakdown: a simple explanation, an analog
 — LAYERED FLASHCARDS
 The AI builds each deck along Bloom's taxonomy — Recognize, then Recall, then Apply — so you move from spotting a concept to actually using it. SM-2 spaced repetition (Anki-classic) schedules reviews so you only see what you're about to forget. New here? You start with sample decks ready to review on day one.
 
-— FOCUS TIMER, BUILT IN
-Pomodoro-style sessions with wall-clock accuracy. Background-safe — the timer keeps running when your phone locks, and a local notification brings you back when the session ends.
+— DEEP LEARN (PRO)
+Turn any deck into a 7-day mastery course. Each day is a short lesson: a plain-language explanation, a few new flashcards (Recognize → Recall → Apply), and a prompt to use the idea for real. Go at your own pace — all seven days are open from the start.
 
 — DAILY DASHBOARD
 See today's picks, your captures, your streak, and what's due to review. One screen, no clutter.
@@ -65,7 +65,7 @@ Anti Noise is built for solo learners, knowledge workers, and students who want 
 ### Keywords (92 / 100, no spaces, comma-sep)
 
 ```
-focustimer,flashcard,aisummary,feynman,study,deepwork,anki,readwise,notes,memory,distraction
+deeplearn,flashcard,aisummary,feynman,study,deepwork,anki,readwise,notes,memory,distraction
 ```
 
 ### What's New (release notes — v1.0, 110 / 4000)
@@ -85,6 +85,16 @@ Daily Knowledge is here.
 — NO API KEY NEEDED: AI summaries now run on our servers. Just capture — we handle the rest.
 
 Plus a higher free tier and a smoother capture flow.
+```
+
+### What's New (release notes — v1.2, ≈360 / 4000)
+
+```
+Introducing Deep Learn.
+
+The Focus timer is now Deep Learn — turn any deck into a 7-day mastery course. Each day is a short lesson: a plain-language explanation, a few new flashcards (Recognize → Recall → Apply), and a prompt to use the idea for real. All seven days are open from the start, so you go at your own pace. Deep Learn is a Pro feature.
+
+Your streak now counts any day you complete a card review.
 ```
 
 ---
@@ -125,8 +135,8 @@ Mỗi capture được phân tích thành 5 phần: giải thích đơn giản, 
 — THẺ HỌC PHÂN TẦNG
 AI xây mỗi bộ thẻ theo thang Bloom — Nhận biết, rồi Nhớ lại, rồi Vận dụng — đưa bạn từ nhận ra khái niệm đến dùng được nó thật sự. Thuật toán SM-2 (Anki kinh điển) sắp lịch ôn để bạn chỉ thấy thứ sắp quên. Mới dùng? Bạn có sẵn bộ thẻ mẫu để ôn ngay ngày đầu.
 
-— ĐỒNG HỒ FOCUS TÍCH HỢP
-Phiên Pomodoro chính xác theo đồng hồ thực. An toàn nền — hẹn giờ vẫn chạy khi khóa máy, kết phiên sẽ có local notification gọi bạn quay lại.
+— DEEP LEARN (PRO)
+Biến bất kỳ bộ thẻ nào thành khóa học làm chủ 7 ngày. Mỗi ngày một bài học ngắn: giải thích dễ hiểu, vài thẻ mới (Nhận biết → Nhớ lại → Vận dụng), và một gợi ý áp dụng thực tế. Học theo nhịp của bạn — cả 7 ngày mở sẵn từ đầu.
 
 — DASHBOARD HÀNG NGÀY
 Gợi ý hôm nay, capture, streak, thẻ đến hạn ôn. Một màn hình, không rối mắt.
@@ -168,6 +178,16 @@ Daily Knowledge đã có mặt.
 Kèm hạn mức miễn phí cao hơn và luồng capture mượt hơn.
 ```
 
+### What's New v1.2 (≈340 / 4000)
+
+```
+Giới thiệu Deep Learn.
+
+Đồng hồ Focus nay thành Deep Learn — biến bất kỳ bộ thẻ nào thành khóa học làm chủ 7 ngày. Mỗi ngày là một bài học ngắn: giải thích dễ hiểu, vài thẻ mới (Nhận biết → Nhớ lại → Vận dụng), và một gợi ý áp dụng vào thực tế. Cả 7 ngày mở sẵn từ đầu, bạn học theo nhịp của mình. Deep Learn là tính năng Pro.
+
+Streak nay tính theo ngày bạn hoàn thành ôn thẻ.
+```
+
 ---
 
 ## URLs (TODO — cần dựng static page)
@@ -195,7 +215,7 @@ v1.1 ships server-side AI + Daily Knowledge. Re-check these App Privacy data typ
 - [ ] Paste v1.1 What's New (EN + VI) into ASC.
 - [ ] Confirm App Privacy labels per the delta above.
 - [ ] Screenshots: UI redesign deferred to v1.1.1 → keep current screenshots unless Daily Knowledge / Home screen changed enough to warrant a refresh (review on device).
-- [ ] **Description copy:** factual fixes applied (AI vendor neutral, server-side AI, 10/mo, daily picks). Focus timer still in the app for v1.1 (drop is v1.2) → description retains it. Confirm voice before submit.
+- [ ] **Description copy (v1.2 branch):** Focus timer section swapped to Deep Learn (Pro); keyword focustimer→deeplearn. NOTE: the v1.1 submission (from main) still ships Focus, so its description keeps the Focus section — this swap applies only when v1.2 ships.
 
 ## Categories
 

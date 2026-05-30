@@ -8,7 +8,7 @@ Welcome. This page covers the most common questions about Anti Noise and how to 
 
 ## What is Anti Noise?
 
-Anti Noise is an iOS app for solo learners and knowledge workers. Save an article, drop a note, snap a screenshot — Anti Noise turns each capture into a Feynman-style summary and automatically generates spaced-repetition flashcards from the ideas worth remembering. Stay in flow with the built-in Focus timer.
+Anti Noise is an iOS app for solo learners and knowledge workers. Save an article, drop a note, snap a screenshot — Anti Noise turns each capture into a Feynman-style summary and automatically generates spaced-repetition flashcards from the ideas worth remembering. Go deeper with Deep Learn — 7-day mastery courses built from your decks.
 
 Available on iPhone, iOS 17 and later. English and Vietnamese.
 
@@ -57,27 +57,28 @@ SM-2, the classic Anki algorithm. Easy cards return after weeks; difficult cards
 **How do I review cards?**
 Open the Learn tab. The deck shows cards due today. Tap a card to flip, then rate your recall.
 
-### Focus mode
+### Deep Learn
 
-**How does Focus work?**
-Choose a duration (preset chips or custom, minimum 1 minute) and optionally tie the session to a flashcard deck. The timer is wall-clock accurate and keeps running when your phone locks. A local notification fires when the session ends.
+**What is Deep Learn?**
+A Pro feature: turn any deck into a 7-day mastery course. Each day is a short lesson — a plain-language explanation, a few new flashcards (Recognize → Recall → Apply), and a prompt to apply the idea. All seven days are available right away; open them at your own pace. You run one course at a time.
 
-**Why is my streak not updating after creating captures?**
-Streak counts consecutive days with at least one **completed** Focus session, not captures. Complete a Focus session today to add to your streak.
+**Why is my streak not updating?**
+Streak counts consecutive days with at least one **completed** card review (any review — a normal deck, a layered deck, or a Deep Learn lesson). Review at least one card today to add to your streak.
 
 ### Subscription
 
 **What is included in Free?**
 - 3 captures per day
-- 5 AI summaries per month
+- 10 AI summaries per month
+- Daily Knowledge — a few suggested skills to learn each day
 - Unlimited reading of existing captures and flashcards
-- Focus timer
 
 **What is included in Pro?**
 - Unlimited captures
 - Unlimited AI summaries
+- Deep Learn — 7-day mastery courses from your decks
 - 7-day free trial when you first subscribe
-- Same Focus, Learn, and Share Extension features
+- Same Learn and Share Extension features
 
 **How do I subscribe?**
 Profile → Subscription → choose monthly or annual.
@@ -97,7 +98,7 @@ Refunds are handled by Apple. Open the Report a Problem page at https://reportap
 On your device first (SwiftData) and mirrored to Firebase Firestore so you can sync across your devices. We do not sell or share your data.
 
 **How do I export my data?**
-Profile → Settings → Export Data → choose JSON. You will receive a download containing all of your captures, summaries, flashcards, and focus sessions.
+Profile → Settings → Export Data → choose JSON. You will receive a download containing all of your captures, summaries, decks, flashcards, goals, and Deep Learn courses.
 
 **How do I delete my account?**
 Profile → Settings → Delete Account. Your data is hidden immediately and permanently deleted after 7 days. You can sign in within that window to restore your account.

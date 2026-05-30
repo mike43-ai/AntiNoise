@@ -11,6 +11,7 @@ struct UserDataExportPayload: Codable, Sendable {
     let decks: [ExportedDeck]
     let flashcards: [ExportedFlashcard]
     let goals: [ExportedGoal]
+    let learningPaths: [ExportedLearningPath]
 }
 
 struct ExportedCapture: Codable, Sendable {
@@ -61,4 +62,19 @@ struct ExportedGoal: Codable, Sendable {
     let scope: String
     let title: String
     let createdAt: Date
+}
+
+struct ExportedLearningPath: Codable, Sendable {
+    let id: UUID
+    let topic: String
+    let durationDays: Int
+    let currentDay: Int
+    let status: String
+    let startedAt: Date
+    let days: [ExportedLearningDay]
+}
+
+struct ExportedLearningDay: Codable, Sendable {
+    let dayIndex: Int
+    let completedAt: Date?
 }

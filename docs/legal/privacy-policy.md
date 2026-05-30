@@ -27,7 +27,7 @@ We collect the following categories of data, all of which are linked to your acc
 - **Purchase history** — records of in-app subscriptions (free trial, monthly, annual) managed through RevenueCat. Used to deliver subscription entitlements and prevent fraud.
 
 ### 1.5 Diagnostic and product data
-- **Product interaction** — anonymous, aggregated events about feature usage (e.g., "capture created", "focus session started"). Used to fix bugs and improve the app. We never log the *contents* of your captures.
+- **Product interaction** — anonymous, aggregated events about feature usage (e.g., "capture created", "review session completed"). Used to fix bugs and improve the app. We never log the *contents* of your captures.
 - **Performance data** — startup time, render time, memory usage. Used to detect performance regressions.
 - **Crash data** — automatic crash reports from Firebase Crashlytics, including stack traces and device model. Used to identify and fix crashes.
 
@@ -82,7 +82,7 @@ Anti Noise is operated from Vietnam. Firebase, Cloudflare, OpenRouter, and Reven
 
 You can:
 
-- **Access your data** — request a JSON export at any time from **Profile → Settings → Export Data**. The export includes all of your captures, summaries, flashcards, and focus sessions.
+- **Access your data** — request a JSON export at any time from **Profile → Settings → Export Data**. The export includes all of your captures, summaries, flashcards, goals, and Deep Learn courses.
 - **Delete your account** — see Section 5.
 - **Correct your data** — edit captures or your display name inside the app.
 - **Withdraw consent** — sign out and stop using the Service. Your data will remain until you delete your account.

@@ -29,6 +29,10 @@ struct DataExportService {
         let goalsDescriptor = FetchDescriptor<LearningGoal>(predicate: #Predicate { $0.uid == userID })
         let goals = (try? context.fetch(goalsDescriptor)) ?? []
 
+        let paths = (try? context.fetch(FetchDescriptor<LearningPath>())) ?? []
+        let allDays = (try? context.fetch(FetchDescriptor<LearningDay>())) ?? []
+        let daysByPath = Dictionary(grouping: allDays, by: { $0.pathID })
+
         let payload = UserDataExportPayload(
             exportedAt: now,
             userId: userID,
@@ -73,7 +77,20 @@ struct DataExportService {
                 scope: $0.scope.rawValue,
                 title: $0.title,
                 createdAt: $0.createdAt
-            ) }
+            ) },
+            learningPaths: paths.map { path in
+                ExportedLearningPath(
+                    id: path.id,
+                    topic: path.topic,
+                    durationDays: path.durationDays,
+                    currentDay: path.currentDay,
+                    status: path.status,
+                    startedAt: path.startedAt,
+                    days: (daysByPath[path.id] ?? [])
+                        .sorted { $0.dayIndex < $1.dayIndex }
+                        .map { ExportedLearningDay(dayIndex: $0.dayIndex, completedAt: $0.completedAt) }
+                )
+            }
         )
 
         let encoder = JSONEncoder()
