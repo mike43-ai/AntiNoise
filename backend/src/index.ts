@@ -1,11 +1,14 @@
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { verifyFirebaseIdToken, type FirebaseUser } from './firebase-token-verifier';
+import { verifyAppCheckToken } from './app-check-verifier';
 import { peekUsage, commitUsage, type Tier, type RateLimitResult } from './rate-limiter';
 import {
   callAI,
   FEYNMAN_SYSTEM_PROMPT,
   FLASHCARDS_SYSTEM_PROMPT,
+  LEARN_OUTLINE_SYSTEM_PROMPT,
+  LEARN_DAY_EXPAND_SYSTEM_PROMPT,
 } from './openrouter-client';
 import { handleRevenueCatWebhook } from './revenuecat-webhook';
 import { runDailyRefresh } from './daily-pipeline';
@@ -15,6 +18,13 @@ interface Env {
   OPENROUTER_MODEL: string;
   OPENROUTER_REFERER?: string;
   FIREBASE_PROJECT_ID: string;
+  // Numeric GCP project number — App Check token issuer/audience. Non-secret.
+  FIREBASE_PROJECT_NUMBER: string;
+  // "true" rejects requests with a missing/invalid App Check token. Any other
+  // value (default) runs in monitor mode: verify-and-log only, never block —
+  // safe to ship before every client sends a token. Flip to "true" once logs
+  // show ~all traffic carries a valid token.
+  APP_CHECK_ENFORCE?: string;
   FIREBASE_SERVICE_ACCOUNT_JSON: string;
   REVENUECAT_WEBHOOK_AUTH: string;
   FREE_MONTHLY_LIMIT: string;
@@ -44,8 +54,43 @@ app.post('/v1/webhooks/revenuecat', async (c) => {
   });
 });
 
-// Auth middleware — verifies Firebase ID token and reads tier claim.
+// App Check — proves the request comes from an authentic build of the app, not a
+// script. Gated by APP_CHECK_ENFORCE so it can ship in monitor mode (log only)
+// while older clients that don't yet send a token are still in the wild, then be
+// flipped to hard-reject without a redeploy of the verification path.
+async function checkAppCheck(c: {
+  req: { header: (n: string) => string | undefined };
+  env: Env;
+}): Promise<Response | null> {
+  const enforce = c.env.APP_CHECK_ENFORCE === 'true';
+  const token = c.req.header('x-firebase-appcheck');
+
+  if (!token) {
+    console.log('appcheck.missing', { enforce });
+    return enforce
+      ? Response.json({ error: 'appcheck-missing' }, { status: 401 })
+      : null;
+  }
+
+  try {
+    const { appId } = await verifyAppCheckToken(token, c.env.FIREBASE_PROJECT_NUMBER);
+    console.log('appcheck.ok', { appId });
+    return null;
+  } catch (err) {
+    const detail = err instanceof Error ? err.message : 'appcheck-failed';
+    console.log('appcheck.fail', { detail, enforce });
+    return enforce
+      ? Response.json({ error: 'appcheck-invalid', detail }, { status: 401 })
+      : null;
+  }
+}
+
+// Auth middleware — verifies App Check (app integrity) then Firebase ID token
+// (user identity) and reads tier claim.
 app.use('/v1/*', async (c, next) => {
+  const appCheckReject = await checkAppCheck(c);
+  if (appCheckReject) return appCheckReject;
+
   const auth = c.req.header('authorization');
   if (!auth?.startsWith('Bearer ')) {
     return c.json({ error: 'auth-missing' }, 401);
@@ -177,6 +222,19 @@ interface Flashcard {
   layer?: number; // Bloom layer 0-2 (v1.1 layered decks); absent → flat (0)
 }
 
+// Normalize a model's raw card array: clamp layer to 0-2 (default 0) so a missing
+// or garbage layer never breaks iOS ordering, and cap at 15 (the layered ceiling).
+// Throws when the array is empty so the caller surfaces a retry instead of an empty deck.
+export function normalizeCards(rawCards: unknown): Flashcard[] {
+  if (!Array.isArray(rawCards) || rawCards.length === 0) {
+    throw new Error('cards-empty');
+  }
+  return (rawCards as Flashcard[]).slice(0, 15).map((card) => ({
+    ...card,
+    layer: Math.min(2, Math.max(0, Math.round(Number(card.layer ?? 0)) || 0)),
+  }));
+}
+
 app.post('/v1/ai/flashcards', async (c) => {
   const body = (await c.req.json().catch(() => null)) as AIRequest | null;
   if (!body?.text || body.text.trim().length === 0) {
@@ -214,16 +272,7 @@ app.post('/v1/ai/flashcards', async (c) => {
     });
 
     const parsed = JSON.parse(text) as { cards?: Flashcard[] };
-    const rawCards = parsed.cards;
-    if (!Array.isArray(rawCards) || rawCards.length === 0) {
-      throw new Error('cards-empty');
-    }
-    // Normalize layer to 0-2 (default 0) so a missing/garbage layer never breaks
-    // iOS ordering; cap at 15 (the layered ceiling).
-    const cards = rawCards.slice(0, 15).map((card) => ({
-      ...card,
-      layer: Math.min(2, Math.max(0, Math.round(Number(card.layer ?? 0)) || 0)),
-    }));
+    const cards = normalizeCards(parsed.cards);
 
     await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
     return c.json({ cards, model: resolvedModel });
@@ -275,6 +324,152 @@ app.post('/v1/daily/refresh', async (c) => {
     return c.json({ error: 'daily-unavailable', detail: classifyAIError(raw) }, 502);
   }
 });
+
+// --- Deep Learn (v1.2): Pro-only multi-day course generation ---
+
+interface OutlineDay {
+  day: number;
+  subtopic: string;
+  objective: string;
+}
+
+// POST /v1/learn/path — generate the 7-day outline + expand Day 1. Pro-only.
+app.post('/v1/learn/path', async (c) => {
+  const body = (await c.req.json().catch(() => null)) as {
+    topic?: string;
+    deckTitle?: string;
+    captureSnippets?: string[];
+    role?: string;
+    level?: string;
+  } | null;
+
+  const topic = body?.topic?.trim();
+  if (!topic) return c.json({ error: 'topic-required' }, 400);
+  if (topic.length > 200) return c.json({ error: 'topic-too-long', limit: 200 }, 413);
+
+  const user = c.get('user');
+  const tier = c.get('tier');
+  if (tier !== 'pro') return c.json({ error: 'pro-required' }, 403);
+
+  const limits = {
+    freeMonthlyLimit: parseInt(c.env.FREE_MONTHLY_LIMIT, 10),
+    proDailyLimit: parseInt(c.env.PRO_DAILY_LIMIT, 10),
+  };
+  const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+  for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
+  if (!rl.allowed) return c.json({ error: 'rate-limit-exceeded', tier, resetAt: rl.resetAt }, 429);
+
+  // Cap snippet payload so a huge capture set can't blow up the prompt/cost.
+  const snippets = (body?.captureSnippets ?? []).slice(0, 8).map((s) => String(s).slice(0, 1000));
+
+  try {
+    const outlinePrompt = JSON.stringify({
+      topic,
+      deckTitle: body?.deckTitle ?? null,
+      user: { role: body?.role ?? null, level: body?.level ?? null },
+      snippets,
+    });
+    const outlineRes = await callAI({
+      apiKey: c.env.OPENROUTER_API_KEY,
+      model: c.env.OPENROUTER_MODEL,
+      systemInstruction: LEARN_OUTLINE_SYSTEM_PROMPT,
+      userPrompt: outlinePrompt,
+      jsonResponse: true,
+      temperature: 0.5,
+      referer: c.env.OPENROUTER_REFERER,
+      title: 'Anti Noise',
+    });
+    const outline = JSON.parse(outlineRes.text) as { days?: OutlineDay[] };
+    const days = Array.isArray(outline.days) ? outline.days : [];
+    if (days.length === 0) throw new Error('outline-empty');
+
+    const day1Meta = days.find((d) => d.day === 1) ?? days[0];
+    const day1 = await expandDay(c, {
+      topic,
+      dayIndex: 1,
+      subtopic: day1Meta.subtopic,
+      objective: day1Meta.objective,
+      priorSubtopics: [],
+    });
+
+    await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+    return c.json({ outlineJSON: JSON.stringify({ days }), day1, model: outlineRes.resolvedModel });
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : 'learn-failed';
+    console.error('learn.path.failed', { uid: user.uid, raw });
+    return c.json({ error: 'ai-unavailable', detail: classifyAIError(raw) }, 502);
+  }
+});
+
+// POST /v1/learn/day — lazily expand one later day of an active course. Pro-only.
+app.post('/v1/learn/day', async (c) => {
+  const body = (await c.req.json().catch(() => null)) as {
+    topic?: string;
+    dayIndex?: number;
+    subtopic?: string;
+    objective?: string;
+    priorSubtopics?: string[];
+  } | null;
+
+  const topic = body?.topic?.trim();
+  const subtopic = body?.subtopic?.trim();
+  if (!topic || !subtopic || typeof body?.dayIndex !== 'number') {
+    return c.json({ error: 'invalid-body' }, 400);
+  }
+
+  const user = c.get('user');
+  const tier = c.get('tier');
+  if (tier !== 'pro') return c.json({ error: 'pro-required' }, 403);
+
+  const limits = {
+    freeMonthlyLimit: parseInt(c.env.FREE_MONTHLY_LIMIT, 10),
+    proDailyLimit: parseInt(c.env.PRO_DAILY_LIMIT, 10),
+  };
+  const rl = await peekUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+  for (const [k, v] of Object.entries(rateLimitHeaders(rl))) c.header(k, v);
+  if (!rl.allowed) return c.json({ error: 'rate-limit-exceeded', tier, resetAt: rl.resetAt }, 429);
+
+  try {
+    const day = await expandDay(c, {
+      topic,
+      dayIndex: body.dayIndex,
+      subtopic,
+      objective: body?.objective ?? '',
+      priorSubtopics: (body?.priorSubtopics ?? []).slice(0, 12).map((s) => String(s).slice(0, 120)),
+    });
+    await commitUsage(c.env.RATE_LIMIT, user.uid, tier, limits);
+    return c.json({ ...day, model: 'ok' });
+  } catch (err) {
+    const raw = err instanceof Error ? err.message : 'learn-failed';
+    console.error('learn.day.failed', { uid: user.uid, raw });
+    return c.json({ error: 'ai-unavailable', detail: classifyAIError(raw) }, 502);
+  }
+});
+
+// Expand one day → {concept, cards, applyPrompt}. Shared by both learn endpoints.
+async function expandDay(
+  c: { env: Env },
+  args: { topic: string; dayIndex: number; subtopic: string; objective: string; priorSubtopics: string[] },
+): Promise<{ concept: string; cards: Flashcard[]; applyPrompt: string }> {
+  const { text } = await callAI({
+    apiKey: c.env.OPENROUTER_API_KEY,
+    model: c.env.OPENROUTER_MODEL,
+    systemInstruction: LEARN_DAY_EXPAND_SYSTEM_PROMPT,
+    userPrompt: JSON.stringify(args),
+    jsonResponse: true,
+    temperature: 0.5,
+    referer: c.env.OPENROUTER_REFERER,
+    title: 'Anti Noise',
+  });
+  const parsed = JSON.parse(text) as { concept?: string; cards?: unknown; applyPrompt?: string };
+  const concept = (parsed.concept ?? '').trim();
+  if (!concept) throw new Error('concept-empty');
+  return {
+    concept,
+    cards: normalizeCards(parsed.cards),
+    applyPrompt: (parsed.applyPrompt ?? '').trim(),
+  };
+}
 
 app.notFound((c) => c.json({ error: 'not-found' }, 404));
 
