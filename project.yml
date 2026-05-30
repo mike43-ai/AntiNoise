@@ -12,7 +12,7 @@ settings:
   base:
     SWIFT_VERSION: "5.10"
     IPHONEOS_DEPLOYMENT_TARGET: "17.0"
-    MARKETING_VERSION: "1.0.1"
+    MARKETING_VERSION: "1.1.0"
     CURRENT_PROJECT_VERSION: "2"
     DEVELOPMENT_TEAM: "68MQXVWJZ4"
     CODE_SIGN_STYLE: Automatic
@@ -105,6 +105,20 @@ targets:
       - target: AntiNoiseShareExtension
         embed: true
 
+  AntiNoiseTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: AntiNoiseTests
+    dependencies:
+      - target: AntiNoise
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.antinoise.focus.Tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/AntiNoise.app/AntiNoise"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+
   AntiNoiseShareExtension:
     type: app-extension
     platform: iOS
@@ -152,5 +166,7 @@ schemes:
       config: Debug
     test:
       config: Debug
+      targets:
+        - AntiNoiseTests
     archive:
       config: Release
